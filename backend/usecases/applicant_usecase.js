@@ -1,24 +1,50 @@
-const ApplicantRepo = require("../repositories/applicant_repo");
+const {
+  create_applicant,
+  get_applicant_by_id,
+  get_applicant_by_email,
+  update_applicant,
+  delete_applicant,
+} = require("../repositories/applicant");
 
 class ApplicantUsecase {
   async createApplicant(applicantData) {
-    return await ApplicantRepo.createApplicant(applicantData);
+    const created = await create_applicant(applicantData);
+    if (!created) {
+      throw new Error("Failed to create applicant");
+    }
+    return created;
   }
 
   async getApplicantById(applicantId) {
-    return await ApplicantRepo.getApplicantById(applicantId);
+    const applicant = await get_applicant_by_id(applicantId);
+    if (!applicant) {
+      throw new Error("Applicant not found");
+    }
+    return applicant;
   }
 
   async getApplicantByEmail(email) {
-    return await get_applicant_by_email(email);
+    const applicant = await get_applicant_by_email(email);
+    if (!applicant) {
+      throw new Error("Applicant not found");
+    }
+    return applicant;
   }
 
   async updateApplicant(applicantId, applicantData) {
-    return await update_applicant(applicantId, applicantData);
+    const updated = await update_applicant(applicantId, applicantData);
+    if (!updated) {
+      throw new Error("Failed to update applicant");
+    }
+    return updated;
   }
 
   async deleteApplicant(applicantId) {
-    return await delete_applicant(applicantId);
+    const deleted = await delete_applicant(applicantId);
+    if (!deleted) {
+      throw new Error("Failed to delete applicant");
+    }
+    return deleted;
   }
 }
 

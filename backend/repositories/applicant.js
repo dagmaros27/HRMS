@@ -1,8 +1,8 @@
 const { Applicant } = require("../domain/models/models");
 
 const create_applicant = async (applicant) => {
-  applicant = await Applicant.create(applicant);
-  return applicant;
+  const createdApplicant = await Applicant.create(applicant);
+  return createdApplicant;
 };
 
 const get_applicant_by_id = async (id) => {
@@ -23,7 +23,8 @@ const update_applicant = async (id, applicant) => {
 };
 
 const delete_applicant = async (id) => {
-  await Applicant.findByIdAndDelete(id);
+  const deletedApplicant = await Applicant.findByIdAndDelete(id);
+  return deletedApplicant;
 };
 
 module.exports = {

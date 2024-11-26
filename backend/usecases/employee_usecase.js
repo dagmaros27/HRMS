@@ -9,27 +9,51 @@ const {
 
 class EmployeeUsecase {
   async createEmployee(employeeData) {
-    return await create_employee(employeeData);
+    const created = await create_employee(employeeData);
+    if (!created) {
+      throw new Error("Failed to create employee");
+    }
+    return created;
   }
 
   async getEmployeeById(employeeId) {
-    return await get_employee_by_id(employeeId);
+    const employee = await get_employee_by_id(employeeId);
+    if (!employee) {
+      throw new Error("Employee not found");
+    }
+    return employee;
   }
 
   async getEmployeeByEmail(email) {
-    return await get_employee_by_email(email);
+    const employee = await get_employee_by_email(email);
+    if (!employee) {
+      throw new Error("Employee not found");
+    }
+    return employee;
   }
 
   async getAllEmployees() {
-    return await get_all_employees();
+    const employees = await get_all_employees();
+    if (!employees) {
+      throw new Error("Failed to get all employees");
+    }
+    return employees;
   }
 
   async updateEmployee(employeeId, employeeData) {
-    return await update_employee(employeeId, employeeData);
+    const updated = await update_employee(employeeId, employeeData);
+    if (!updated) {
+      throw new Error("Failed to update employee");
+    }
+    return updated;
   }
 
   async deleteEmployee(employeeId) {
-    return await delete_employee(employeeId);
+    const deleted = await delete_employee(employeeId);
+    if (!deleted) {
+      throw new Error("Failed to delete employee");
+    }
+    return deleted;
   }
 }
 

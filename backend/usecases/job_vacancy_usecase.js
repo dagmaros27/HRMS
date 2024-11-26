@@ -8,23 +8,43 @@ const {
 
 class JobVacancyUsecase {
   async createJobVacancy(jobVacancyData) {
-    return await create_job(jobVacancyData);
+    const created = await create_job(jobVacancyData);
+    if (!created) {
+      throw new Error("Failed to create job vacancy");
+    }
+    return created;
   }
 
   async getAllJobs() {
-    return await get_all_jobs();
+    const jobs = await get_all_jobs();
+    if (!jobs) {
+      throw new Error("Failed to get all jobs");
+    }
+    return jobs;
   }
 
   async getJobById(jobId) {
-    return await get_job_by_id(jobId);
+    const job = await get_job_by_id(jobId);
+    if (!job) {
+      throw new Error("Job not found");
+    }
+    return job;
   }
 
   async updateJob(jobId, jobData) {
-    return await update_job(jobId, jobData);
+    const updated = await update_job(jobId, jobData);
+    if (!updated) {
+      throw new Error("Failed to update job");
+    }
+    return updated;
   }
 
   async deleteJob(jobId) {
-    return await delete_job(jobId);
+    const deleted = await delete_job(jobId);
+    if (!deleted) {
+      throw new Error("Failed to delete job");
+    }
+    return deleted;
   }
 }
 

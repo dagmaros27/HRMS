@@ -9,27 +9,54 @@ const {
 
 class LeaveRequestUsecase {
   async createLeaveRequest(leaveRequestData) {
-    return await create_leave_request(leaveRequestData);
+    const created = await create_leave_request(leaveRequestData);
+    if (!created) {
+      throw new Error("Failed to create leave request");
+    }
+    return created;
   }
 
   async getLeaveRequestById(leaveRequestId) {
-    return await get_leave_request_by_id(leaveRequestId);
+    const leaveRequest = await get_leave_request_by_id(leaveRequestId);
+    if (!leaveRequest) {
+      throw new Error("Leave request not found");
+    }
+    return leaveRequest;
   }
 
   async getLeaveRequestsByEmployee(employeeId) {
-    return await get_leave_requests_by_employee(employeeId);
+    const leaveRequests = await get_leave_requests_by_employee(employeeId);
+    if (!leaveRequests) {
+      throw new Error("Failed to get leave requests by employee");
+    }
+    return leaveRequests;
   }
 
   async getAllLeaveRequests() {
-    return await get_all_leave_requests();
+    const leaveRequests = await get_all_leave_requests();
+    if (!leaveRequests) {
+      throw new Error("Failed to get all leave requests");
+    }
+    return leaveRequests;
   }
 
   async updateLeaveRequest(leaveRequestId, leaveRequestData) {
-    return await update_leave_request(leaveRequestId, leaveRequestData);
+    const updated = await update_leave_request(
+      leaveRequestId,
+      leaveRequestData
+    );
+    if (!updated) {
+      throw new Error("Failed to update leave request");
+    }
+    return updated;
   }
 
   async deleteLeaveRequest(leaveRequestId) {
-    return await delete_leave_request(leaveRequestId);
+    const deleted = await delete_leave_request(leaveRequestId);
+    if (!deleted) {
+      throw new Error("Failed to delete leave request");
+    }
+    return deleted;
   }
 }
 

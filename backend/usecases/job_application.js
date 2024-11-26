@@ -6,15 +6,27 @@ const {
 
 class JobApplicationUsecase {
   async applyForJob(jobApplicationData) {
-    return await create_job_application(jobApplicationData);
+    const created = await create_job_application(jobApplicationData);
+    if (!created) {
+      throw new Error("Failed to apply for job");
+    }
+    return created;
   }
 
   async getJobApplicationById(jobApplicationId) {
-    return await get_job_application_by_id(jobApplicationId);
+    const jobApplication = await get_job_application_by_id(jobApplicationId);
+    if (!jobApplication) {
+      throw new Error("Job application not found");
+    }
+    return jobApplication;
   }
 
   async getJobApplicationsByVacancy(vacancyId) {
-    return await get_job_applications_by_vacancy(vacancyId);
+    const jobApplications = await get_job_applications_by_vacancy(vacancyId);
+    if (!jobApplications) {
+      throw new Error("Failed to get job applications by vacancy");
+    }
+    return jobApplications;
   }
 }
 

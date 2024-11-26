@@ -1,22 +1,36 @@
 const { HRManager } = require("../domain/models/models");
 
-const create_hrmanager = async (manager) => {
+const create_hr_manager = async (manager) => {
   manager = await HRManager.create(manager);
   return manager;
 };
 
-const get_hrmanager_by_id = async (id) => {
+const get_hr_manager_by_id = async (id) => {
   const manager = await HRManager.findById(id);
   return manager;
 };
 
-const get_hrmanager_by_email = async (email) => {
+const get_hr_manager_by_email = async (email) => {
   const manager = await HRManager.findOne({ email: email });
   return manager;
 };
 
+const update_hr_manager = async (id, manager) => {
+  const updated = await HRManager.findByIdAndUpdate(id, manager, {
+    new: true,
+  });
+  return updated;
+};
+
+const delete_hr_manager = async (id) => {
+  const deleted = await HRManager.findByIdAndDelete(id);
+  return deleted;
+};
+
 module.exports = {
-  create_hrmanager,
-  get_hrmanager_by_id,
-  get_hrmanager_by_email,
+  create_hr_manager,
+  get_hr_manager_by_id,
+  get_hr_manager_by_email,
+  update_hr_manager,
+  delete_hr_manager,
 };

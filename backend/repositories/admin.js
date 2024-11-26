@@ -21,7 +21,8 @@ const update_admin = async (id, admin) => {
 };
 
 const delete_admin = async (id) => {
-  await Admin.findByIdAndDelete(id);
+  const deletedAdmin = await Admin.findByIdAndDelete(id);
+  return deletedAdmin;
 };
 
 module.exports = {
