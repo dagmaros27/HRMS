@@ -1,35 +1,40 @@
 const { Employee } = require("../domain/models/models");
-const AsyncHandler = require("express-async-handler");
 
-const create_employee = AsyncHandler(async (employee) => {
+const create_employee = async (employee) => {
   employee = await Employee.create(employee);
   return employee;
-});
+};
 
-const get_employee_by_id = AsyncHandler(async (id) => {
+const get_employee_by_id = async (id) => {
   const employee = await Employee.findById(id);
   return employee;
-});
+};
 
-const get_employee_by_email = AsyncHandler(async (email) => {
+const get_employee_by_email = async (email) => {
   const employee = await Employee.findOne({ email: email });
   return employee;
-});
+};
 
-const get_all_employees = AsyncHandler(async () => {
+const get_all_employees = async () => {
   const employees = await Employee.find({});
   return employees;
-});
+};
 
-const update_employee = AsyncHandler(async (employee) => {
-  const updatedEmployee = await Employee.findByIdAndUpdate({ employee });
+const update_employee = async (employee) => {
+  const updatedEmployee = await Employee.findByIdAndUpdate(
+    employee._id,
+    employee,
+    {
+      new: true,
+    }
+  );
   return updatedEmployee;
-});
+};
 
-const delete_employee = AsyncHandler(async (id) => {
+const delete_employee = async (id) => {
   const employee = await Employee.findByIdAndDelete(id);
   return employee;
-});
+};
 
 module.exports = {
   create_employee,

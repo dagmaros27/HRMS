@@ -9,7 +9,11 @@ const jobApplicationSchema = new Schema(
       ref: "Applicant",
       required: true,
     },
-    jobTitle: { type: String, required: true },
+    jobVacancy: {
+      type: Schema.Types.ObjectId,
+      ref: "JobVacancy",
+      required: true,
+    },
     status: {
       type: String,
       enum: ["pending", "approved", "rejected"],

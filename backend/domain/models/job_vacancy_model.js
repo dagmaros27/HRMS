@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const jobSchema = new Schema(
+const jobVacancySchema = new Schema(
   {
     jobTitle: { type: String, required: true },
     description: { type: String, required: true },
@@ -23,6 +23,6 @@ const jobSchema = new Schema(
   { timestamps: true }
 );
 
-const Job = mongoose.model("Job", jobSchema);
+const JobVacancy = mongoose.model("JobVacancy", jobVacancySchema);
 
-module.exports = { Job };
+module.exports = { JobVacancy };

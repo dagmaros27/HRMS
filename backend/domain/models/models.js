@@ -7,14 +7,14 @@ const { LeaveRequest } = require("./leave_request_model");
 const { TrainingProgram } = require("./training_program_model");
 const { Trainee } = require("./trainee_model");
 const { News } = require("./news_model");
-const { Job } = require("./job_model");
+const { JobVacancy } = require("./job_vacancy_model");
 module.exports = {
   Admin,
   Employee,
   HRManager,
   Applicant,
   JobApplication,
-  Job,
+  JobVacancy,
   LeaveRequest,
   TrainingProgram,
   Trainee,
