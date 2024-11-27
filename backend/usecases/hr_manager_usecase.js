@@ -7,6 +7,7 @@ const {
 } = require("../repositories/hrmanager");
 
 class HrManagerUsecase {
+  constructor() {}
   async createHrManager(hrManagerData) {
     const created = await create_hr_manager(hrManagerData);
     if (!created) {

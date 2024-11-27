@@ -2,7 +2,8 @@ const { Admin } = require("../domain/models/models");
 
 const create_admin = async (admin) => {
   admin = await Admin.create(admin);
-  return admin;
+  const { password, ...adminWithoutPassword } = admin.toObject();
+  return adminWithoutPassword;
 };
 
 const get_admin_by_id = async (id) => {
@@ -17,12 +18,14 @@ const get_admin_by_email = async (email) => {
 
 const update_admin = async (id, admin) => {
   const updatedAdmin = await Admin.findByIdAndUpdate(id, admin, { new: true });
-  return updatedAdmin;
+  const { password, ...adminWithoutPassword } = updatedAdmin.toObject();
+  return adminWithoutPassword;
 };
 
 const delete_admin = async (id) => {
   const deletedAdmin = await Admin.findByIdAndDelete(id);
-  return deletedAdmin;
+  const { password, ...adminWithoutPassword } = deletedAdmin.toObject();
+  return adminWithoutPassword;
 };
 
 module.exports = {

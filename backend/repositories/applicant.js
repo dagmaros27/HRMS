@@ -2,7 +2,8 @@ const { Applicant } = require("../domain/models/models");
 
 const create_applicant = async (applicant) => {
   const createdApplicant = await Applicant.create(applicant);
-  return createdApplicant;
+  const { password, ...applicantWithoutPassword } = createdApplicant.toObject();
+  return applicantWithoutPassword;
 };
 
 const get_applicant_by_id = async (id) => {
@@ -19,12 +20,14 @@ const update_applicant = async (id, applicant) => {
   const updatedApplicant = await Applicant.findByIdAndUpdate(id, applicant, {
     new: true,
   });
-  return updatedApplicant;
+  const { password, ...applicantWithoutPassword } = updatedApplicant.toObject();
+  return applicantWithoutPassword;
 };
 
 const delete_applicant = async (id) => {
   const deletedApplicant = await Applicant.findByIdAndDelete(id);
-  return deletedApplicant;
+  const { password, ...applicantWithoutPassword } = deletedApplicant.toObject();
+  return applicantWithoutPassword;
 };
 
 module.exports = {

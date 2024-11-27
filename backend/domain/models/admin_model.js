@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
+const bcrypt = require("bcrypt");
 
 // Admin Model
 const adminSchema = new Schema(
@@ -10,6 +11,13 @@ const adminSchema = new Schema(
   },
   { timestamps: true }
 );
+
+adminSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) {
+    return next();
+  }
+  this.password = await bcrypt.hash(this.password, 10);
+});
 
 const Admin = mongoose.model("Admin", adminSchema);
 

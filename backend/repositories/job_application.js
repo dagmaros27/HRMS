@@ -15,8 +15,14 @@ const get_job_applications_by_vacancy = async (vacancyId) => {
   return applications;
 };
 
+const get_all_job_applications = async () => {
+  const applications = await JobApplication.find();
+  return applications;
+};
+
 module.exports = {
   create_job_application,
   get_job_application_by_id,
   get_job_applications_by_vacancy,
+  get_all_job_applications,
 };

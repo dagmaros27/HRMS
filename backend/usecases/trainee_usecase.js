@@ -5,6 +5,7 @@ const {
 } = require("../repositories/trainee");
 
 class TraineeUsecase {
+  constructor() {}
   async createTrainee(traineeData) {
     const created = await create_trainee(traineeData);
     if (!created) {

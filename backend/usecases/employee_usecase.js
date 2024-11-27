@@ -8,6 +8,7 @@ const {
 } = require("../repositories/employee");
 
 class EmployeeUsecase {
+  constructor() {}
   async createEmployee(employeeData) {
     const created = await create_employee(employeeData);
     if (!created) {

@@ -7,6 +7,7 @@ const {
 } = require("../repositories/applicant");
 
 class ApplicantUsecase {
+  constructor() {}
   async createApplicant(applicantData) {
     const created = await create_applicant(applicantData);
     if (!created) {

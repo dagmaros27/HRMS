@@ -6,6 +6,7 @@ const {
 } = require("../repositories/training_program");
 
 class TrainingProgramUsecase {
+  constructor() {}
   async createTrainingProgram(trainingProgramData) {
     const created = await create_training_program(trainingProgramData);
     if (!created) {

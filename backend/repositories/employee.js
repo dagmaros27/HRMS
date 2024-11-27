@@ -2,7 +2,8 @@ const { Employee } = require("../domain/models/models");
 
 const create_employee = async (employee) => {
   employee = await Employee.create(employee);
-  return employee;
+  const { password, ...employeeWithoutPassword } = employee.toObject();
+  return employeeWithoutPassword;
 };
 
 const get_employee_by_id = async (id) => {
@@ -28,12 +29,14 @@ const update_employee = async (employee) => {
       new: true,
     }
   );
-  return updatedEmployee;
+  const { password, ...employeeWithoutPassword } = updatedEmployee.toObject();
+  return employeeWithoutPassword;
 };
 
 const delete_employee = async (id) => {
   const employee = await Employee.findByIdAndDelete(id);
-  return employee;
+  const { password, ...employeeWithoutPassword } = employee.toObject();
+  return employeeWithoutPassword;
 };
 
 module.exports = {

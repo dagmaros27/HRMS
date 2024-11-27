@@ -7,6 +7,7 @@ const {
 } = require("../repositories/job_vacancy");
 
 class JobVacancyUsecase {
+  constructor() {}
   async createJobVacancy(jobVacancyData) {
     const created = await create_job(jobVacancyData);
     if (!created) {

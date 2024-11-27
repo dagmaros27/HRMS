@@ -8,7 +8,8 @@ const {
 } = require("../repositories/leave_request");
 
 class LeaveRequestUsecase {
-  async createLeaveRequest(leaveRequestData) {
+  constructor() {}
+  async applyLeaveRequest(leaveRequestData) {
     const created = await create_leave_request(leaveRequestData);
     if (!created) {
       throw new Error("Failed to create leave request");
@@ -40,15 +41,30 @@ class LeaveRequestUsecase {
     return leaveRequests;
   }
 
-  async updateLeaveRequest(leaveRequestId, leaveRequestData) {
-    const updated = await update_leave_request(
-      leaveRequestId,
-      leaveRequestData
-    );
-    if (!updated) {
-      throw new Error("Failed to update leave request");
+  async approveLeaveRequest(leaveRequestId) {
+    const leaveRequest = await get_leave_request_by_id(leaveRequestId);
+    if (!leaveRequest) {
+      throw new Error("Leave request not found");
     }
-    return updated;
+    const updated = { ...leaveRequest, status: "approved" };
+    const approved = await update_leave_request(updated);
+    if (!approved) {
+      throw new Error("Failed to approve leave request");
+    }
+    return approved;
+  }
+
+  async rejectLeaveRequest(leaveRequestId) {
+    const leaveRequest = await get_leave_request_by_id(leaveRequestId);
+    if (!leaveRequest) {
+      throw new Error("Leave request not found");
+    }
+    const updated = { ...leaveRequest, status: "rejected" };
+    const rejected = await update_leave_request(updated);
+    if (!rejected) {
+      throw new Error("Failed to reject leave request");
+    }
+    return rejected;
   }
 
   async deleteLeaveRequest(leaveRequestId) {

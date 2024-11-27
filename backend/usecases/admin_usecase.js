@@ -7,7 +7,13 @@ const {
 } = require("../repositories/admin");
 
 class AdminUsecase {
+  constructor() {}
+
   async createAdmin(adminData) {
+    const admin = await get_admin_by_email(adminData.email);
+    if (admin) {
+      throw new Error("Admin already exists");
+    }
     const created = await create_admin(adminData);
     if (!created) {
       throw new Error("Failed to create admin");

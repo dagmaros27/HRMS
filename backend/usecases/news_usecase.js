@@ -5,6 +5,7 @@ const {
 } = require("../repositories/news");
 
 class NewsUsecase {
+  constructor() {}
   async createNews(newsData) {
     const created = await create_news(newsData);
     if (!created) {
