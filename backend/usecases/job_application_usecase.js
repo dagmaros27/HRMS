@@ -3,7 +3,7 @@ const {
   get_job_application_by_id,
   get_job_applications_by_vacancy,
   get_all_job_applications,
-} = require("../repositories/job_application");
+} = require("../infrastructures/repositories/job_application");
 
 class JobApplicationUsecase {
   constructor() {}

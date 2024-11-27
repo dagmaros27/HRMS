@@ -5,7 +5,7 @@ const {
   delete_leave_request,
   get_leave_requests_by_employee,
   get_all_leave_requests,
-} = require("../repositories/leave_request");
+} = require("../infrastructures/repositories/leave_request");
 
 class LeaveRequestUsecase {
   constructor() {}

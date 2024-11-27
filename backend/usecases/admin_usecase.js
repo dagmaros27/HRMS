@@ -4,7 +4,7 @@ const {
   get_admin_by_email,
   update_admin,
   delete_admin,
-} = require("../repositories/admin");
+} = require("../infrastructures/repositories/admin");
 
 class AdminUsecase {
   constructor() {}

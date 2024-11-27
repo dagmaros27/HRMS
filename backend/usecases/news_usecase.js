@@ -2,7 +2,7 @@ const {
   create_news,
   get_all_news,
   get_news_by_id,
-} = require("../repositories/news");
+} = require("../infrastructures/repositories/news");
 
 class NewsUsecase {
   constructor() {}

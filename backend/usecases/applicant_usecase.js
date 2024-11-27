@@ -4,7 +4,7 @@ const {
   get_applicant_by_email,
   update_applicant,
   delete_applicant,
-} = require("../repositories/applicant");
+} = require("../infrastructures/repositories/applicant");
 
 class ApplicantUsecase {
   constructor() {}

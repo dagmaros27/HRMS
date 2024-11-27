@@ -4,7 +4,7 @@ const {
   get_job_by_id,
   update_job,
   delete_job,
-} = require("../repositories/job_vacancy");
+} = require("../infrastructures/repositories/job_vacancy");
 
 class JobVacancyUsecase {
   constructor() {}

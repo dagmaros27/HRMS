@@ -5,7 +5,7 @@ const {
   update_employee,
   delete_employee,
   get_all_employees,
-} = require("../repositories/employee");
+} = require("../infrastructures/repositories/employee");
 
 class EmployeeUsecase {
   constructor() {}

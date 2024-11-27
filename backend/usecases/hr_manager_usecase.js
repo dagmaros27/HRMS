@@ -4,7 +4,7 @@ const {
   get_hr_manager_by_email,
   update_hr_manager,
   delete_hr_manager,
-} = require("../repositories/hrmanager");
+} = require("../infrastructures/repositories/hrmanager");
 
 class HrManagerUsecase {
   constructor() {}

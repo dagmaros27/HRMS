@@ -2,7 +2,7 @@ const {
   create_trainee,
   update_trainee,
   get_trainee_by_id,
-} = require("../repositories/trainee");
+} = require("../infrastructures/repositories/trainee");
 
 class TraineeUsecase {
   constructor() {}
