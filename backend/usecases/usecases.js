@@ -8,6 +8,7 @@ const TraineeUsecase = require("./trainee_usecase");
 const TrainingProgramUsecase = require("./training_program_usecase");
 const LeaveRequestUsecase = require("./leave_request_usecase");
 const NewsUsecase = require("./news_usecase");
+const UserUsecase = require("./user_usecase");
 
 module.exports = {
   AdminUsecase,
@@ -20,4 +21,5 @@ module.exports = {
   TrainingProgramUsecase,
   LeaveRequestUsecase,
   NewsUsecase,
+  UserUsecase,
 };
