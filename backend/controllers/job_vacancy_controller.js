@@ -1,4 +1,4 @@
-const JobVacancyUsecase = require("../usecases/usecases");
+const { JobVacancyUsecase } = require("../usecases/usecases");
 
 const jobVacancyUsecase = new JobVacancyUsecase();
 

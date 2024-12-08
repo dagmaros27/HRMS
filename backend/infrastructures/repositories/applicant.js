@@ -1,4 +1,4 @@
-const { Applicant } = require("../domain/models/models");
+const { Applicant } = require("../../domain/models/models");
 
 const create_applicant = async (applicant) => {
   const createdApplicant = await Applicant.create(applicant);

@@ -1,4 +1,4 @@
-const LeaveRequestUsecase = require("../usecases/usecases");
+const { LeaveRequestUsecase } = require("../usecases/usecases");
 
 const leaveRequestUsecase = new LeaveRequestUsecase();
 

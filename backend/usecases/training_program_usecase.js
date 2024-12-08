@@ -3,7 +3,7 @@ const {
   update_training_program,
   get_training_program_by_id,
   get_all_training_programs,
-} = require("../repositories/training_program");
+} = require("../infrastructures/repositories/training_program");
 
 class TrainingProgramUsecase {
   constructor() {}

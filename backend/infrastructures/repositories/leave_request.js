@@ -1,4 +1,4 @@
-const { LeaveRequest } = require("../domain/models/models");
+const { LeaveRequest } = require("../../domain/models/models");
 
 const create_leave_request = async (leaveRequest) => {
   leaveRequest = await LeaveRequest.create(leaveRequest);

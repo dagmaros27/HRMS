@@ -1,4 +1,4 @@
-const { News } = require("../domain/models/models");
+const { News } = require("../../domain/models/models");
 
 const create_news = async (news) => {
   news = await News.create(news);

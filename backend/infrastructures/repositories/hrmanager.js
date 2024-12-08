@@ -1,4 +1,4 @@
-const { HRManager } = require("../domain/models/models");
+const { HRManager } = require("../../domain/models/models");
 
 const create_hr_manager = async (manager) => {
   manager = await HRManager.create(manager);

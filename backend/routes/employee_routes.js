@@ -1,6 +1,11 @@
 const express = require("express");
 const router = express.Router();
+const authMiddleware = require("../infrastructures/middlewares/auth");
+const asyncHandler = require("express-async-handler");
+const { accessMiddleware } = require("../infrastructures/middlewares/access");
 
+router.use(authMiddleware);
+router.use(accessMiddleware(["ADMIN"]));
 const {
   createEmployee,
   getEmployeeById,
@@ -10,10 +15,10 @@ const {
   getAllEmployees,
 } = require("../controllers/employee_controller");
 
-router.post("/", createEmployee);
-router.get("/:id", getEmployeeById);
-router.get("/", getAllEmployees);
-router.put("/:id", updateEmployee);
-router.delete("/:id", deleteEmployee);
+router.post("/", asyncHandler(createEmployee));
+router.get("/:id", asyncHandler(getEmployeeById));
+router.get("/", asyncHandler(getAllEmployees));
+router.put("/:id", asyncHandler(updateEmployee));
+router.delete("/:id", asyncHandler(deleteEmployee));
 
 module.exports = router;

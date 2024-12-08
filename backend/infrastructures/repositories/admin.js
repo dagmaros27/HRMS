@@ -1,4 +1,4 @@
-const { Admin } = require("../domain/models/models");
+const { Admin } = require("../../domain/models/models");
 
 const create_admin = async (admin) => {
   admin = await Admin.create(admin);

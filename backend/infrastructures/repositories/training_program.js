@@ -1,4 +1,4 @@
-const { TrainingProgram } = require("../domain/models/models");
+const { TrainingProgram } = require("../../domain/models/models");
 
 const create_training_program = async (trainingProgram) => {
   trainingProgram = await TrainingProgram.create(trainingProgram);

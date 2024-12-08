@@ -1,4 +1,4 @@
-const { JobVacancy } = require("../domain/models/models");
+const { JobVacancy } = require("../../domain/models/models");
 
 const create_job = async (job) => {
   job = await JobVacancy.create(job);

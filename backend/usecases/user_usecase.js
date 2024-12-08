@@ -1,15 +1,13 @@
-const { get_admin_by_email } = require("../repositories/admin_repository");
+const { get_admin_by_email } = require("../infrastructures/repositories/admin");
 const {
   get_applicant_by_email,
-} = require("../repositories/applicant_repository");
+} = require("../infrastructures/repositories/applicant");
 const {
   get_employee_by_email,
-} = require("../repositories/employee_repository");
+} = require("../infrastructures/repositories/employee");
 const {
   get_hr_manager_by_email,
-} = require("../repositories/hr_manager_repository");
-
-const UserDto = require("../domain/dto/user");
+} = require("../infrastructures/repositories/hrmanager");
 
 class UserUsecase {
   constructor() {}
@@ -22,19 +20,20 @@ class UserUsecase {
 
     if (admin) {
       admin.role = "ADMIN";
-      return UserDto(admin);
+      console.log(admin);
+      return admin;
     }
     if (applicant) {
       applicant.role = "APPLICANT";
-      return UserDto(applicant);
+      return applicant;
     }
     if (employee) {
       employee.role = "EMPLOYEE";
-      return UserDto(employee);
+      return employee;
     }
     if (hrManager) {
       hrManager.role = "HR_MANAGER";
-      return UserDto(hrManager);
+      return hrManager;
     }
     throw new Error("User not found");
   }

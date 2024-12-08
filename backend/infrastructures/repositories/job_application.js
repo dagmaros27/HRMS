@@ -1,4 +1,4 @@
-const { JobApplication } = require("../domain/models/models");
+const { JobApplication } = require("../../domain/models/models");
 
 const create_job_application = async (application) => {
   application = await JobApplication.create(application);

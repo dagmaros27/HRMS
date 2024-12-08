@@ -1,6 +1,11 @@
 const jwt = require("jsonwebtoken");
 const asyncHandler = require("express-async-handler");
-const User = require("../models/user");
+const {
+  Admin,
+  Applicant,
+  Employee,
+  HRManager,
+} = require("../../domain/models/models");
 
 const authMiddleware = asyncHandler(async (req, res, next) => {
   let token;
@@ -13,7 +18,24 @@ const authMiddleware = asyncHandler(async (req, res, next) => {
     try {
       const decoded = jwt.verify(token, process.env.JWT_TOKEN_KEY);
 
-      req.user = await User.findById(decoded.user_id).select("-password");
+      if (decoded.user_role === "ADMIN") {
+        req.user = await Admin.findById(decoded.user_id).select("-password");
+        req.user.role = "ADMIN";
+      } else if (decoded.user_role === "APPLICANT") {
+        req.user = await Applicant.findById(decoded.user_id).select(
+          "-password"
+        );
+        req.user.role = "APPLICANT";
+      } else if (decoded.user_role === "EMPLOYEE") {
+        req.user = await Employee.findById(decoded.user_id).select("-password");
+        req.user.role = "EMPLOYEE";
+      } else if (decoded.user_role === "HRMANAGER") {
+        req.user = await HRManager.findById(decoded.user_id).select(
+          "-password"
+        );
+        req.user.role = "HRMANAGER";
+      }
+      console.log("user", req.user);
       next();
     } catch (error) {
       console.log(error);

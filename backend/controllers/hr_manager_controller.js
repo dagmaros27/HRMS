@@ -1,4 +1,4 @@
-const HrManagerUsecase = require("../usecases/usecases");
+const { HrManagerUsecase } = require("../usecases/usecases");
 
 const hrManagerUsecase = new HrManagerUsecase();
 

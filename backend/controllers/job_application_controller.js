@@ -1,4 +1,4 @@
-const JobApplicationUsecase = require("../usecases/usecases");
+const { JobApplicationUsecase } = require("../usecases/usecases");
 
 const jobApplicationUsecase = new JobApplicationUsecase();
 
