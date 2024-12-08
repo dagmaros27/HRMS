@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../axios";
 
-// Utility to save and load user data from localStorage
 const loadUserFromLocalStorage = () => {
   try {
     const user = localStorage.getItem("user");
@@ -20,7 +19,6 @@ const saveUserToLocalStorage = (user) => {
   }
 };
 
-// Load initial state from localStorage
 const storedUser = loadUserFromLocalStorage();
 
 const initialState = {
@@ -33,14 +31,13 @@ const initialState = {
   error: null,
 };
 
-// Async thunk for user login
 export const loginUser = createAsyncThunk(
   "user/login",
   async (credentials, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post("/auth/login", credentials);
       const data = response.data;
-      saveUserToLocalStorage(data); // Save user to localStorage
+      saveUserToLocalStorage(data);
       return data;
     } catch (error) {
       return rejectWithValue(
@@ -60,14 +57,14 @@ const userSlice = createSlice({
       state.user_email = user_email;
       state.token = token;
       state.role = role;
-      saveUserToLocalStorage(state); // Save updated user state to localStorage
+      saveUserToLocalStorage(state);
     },
     logout: (state) => {
       state.user_name = null;
       state.user_email = null;
       state.token = null;
       state.role = null;
-      localStorage.removeItem("user"); // Clear localStorage on logout
+      localStorage.removeItem("user");
     },
     setLoading: (state, action) => {
       state.loading = action.payload;
@@ -89,7 +86,7 @@ const userSlice = createSlice({
         state.user_email = user_email;
         state.token = token;
         state.role = role;
-        saveUserToLocalStorage(state); // Save to localStorage on successful login
+        saveUserToLocalStorage(state);
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;

@@ -1,7 +1,6 @@
 import { useMediaQuery, Box, Drawer } from "@mui/material";
 import SidebarItems from "./SidebarItems";
-import { Sidebar, Logo } from "react-mui-sidebar";
-import logo from "../../../assets/images/logos/dark1-logo.svg";
+import { Sidebar } from "react-mui-sidebar";
 
 const MSidebar = (props) => {
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up("lg"));
@@ -56,10 +55,6 @@ const MSidebar = (props) => {
               themeSecondaryColor="#49beff"
               showProfile={false}
             >
-              {/* ------------------------------------------- */}
-              {/* Logo */}
-              {/* ------------------------------------------- */}
-              <Logo img={logo} />
               <Box>
                 {/* ------------------------------------------- */}
                 {/* Sidebar Items */}
@@ -95,12 +90,6 @@ const MSidebar = (props) => {
         themeSecondaryColor="#49beff"
         showProfile={false}
       >
-        {/* ------------------------------------------- */}
-        {/* Logo */}
-        {/* ------------------------------------------- */}
-
-        <Logo img={logo} />
-
         {/* ------------------------------------------- */}
         {/* Sidebar For Mobile */}
         {/* ------------------------------------------- */}
