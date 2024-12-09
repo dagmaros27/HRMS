@@ -1,6 +1,7 @@
 import React, { lazy } from "react";
 import { Navigate } from "react-router-dom";
 import Loadable from "../layouts/full/shared/loadable/Loadable";
+import { exact } from "prop-types";
 
 /* ***Layouts**** */
 const FullLayout = Loadable(lazy(() => import("../layouts/full/FullLayout")));
@@ -32,6 +33,12 @@ const EditEmployee = Loadable(
   lazy(() => import("../views/employees/editEmployee"))
 );
 
+const Vacancy = Loadable(lazy(() => import("../views/vacancy/vacancy")));
+const VacancyApply = Loadable(
+  lazy(() => import("../views/vacancy/vacancyApply"))
+);
+const AddVacancy = Loadable(lazy(() => import("../views/vacancy/addVacancy")));
+
 const Router = [
   {
     path: "/",
@@ -46,6 +53,17 @@ const Router = [
       { path: "/employees", exact: true, element: <Employees /> },
       { path: "/add-employee", exact: true, element: <AddEmployee /> },
       { path: "/edit-employee/:id", exact: true, element: <EditEmployee /> },
+      { path: "/vacancy", exact: true, element: <Vacancy /> },
+      {
+        path: "/vacancy/apply/:id",
+        exact: true,
+        element: <VacancyApply />,
+      },
+      {
+        path: "/vacancy/add",
+        exact: true,
+        element: <AddVacancy />,
+      },
       { path: "*", element: <Navigate to="/auth/404" /> },
     ],
   },

@@ -7,6 +7,7 @@ import {
   IconTypography,
   IconUserPlus,
   IconUsers,
+  IconBriefcase,
 } from "@tabler/icons-react";
 
 import { uniqueId } from "lodash";
@@ -32,6 +33,12 @@ const Menuitems = [
     title: "Employees",
     icon: IconUsers,
     href: "/employees",
+  },
+  {
+    id: uniqueId(),
+    title: "Vacancy",
+    icon: IconBriefcase,
+    href: "/vacancy",
   },
 ];
 
