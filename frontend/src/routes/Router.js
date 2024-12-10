@@ -25,6 +25,7 @@ const Register = Loadable(
 );
 const Login = Loadable(lazy(() => import("../views/authentication/Login")));
 
+//employee routes
 const Employees = Loadable(lazy(() => import("../views/employees/employees")));
 const AddEmployee = Loadable(
   lazy(() => import("../views/employees/addEmployee"))
@@ -33,11 +34,19 @@ const EditEmployee = Loadable(
   lazy(() => import("../views/employees/editEmployee"))
 );
 
+//vacancy routes
 const Vacancy = Loadable(lazy(() => import("../views/vacancy/vacancy")));
 const VacancyApply = Loadable(
   lazy(() => import("../views/vacancy/vacancyApply"))
 );
 const AddVacancy = Loadable(lazy(() => import("../views/vacancy/addVacancy")));
+
+//news routes
+const News = Loadable(lazy(() => import("../views/news/news")));
+const NewsDescription = Loadable(
+  lazy(() => import("../views/news/newsDescription"))
+);
+const PostNews = Loadable(lazy(() => import("../views/news/addNews")));
 
 const Router = [
   {
@@ -63,6 +72,21 @@ const Router = [
         path: "/vacancy/add",
         exact: true,
         element: <AddVacancy />,
+      },
+      {
+        path: "/news",
+        exact: true,
+        element: <News />,
+      },
+      {
+        path: "/news/:id",
+        exact: true,
+        element: <NewsDescription />,
+      },
+      {
+        path: "/news/post",
+        exact: true,
+        element: <PostNews />,
       },
       { path: "*", element: <Navigate to="/auth/404" /> },
     ],
