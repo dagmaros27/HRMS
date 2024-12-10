@@ -56,6 +56,23 @@ const ApplicantDetails = Loadable(
   lazy(() => import("../views/application/applicationDescription"))
 );
 
+//leave request routes
+const LeaveRequests = Loadable(
+  lazy(() => import("../views/leave-request/leaveRequests"))
+);
+
+const LeaveRequestHistory = Loadable(
+  lazy(() => import("../views/leave-request/leaveRequestHistory"))
+);
+
+const AddLeaveRequest = Loadable(
+  lazy(() => import("../views/leave-request/addLeaveRequest"))
+);
+
+const LeaveRequestDescription = Loadable(
+  lazy(() => import("../views/leave-request/leaveRequestDescription"))
+);
+
 const Router = [
   {
     path: "/",
@@ -105,6 +122,26 @@ const Router = [
         path: "/vacancy/applicants/:id",
         exact: true,
         element: <ApplicantDetails />,
+      },
+      {
+        path: "/leave-requests",
+        exact: true,
+        element: <LeaveRequests />,
+      },
+      {
+        path: "/leave-requests/add",
+        exact: true,
+        element: <AddLeaveRequest />,
+      },
+      {
+        path: "/leave-requests/history",
+        exact: true,
+        element: <LeaveRequestHistory />,
+      },
+      {
+        path: "/leave-requests/:id",
+        exact: true,
+        element: <LeaveRequestDescription />,
       },
       { path: "*", element: <Navigate to="/auth/404" /> },
     ],

@@ -1,19 +1,21 @@
 import React from "react";
 import {
   IconButton,
+  Button,
   Table,
   TableHead,
   TableRow,
   TableCell,
   TableBody,
   Typography,
+  Box,
 } from "@mui/material";
-import { IconEdit } from "@tabler/icons-react";
+import { IconEdit, IconTrash } from "@tabler/icons-react";
 import PageContainer from "src/components/container/PageContainer";
 import DashboardCard from "../../components/shared/DashboardCard";
 import { Link } from "react-router-dom";
 
-const LeaveRequestPage = () => {
+const LeaveRequestHistoryPage = () => {
   const [leaveRequests, setLeaveRequests] = React.useState([
     {
       id: 1,
@@ -31,20 +33,36 @@ const LeaveRequestPage = () => {
     },
   ]);
 
+  const handleViewDetails = (id) => {
+    // Handle view details functionality
+  };
+
+  const handleDelete = (id) => {
+    // Handle delete functionality
+  };
+
   return (
     <PageContainer
-      title="Leave Requests"
-      description="this is Leave Requests page"
+      title="Leave Request History"
+      description="this is Leave Requests history page"
     >
-      <DashboardCard title="Leave Requests">
+      <DashboardCard
+        title="Leave Requests"
+        action={
+          <Link to="/leave-requests/add">
+            <Button variant="contained" color="primary" sx={{ px: 3 }}>
+              Add Leave Request
+            </Button>
+          </Link>
+        }
+      >
         <Table>
           <TableHead>
             <TableRow>
               <TableCell>Name</TableCell>
               <TableCell>Position</TableCell>
-              <TableCell>Status</TableCell>
               <TableCell>Date</TableCell>
-              <TableCell align="right">Actions</TableCell>
+              <TableCell>Status</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -52,15 +70,21 @@ const LeaveRequestPage = () => {
               <TableRow key={request.id}>
                 <TableCell>{request.name}</TableCell>
                 <TableCell>{request.position}</TableCell>
-                <TableCell>{request.status}</TableCell>
                 <TableCell>{request.date}</TableCell>
-                <TableCell align="right">
-                  <Link to={`/leave-requests/${request.id}`}>
-                    <IconButton color="primary">
-                      <IconEdit size="18" />
-                      <Typography>View details</Typography>
-                    </IconButton>
-                  </Link>
+                <TableCell>
+                  <Button
+                    disableRipple
+                    disableElevation
+                    color={
+                      request.status === "Approved"
+                        ? "success"
+                        : request.status === "Pending"
+                        ? "warning"
+                        : "error"
+                    }
+                  >
+                    {request.status}
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}
@@ -71,4 +95,4 @@ const LeaveRequestPage = () => {
   );
 };
 
-export default LeaveRequestPage;
+export default LeaveRequestHistoryPage;
