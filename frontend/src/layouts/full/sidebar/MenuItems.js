@@ -4,6 +4,7 @@ import {
   IconUsers,
   IconBriefcase,
   IconNews,
+  IconUsersPlus,
 } from "@tabler/icons-react";
 
 import { uniqueId } from "lodash";
@@ -41,6 +42,12 @@ const Menuitems = [
     title: "News",
     icon: IconNews,
     href: "/news",
+  },
+  {
+    id: uniqueId(),
+    title: "Applicants",
+    icon: IconUsersPlus,
+    href: "/vacancy/applicants",
   },
 ];
 

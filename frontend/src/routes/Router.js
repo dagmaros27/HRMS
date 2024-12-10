@@ -48,6 +48,14 @@ const NewsDescription = Loadable(
 );
 const PostNews = Loadable(lazy(() => import("../views/news/addNews")));
 
+//application routes
+const Applicants = Loadable(
+  lazy(() => import("../views/application/applications"))
+);
+const ApplicantDetails = Loadable(
+  lazy(() => import("../views/application/applicationDescription"))
+);
+
 const Router = [
   {
     path: "/",
@@ -87,6 +95,16 @@ const Router = [
         path: "/news/post",
         exact: true,
         element: <PostNews />,
+      },
+      {
+        path: "/vacancy/applicants",
+        exact: true,
+        element: <Applicants />,
+      },
+      {
+        path: "/vacancy/applicants/:id",
+        exact: true,
+        element: <ApplicantDetails />,
       },
       { path: "*", element: <Navigate to="/auth/404" /> },
     ],
