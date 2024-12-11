@@ -73,6 +73,12 @@ const LeaveRequestDescription = Loadable(
   lazy(() => import("../views/leave-request/leaveRequestDescription"))
 );
 
+//training routes
+const Training = Loadable(lazy(() => import("../views/training/training")));
+const AddTraining = Loadable(
+  lazy(() => import("../views/training/addTraining"))
+);
+
 const Router = [
   {
     path: "/",
@@ -142,6 +148,16 @@ const Router = [
         path: "/leave-requests/:id",
         exact: true,
         element: <LeaveRequestDescription />,
+      },
+      {
+        path: "/training",
+        exact: true,
+        element: <Training />,
+      },
+      {
+        path: "/training/add",
+        exact: true,
+        element: <AddTraining />,
       },
       { path: "*", element: <Navigate to="/auth/404" /> },
     ],

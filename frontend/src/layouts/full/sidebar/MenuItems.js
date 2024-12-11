@@ -5,6 +5,7 @@ import {
   IconNews,
   IconUsersPlus,
   IconDoorExit,
+  IconRun,
 } from "@tabler/icons-react";
 
 import { uniqueId } from "lodash";
@@ -60,6 +61,12 @@ const Menuitems = [
     title: "Leave Requests History",
     icon: IconDoorExit,
     href: "/leave-requests/history",
+  },
+  {
+    id: uniqueId(),
+    title: "Training Programs",
+    icon: IconRun,
+    href: "/training",
   },
 ];
 
