@@ -35,7 +35,7 @@ app.use("/api/job-vacancies", jobVacancyRoutes);
 app.use("/api/news", newsRoutes);
 app.use("/api/trainings", trainingRoutes);
 app.use("/api/trainees", traineeRoutes);
-app.use("/api/reports", reportRoutes);
+app.use("/api/report", reportRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

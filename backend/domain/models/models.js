@@ -8,6 +8,7 @@ const { TrainingProgram } = require("./training_program_model");
 const { Trainee } = require("./trainee_model");
 const { News } = require("./news_model");
 const { JobVacancy } = require("./job_vacancy_model");
+const { Report } = require("./report_model");
 module.exports = {
   Admin,
   Employee,
@@ -19,4 +20,5 @@ module.exports = {
   TrainingProgram,
   Trainee,
   News,
+  Report,
 };
