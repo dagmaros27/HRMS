@@ -1,19 +1,32 @@
-import React from "react";
-import { Typography, Button, Box } from "@mui/material";
+import React, { useEffect } from "react";
+import { Typography, Button } from "@mui/material";
 import PageContainer from "src/components/container/PageContainer";
 import DashboardCard from "../../components/shared/DashboardCard";
 import { Link, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchReports } from "../../redux/slices/reportSlice";
 
 const ReportDetailsPage = () => {
   const { id } = useParams();
+  const dispatch = useDispatch();
+  const { reports, status } = useSelector((state) => state.report);
 
-  const report = {
-    id: id,
-    timestamp: "2024-12-12 10:30:00",
-    createdBy: "John Doe",
-    content:
-      "This is a detailed report about the system performance and logs for the specified period.",
-  };
+  useEffect(() => {
+    if (!reports.length) {
+      dispatch(fetchReports());
+    }
+  }, [dispatch, reports.length]);
+
+  const report = reports.find((report) => report.id === parseInt(id));
+
+  if (status === "loading") {
+    return <Typography>Loading...</Typography>;
+  }
+
+  if (!report) {
+    return <Typography>Report not found.</Typography>;
+  }
+
   return (
     <PageContainer
       title="Report Details"
@@ -22,8 +35,7 @@ const ReportDetailsPage = () => {
       <DashboardCard
         title={`Report ID: ${report.id}`}
         action={
-          <Link to={"/reports"}>
-            {" "}
+          <Link to="/reports">
             <Button variant="outlined" color="primary">
               Back
             </Button>
@@ -37,7 +49,8 @@ const ReportDetailsPage = () => {
           <strong>Created By:</strong> {report.createdBy}
         </Typography>
         <Typography variant="body1" gutterBottom>
-          <strong>Details:</strong> {report.content}
+          <strong>Details:</strong>{" "}
+          {report.content || "No additional details available."}
         </Typography>
       </DashboardCard>
     </PageContainer>

@@ -1,51 +1,52 @@
 import { useParams } from "react-router-dom";
-import { Container, Typography, Box, Button } from "@mui/material";
+import {
+  Container,
+  Typography,
+  Box,
+  Button,
+  CircularProgress,
+} from "@mui/material";
 import { Link } from "react-router-dom";
-import image from "../../assets/images/products/s5.jpg";
 import PageContainer from "../../components/container/PageContainer";
 import DashboardCard from "../../components/shared/DashboardCard";
-
-const newsArticles = [
-  {
-    id: 1,
-    title: "Breaking News: Tech Innovation in 2024",
-    description: "Discover the latest advancements in technology this year.",
-    content: `The year 2024 is shaping up to be a milestone in tech innovation. 
-      From advancements in artificial intelligence to groundbreaking 
-      developments in renewable energy, the possibilities are endless. 
-      Stay tuned for more updates.`,
-  },
-  {
-    id: 2,
-    title: "AI Revolution in the Workplace",
-    description:
-      "How AI is transforming industries and enhancing productivity.",
-    content: `Artificial Intelligence is making waves across various industries, 
-      improving efficiency and transforming the workplace. From healthcare 
-      to logistics, learn how AI is changing the way we work.`,
-  },
-  {
-    id: 3,
-    title: "Top 10 Programming Languages to Learn",
-    description: "Stay ahead in your career with these must-know languages.",
-    content: `The tech industry demands skilled developers. This list highlights 
-      the top programming languages you should learn in 2024 to advance 
-      your career and stay ahead of the curve.`,
-  },
-  {
-    id: 4,
-    title: "Sustainability in Tech",
-    description: "Explore green initiatives in the tech industry.",
-    content: `The tech world is moving towards sustainability. Learn how companies 
-      are adopting eco-friendly practices and implementing green technologies.`,
-  },
-];
+import { useSelector } from "react-redux";
+import altImage from "../../assets/images/products/s5.jpg";
 
 const NewsDescriptionPage = () => {
   const { id } = useParams(); // Get the news ID from the route parameters
-  const news = newsArticles.find((article) => article.id === parseInt(id));
+  const { news, status } = useSelector((state) => state.news);
 
-  if (!news) {
+  const article = news.find((article) => article._id == id);
+
+  if (status === "loading") {
+    return (
+      <Container>
+        <Box textAlign="center" marginTop={5}>
+          <CircularProgress />
+          <Typography variant="body1" marginTop={2}>
+            Loading news...
+          </Typography>
+        </Box>
+      </Container>
+    );
+  }
+
+  if (status === "failed") {
+    return (
+      <Container>
+        <Typography variant="h4" color="error" textAlign="center">
+          Failed to load the news article. Please try again later.
+        </Typography>
+        <Box textAlign="center" marginTop={3}>
+          <Link to="/news">
+            <Button variant="contained">Back to News</Button>
+          </Link>
+        </Box>
+      </Container>
+    );
+  }
+
+  if (!article) {
     return (
       <Container>
         <Typography variant="h4" color="error" textAlign="center">
@@ -66,7 +67,7 @@ const NewsDescriptionPage = () => {
       description="Read more about the news"
     >
       <DashboardCard
-        title="Latest News"
+        title="News Details"
         action={
           <Link to={"/news"}>
             <Button variant="outlined">Back</Button>
@@ -74,8 +75,8 @@ const NewsDescriptionPage = () => {
         }
       >
         <img
-          src={image}
-          alt={news.title}
+          src={article.image || altImage}
+          alt={article.title}
           style={{
             width: "100%",
             borderRadius: "8px",
@@ -85,13 +86,13 @@ const NewsDescriptionPage = () => {
           }}
         />
         <Typography variant="h3" component="h1" gutterBottom>
-          {news.title}
+          {article.title}
         </Typography>
         <Typography variant="subtitle1" color="textSecondary" gutterBottom>
-          {news.description}
+          {article.description}
         </Typography>
         <Typography variant="body1" style={{ marginTop: "16px" }}>
-          {news.content}
+          {article.content}
         </Typography>
       </DashboardCard>
     </PageContainer>

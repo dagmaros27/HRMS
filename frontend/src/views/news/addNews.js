@@ -2,11 +2,14 @@ import React, { useState } from "react";
 import { TextField, Button, Grid, Box, Typography } from "@mui/material";
 import PageContainer from "src/components/container/PageContainer";
 import DashboardCard from "../../components/shared/DashboardCard";
-import { display } from "@mui/system";
-import { justifyContent } from "@mui/system/flexbox";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { addNews } from "../../store/slices/newsSlice";
 
 const AddNewsPage = () => {
+  const dispatch = useDispatch();
+  const { status, error: backendError } = useSelector((state) => state.news);
+
   const [formData, setFormData] = useState({
     title: "",
     image: "",
@@ -15,6 +18,7 @@ const AddNewsPage = () => {
   });
 
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -31,17 +35,10 @@ const AddNewsPage = () => {
     }
 
     setError("");
-    console.log("News Submitted:", formData);
-
-    // Reset the form (optional)
-    setFormData({
-      title: "",
-      image: "",
-      description: "",
-      content: "",
-    });
-
-    // Optionally, redirect or show a success message
+    dispatch(addNews(formData)); // Dispatch the Redux action to add news
+    if (status === "success") {
+      navigate("/news");
+    }
   };
 
   return (
@@ -105,19 +102,30 @@ const AddNewsPage = () => {
                 required
               />
             </Grid>
-            {error && (
+
+            {(error || backendError) && (
               <Grid item xs={12}>
-                <Typography color="error">{error}</Typography>
+                <Typography color="error">{error || backendError}</Typography>
               </Grid>
             )}
+
+            {status === "success" && (
+              <Grid item xs={12}>
+                <Typography color="primary">
+                  News added successfully! Redirecting...
+                </Typography>
+              </Grid>
+            )}
+
             <Grid item xs={12}>
               <Button
                 type="submit"
                 variant="contained"
                 color="primary"
                 fullWidth
+                disabled={status === "loading"}
               >
-                Add News
+                {status === "loading" ? "Adding..." : "Add News"}
               </Button>
             </Grid>
           </Grid>
