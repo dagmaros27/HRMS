@@ -78,7 +78,15 @@ const Training = Loadable(lazy(() => import("../views/training/training")));
 const AddTraining = Loadable(
   lazy(() => import("../views/training/addTraining"))
 );
+const MyTrainings = Loadable(
+  lazy(() => import("../views/training/myTrainings"))
+);
 
+//report routes
+const Report = Loadable(lazy(() => import("../views/report/report")));
+const ReportDetails = Loadable(
+  lazy(() => import("../views/report/reportDetails"))
+);
 const Router = [
   {
     path: "/",
@@ -158,6 +166,21 @@ const Router = [
         path: "/training/add",
         exact: true,
         element: <AddTraining />,
+      },
+      {
+        path: "/training/my-trainings",
+        exact: true,
+        element: <MyTrainings />,
+      },
+      {
+        path: "/reports",
+        exact: true,
+        element: <Report />,
+      },
+      {
+        path: "/reports/:id",
+        exact: true,
+        element: <ReportDetails />,
       },
       { path: "*", element: <Navigate to="/auth/404" /> },
     ],

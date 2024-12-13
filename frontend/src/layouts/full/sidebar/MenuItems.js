@@ -6,6 +6,7 @@ import {
   IconUsersPlus,
   IconDoorExit,
   IconRun,
+  IconReport,
 } from "@tabler/icons-react";
 
 import { uniqueId } from "lodash";
@@ -14,17 +15,6 @@ const Menuitems = [
   {
     navlabel: true,
     subheader: "Home",
-  },
-
-  {
-    id: uniqueId(),
-    title: "Dashboard",
-    icon: IconLayoutDashboard,
-    href: "/dashboard",
-  },
-  {
-    navlabel: true,
-    subheader: "User Control",
   },
   {
     id: uniqueId(),
@@ -67,6 +57,18 @@ const Menuitems = [
     title: "Training Programs",
     icon: IconRun,
     href: "/training",
+  },
+  {
+    id: uniqueId(),
+    title: "My Trainings",
+    icon: IconRun,
+    href: "/trainings/my-trainings",
+  },
+  {
+    id: uniqueId(),
+    title: "Reports",
+    icon: IconReport,
+    href: "/reports",
   },
 ];
 

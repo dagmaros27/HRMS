@@ -63,8 +63,8 @@ const TrainingPage = () => {
                     {session.description}
                   </p>
                   <Link to={`/training/${session.id}`}>
-                    <Button variant="contained" size="small">
-                      Learn More
+                    <Button variant="contained" size="small" fullWidth>
+                      Register
                     </Button>
                   </Link>
                 </div>
