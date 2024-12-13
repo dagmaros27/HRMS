@@ -1,6 +1,6 @@
-const { HrManagerUsecase } = require("../usecases/usecases");
+const { HRManagerUsecase } = require("../usecases/usecases");
 
-const hrManagerUsecase = new HrManagerUsecase();
+const hrManagerUsecase = new HRManagerUsecase();
 
 const createHrManager = async (req, res) => {
   const hrManagerData = req.body;

@@ -1,4 +1,4 @@
-const { NewsUsecase } = require("../usecases/news_usecase");
+const { NewsUsecase } = require("../usecases/usecases");
 
 const newsUsecase = new NewsUsecase();
 

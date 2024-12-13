@@ -5,7 +5,7 @@ const jobVacancySchema = new Schema(
   {
     jobTitle: { type: String, required: true },
     description: { type: String, required: true },
-    salary: { type: string, required: true },
+    salary: { type: String, required: true },
     location: { type: String, required: true },
     deadline: { type: Date, required: true },
     status: {

@@ -6,7 +6,7 @@ const newsSchema = new Schema(
   {
     title: { type: String, required: true },
     content: { type: String, required: true },
-    author: { type: Schema.Types.ObjectId, ref: "Admin" },
+    author: { type: Schema.Types.ObjectId, ref: "Employee" },
     publishedDate: { type: Date, default: Date.now },
   },
   { timestamps: true }

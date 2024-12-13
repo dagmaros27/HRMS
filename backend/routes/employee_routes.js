@@ -3,9 +3,6 @@ const router = express.Router();
 const authMiddleware = require("../infrastructures/middlewares/auth");
 const asyncHandler = require("express-async-handler");
 const { accessMiddleware } = require("../infrastructures/middlewares/access");
-
-router.use(authMiddleware);
-router.use(accessMiddleware(["ADMIN"]));
 const {
   createEmployee,
   getEmployeeById,
@@ -14,6 +11,9 @@ const {
   getEmployeeByEmail,
   getAllEmployees,
 } = require("../controllers/employee_controller");
+
+router.use(authMiddleware);
+//router.use(accessMiddleware(["ADMIN"]));
 
 router.post("/", asyncHandler(createEmployee));
 router.get("/:id", asyncHandler(getEmployeeById));

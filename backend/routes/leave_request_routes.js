@@ -9,6 +9,14 @@ const {
   rejectLeaveRequest,
   getLeaveRequestsByEmployee,
 } = require("../controllers/leave_request_controller");
+const authMiddleware = require("../infrastructures/middlewares/auth");
+const {
+  adminMiddleware,
+  accessMiddleware,
+} = require("../infrastructures/middlewares/access");
+
+router.use(authMiddleware);
+//router.use(accessMiddleware(["EMPLOYEE"]));
 
 router.post("/apply", applyLeaveRequest);
 router.put("/approve/:id", approveLeaveRequest);

@@ -6,6 +6,14 @@ const {
   getTraineeById,
   updateTrainee,
 } = require("../controllers/trainee_controller");
+const authMiddleware = require("../infrastructures/middlewares/auth");
+const {
+  adminMiddleware,
+  accessMiddleware,
+} = require("../infrastructures/middlewares/access");
+
+router.use(authMiddleware);
+//router.use(accessMiddleware(["ADMIN"]));
 
 router.post("/", createTrainee);
 router.get("/:id", getTraineeById);

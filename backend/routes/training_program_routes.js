@@ -7,6 +7,14 @@ const {
   getTrainingProgramById,
   updateTrainingProgram,
 } = require("../controllers/training_program_controller");
+const authMiddleware = require("../infrastructures/middlewares/auth");
+const {
+  adminMiddleware,
+  accessMiddleware,
+} = require("../infrastructures/middlewares/access");
+
+router.use(authMiddleware);
+//router.use(accessMiddleware(["EMPLOYEE", "ADMIN"]));
 
 router.post("/", createTrainingProgram);
 router.get("/", getAllTrainingPrograms);

@@ -1,4 +1,4 @@
-const { TraineeUsecase } = require("../usecases/trainee_usecase");
+const { TraineeUsecase } = require("../usecases/usecases");
 
 const traineeUsecase = new TraineeUsecase();
 

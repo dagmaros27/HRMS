@@ -1,6 +1,4 @@
-const {
-  TrainingProgramUsecase,
-} = require("../usecases/training_program_usecase");
+const { TrainingProgramUsecase } = require("../usecases/usecases");
 
 const trainingProgramUsecase = new TrainingProgramUsecase();
 
