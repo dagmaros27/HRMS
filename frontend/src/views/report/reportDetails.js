@@ -17,7 +17,7 @@ const ReportDetailsPage = () => {
     }
   }, [dispatch, reports.length]);
 
-  const report = reports.find((report) => report.id === parseInt(id));
+  const report = reports.find((report) => report._id === id);
 
   if (status === "loading") {
     return <Typography>Loading...</Typography>;

@@ -55,7 +55,7 @@ const ReportPage = () => {
           <TableBody>
             {reports.map((report) => (
               <TableRow key={report.id}>
-                <TableCell>{report.id}</TableCell>
+                <TableCell>{report._id}</TableCell>
                 <TableCell>{report.timestamp}</TableCell>
                 <TableCell>{report.createdBy}</TableCell>
                 <TableCell>
