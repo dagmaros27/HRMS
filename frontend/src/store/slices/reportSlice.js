@@ -11,8 +11,8 @@ export const fetchReports = createAsyncThunk(
 
 export const generateReport = createAsyncThunk(
   "report/generateReport",
-  async (report) => {
-    const response = await axiosInstance.post("/report/generate", report);
+  async () => {
+    const response = await axiosInstance.post("/report/generate");
     return response.data;
   }
 );

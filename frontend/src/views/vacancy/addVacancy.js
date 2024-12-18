@@ -2,9 +2,13 @@ import React, { useState } from "react";
 import { TextField, Button, MenuItem, Box, Typography } from "@mui/material";
 import PageContainer from "src/components/container/PageContainer";
 import DashboardCard from "../../components/shared/DashboardCard";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addVacancy } from "../../redux/slices/vacancySlice";
 
 const AddVacancyPage = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [formValues, setFormValues] = useState({
     jobTitle: "",
     description: "",
@@ -24,29 +28,10 @@ const AddVacancyPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Make API request to add vacancy
     try {
-      const response = await fetch("/api/vacancies", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ ...formValues, createdBy: "HRManagerID" }), // Replace HRManagerID with the actual ID
-      });
-
-      if (response.ok) {
-        alert("Vacancy added successfully!");
-        setFormValues({
-          jobTitle: "",
-          description: "",
-          salary: "",
-          location: "",
-          deadline: "",
-          status: "open",
-        });
-      } else {
-        alert("Failed to add vacancy.");
-      }
+      await dispatch(addVacancy({ ...formValues }));
+      alert("Vacancy added successfully!");
+      navigate("/vacancy");
     } catch (error) {
       console.error("Error:", error);
       alert("An error occurred while adding the vacancy.");

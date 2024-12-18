@@ -6,13 +6,7 @@ import DashboardCard from "../../components/shared/DashboardCard";
 
 const VacancyApplyPage = () => {
   const { id } = useParams();
-  console.log("Vacancy ID:", id);
   const [coverLetter, setCoverLetter] = useState("");
-
-  const jobDetails = {
-    title: "Software Developer",
-    description: "Join our team to build cutting-edge software solutions.",
-  };
 
   const handleApplicationSubmit = () => {
     const applicationData = {
@@ -25,13 +19,13 @@ const VacancyApplyPage = () => {
   };
 
   return (
-    <PageContainer title={`Apply for ${jobDetails.title}`}>
+    <PageContainer title="Apply for Vacancy">
       <DashboardCard
-        title={`Apply for ${jobDetails.title}`}
+        title="Apply for Vacancy"
         description="Application Page"
         action={
           <Link to={"/vacancy"}>
-            <Button variant="outlined"> Back</Button>{" "}
+            <Button variant="outlined"> Back</Button>
           </Link>
         }
       >
@@ -39,10 +33,7 @@ const VacancyApplyPage = () => {
           sx={{ padding: 3, maxWidth: "600px", margin: "auto", boxShadow: 3 }}
         >
           <Typography variant="h5" fontWeight="bold" mb={2}>
-            Apply for: {jobDetails.title}
-          </Typography>
-          <Typography variant="body1" color="text.secondary" mb={2}>
-            {jobDetails.description}
+            Apply for: Vacancy #{id}
           </Typography>
           <Typography variant="body2" color="text.primary" mb={2}>
             All your profile information will be included in this application.

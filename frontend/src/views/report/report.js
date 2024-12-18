@@ -22,8 +22,8 @@ const ReportPage = () => {
 
   const handleGenerateReport = async () => {
     try {
-      const result = await dispatch(generateReport({})).unwrap();
-      navigate(`/reports/${result.id}`); // Navigate to the newly generated report details page
+      const result = await dispatch(generateReport()).unwrap();
+      navigate(`/reports/${result.id}`);
     } catch (error) {
       console.error("Failed to generate report:", error);
     }

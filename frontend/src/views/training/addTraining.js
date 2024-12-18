@@ -1,10 +1,23 @@
 import React, { useState } from "react";
-import { TextField, Button, Grid, Box, Typography } from "@mui/material";
+import {
+  TextField,
+  Button,
+  Grid,
+  Box,
+  Typography,
+  CircularProgress,
+} from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { addTraining } from "../../redux/slices/trainingSlice";
+import { Link, useNavigate } from "react-router-dom";
 import PageContainer from "src/components/container/PageContainer";
 import DashboardCard from "../../components/shared/DashboardCard";
-import { Link } from "react-router-dom";
 
 const AddTrainingPage = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { status } = useSelector((state) => state.training);
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -30,18 +43,9 @@ const AddTrainingPage = () => {
     }
 
     setError("");
-    console.log("Training Submitted:", formData);
-
-    // Reset the form (optional)
-    setFormData({
-      title: "",
-      description: "",
-      startDate: "",
-      endDate: "",
-      trainers: "",
+    dispatch(addTraining(formData)).then(() => {
+      navigate("/training");
     });
-
-    // Optionally, redirect or show a success message
   };
 
   return (
@@ -52,7 +56,7 @@ const AddTrainingPage = () => {
       <DashboardCard
         title="Add Training"
         action={
-          <Link to={"/training"}>
+          <Link to="/training">
             <Button variant="outlined">Back</Button>
           </Link>
         }
@@ -85,7 +89,7 @@ const AddTrainingPage = () => {
                 rows={2}
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={6}>
               <TextField
                 label="Start Date"
                 name="startDate"
@@ -93,13 +97,11 @@ const AddTrainingPage = () => {
                 value={formData.startDate}
                 onChange={handleInputChange}
                 fullWidth
-                InputLabelProps={{
-                  shrink: true,
-                }}
+                InputLabelProps={{ shrink: true }}
                 required
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={6}>
               <TextField
                 label="End Date"
                 name="endDate"
@@ -107,9 +109,7 @@ const AddTrainingPage = () => {
                 value={formData.endDate}
                 onChange={handleInputChange}
                 fullWidth
-                InputLabelProps={{
-                  shrink: true,
-                }}
+                InputLabelProps={{ shrink: true }}
                 required
               />
             </Grid>
@@ -134,7 +134,11 @@ const AddTrainingPage = () => {
                 color="primary"
                 fullWidth
               >
-                Add Training
+                {status === "loading" ? (
+                  <CircularProgress size={24} />
+                ) : (
+                  "Add Training"
+                )}
               </Button>
             </Grid>
           </Grid>

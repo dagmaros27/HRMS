@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
-  IconButton,
   Button,
   Table,
   TableHead,
@@ -8,43 +7,28 @@ import {
   TableCell,
   TableBody,
   Typography,
-  Box,
 } from "@mui/material";
-import { IconEdit, IconTrash } from "@tabler/icons-react";
 import PageContainer from "src/components/container/PageContainer";
 import DashboardCard from "../../components/shared/DashboardCard";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchLeaveRequests,
+  selectLeaveRequests,
+} from "../../redux/slices/leaveRequestSlice";
 
 const LeaveRequestHistoryPage = () => {
-  const [leaveRequests, setLeaveRequests] = React.useState([
-    {
-      id: 1,
-      name: "John Doe",
-      position: "Developer",
-      status: "Pending",
-      date: "2021-10-10",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      position: "Designer",
-      status: "Approved",
-      date: "2021-10-10",
-    },
-  ]);
+  const dispatch = useDispatch();
+  const leaveRequests = useSelector(selectLeaveRequests);
 
-  const handleViewDetails = (id) => {
-    // Handle view details functionality
-  };
-
-  const handleDelete = (id) => {
-    // Handle delete functionality
-  };
+  useEffect(() => {
+    dispatch(fetchLeaveRequests());
+  }, [dispatch]);
 
   return (
     <PageContainer
       title="Leave Request History"
-      description="this is Leave Requests history page"
+      description="View past leave requests"
     >
       <DashboardCard
         title="Leave Requests"

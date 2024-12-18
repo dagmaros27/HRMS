@@ -1,3 +1,6 @@
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchVacancies } from "../../redux/slices/vacancySlice";
 import { Grid, Button } from "@mui/material";
 import PageContainer from "src/components/container/PageContainer";
 import DashboardCard from "../../components/shared/DashboardCard";
@@ -5,41 +8,12 @@ import VacancyCard from "./components/VacancyCard";
 import { Link } from "react-router-dom";
 
 const VacancyPage = () => {
-  const vacancies = [
-    {
-      id: 1,
-      title: "Software Developer",
-      description: "Join our team to build cutting-edge software solutions.",
-      location: "Lagos, Nigeria",
-      datePosted: "2021-09-01",
-      salary: "$70,000 - $90,000",
-    },
-    {
-      id: 2,
-      title: "Product Manager",
-      description: "Drive the vision and execution of our product lifecycle.",
-      location: "Lagos, Nigeria",
-      datePosted: "2021-09-01",
-      salary: "$100,000 - $120,000",
-    },
-    {
-      id: 3,
-      title: "UI/UX Designer",
-      description:
-        "Create engaging designs and user experiences for our platform.",
-      location: "Lagos, Nigeria",
-      datePosted: "2021-09-01",
-      salary: "$60,000 - $80,000",
-    },
-    {
-      id: 4,
-      title: "Data Scientist",
-      description: "Analyze data to drive decision-making and insights.",
-      location: "Lagos, Nigeria",
-      datePosted: "2021-09-01",
-      salary: "$90,000 - $110,000",
-    },
-  ];
+  const dispatch = useDispatch();
+  const { vacancies, status } = useSelector((state) => state.vacancy);
+
+  useEffect(() => {
+    dispatch(fetchVacancies());
+  }, [dispatch]);
 
   return (
     <PageContainer
@@ -54,6 +28,8 @@ const VacancyPage = () => {
           </Link>
         }
       >
+        {status === "loading" && <p>Loading vacancies...</p>}
+        {status === "failed" && <p>Failed to load vacancies.</p>}
         <Grid container spacing={3}>
           {vacancies.map((vacancy) => (
             <Grid item xs={12} sm={6} md={4} key={vacancy.id}>

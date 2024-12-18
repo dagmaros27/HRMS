@@ -1,32 +1,25 @@
-import { Grid, Button } from "@mui/material";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Grid, Button, CircularProgress, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 import PageContainer from "src/components/container/PageContainer";
 import DashboardCard from "../../components/shared/DashboardCard";
-import { Link } from "react-router-dom";
-import image from "../../assets/images/products/s5.jpg";
+import {
+  fetchTrainings,
+  registerForTraining,
+} from "../../redux/slices/trainingSlice";
 
 const TrainingPage = () => {
-  const trainingSessions = [
-    {
-      id: 1,
-      title: "Advanced React Workshop",
-      description: "Enhance your React skills with advanced techniques.",
-    },
-    {
-      id: 2,
-      title: "AI and Machine Learning Bootcamp",
-      description: "Dive deep into AI and machine learning concepts.",
-    },
-    {
-      id: 3,
-      title: "Full-Stack Development Course",
-      description: "Become a proficient full-stack developer.",
-    },
-    {
-      id: 4,
-      title: "Cybersecurity Essentials",
-      description: "Learn the fundamentals of cybersecurity.",
-    },
-  ];
+  const dispatch = useDispatch();
+  const { trainings, status } = useSelector((state) => state.training);
+
+  useEffect(() => {
+    dispatch(fetchTrainings());
+  }, [dispatch]);
+
+  const handleRegister = (id) => {
+    dispatch(registerForTraining(id));
+  };
 
   return (
     <PageContainer
@@ -36,42 +29,59 @@ const TrainingPage = () => {
       <DashboardCard
         title="Upcoming Training"
         action={
-          <Link to={"/training/add"}>
-            <Button variant="contained">Add Training</Button>
+          <Link to="/training/add">
+            <Button variant="contained" color="primary">
+              Add Training
+            </Button>
           </Link>
         }
       >
-        <Grid container spacing={3}>
-          {trainingSessions.map((session) => (
-            <Grid item xs={12} sm={6} md={4} key={session.id}>
-              <div
-                style={{
-                  border: "1px solid #ddd",
-                  borderRadius: "8px",
-                  overflow: "hidden",
-                  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-                }}
-              >
-                <img
-                  src={image}
-                  alt={session.title}
-                  style={{ width: "100%", height: "200px", objectFit: "cover" }}
-                />
-                <div style={{ padding: "16px" }}>
-                  <h3 style={{ margin: "0 0 8px" }}>{session.title}</h3>
-                  <p style={{ margin: "0 0 16px", color: "#555" }}>
-                    {session.description}
-                  </p>
-                  <Link to={`/training/${session.id}`}>
-                    <Button variant="contained" size="small" fullWidth>
+        {status === "loading" ? (
+          <CircularProgress />
+        ) : (
+          <Grid container spacing={3}>
+            {trainings.map((session) => (
+              <Grid item xs={12} sm={6} md={4} key={session.id}>
+                <div
+                  style={{
+                    border: "1px solid #ddd",
+                    borderRadius: "8px",
+                    overflow: "hidden",
+                    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                  }}
+                >
+                  <img
+                    src={session.image || "default-image-url.jpg"}
+                    alt={session.title}
+                    style={{
+                      width: "100%",
+                      height: "200px",
+                      objectFit: "cover",
+                    }}
+                  />
+                  <div style={{ padding: "16px" }}>
+                    <Typography variant="h6">{session.title}</Typography>
+                    <Typography
+                      variant="body2"
+                      color="textSecondary"
+                      gutterBottom
+                    >
+                      {session.description}
+                    </Typography>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      fullWidth
+                      onClick={() => handleRegister(session.id)}
+                    >
                       Register
                     </Button>
-                  </Link>
+                  </div>
                 </div>
-              </div>
-            </Grid>
-          ))}
-        </Grid>
+              </Grid>
+            ))}
+          </Grid>
+        )}
       </DashboardCard>
     </PageContainer>
   );

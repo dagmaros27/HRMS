@@ -1,21 +1,32 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Container, Typography, Button, Box, Paper } from "@mui/material";
 import { Link } from "react-router-dom";
 import PageContainer from "../../components/container/PageContainer";
 import DashboardCard from "../../components/shared/DashboardCard";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchApplicationByVacancy,
+  selectVacancyApplications,
+} from "../../redux/slices/applicationSlice";
 
 const ApplicantDetailsPage = () => {
   const { id } = useParams();
+  const dispatch = useDispatch();
+  const applicant = useSelector(selectVacancyApplications)[0]; // Assuming one result
+  const status = useSelector((state) => state.application.status);
 
-  const applicantData = {
-    name: "John Doe",
-    email: "john.doe@example.com",
-    phone: "+1234567890",
-    resume: "https://example.com/resume/johndoe.pdf",
-    coverLetter:
-      "I am excited to apply for the Software Developer position at your company. With a strong background in web development and a passion for problem-solving, I am confident in my ability to contribute to your team's success.",
-  };
+  useEffect(() => {
+    dispatch(fetchApplicationByVacancy(id));
+  }, [dispatch, id]);
+
+  if (status === "loading") {
+    return <Typography>Loading...</Typography>;
+  }
+
+  if (!applicant) {
+    return <Typography>No applicant found.</Typography>;
+  }
 
   return (
     <PageContainer>
@@ -31,20 +42,20 @@ const ApplicantDetailsPage = () => {
           <Paper elevation={3} style={{ padding: "24px" }}>
             <Box mt={3}>
               <Typography variant="h6">Name:</Typography>
-              <Typography variant="body1">{applicantData.name}</Typography>
+              <Typography variant="body1">{applicant.name}</Typography>
             </Box>
             <Box mt={3}>
               <Typography variant="h6">Email:</Typography>
-              <Typography variant="body1">{applicantData.email}</Typography>
+              <Typography variant="body1">{applicant.email}</Typography>
             </Box>
             <Box mt={3}>
               <Typography variant="h6">Phone:</Typography>
-              <Typography variant="body1">{applicantData.phone}</Typography>
+              <Typography variant="body1">{applicant.phone}</Typography>
             </Box>
             <Box mt={3}>
               <Typography variant="h6">Resume:</Typography>
               <a
-                href={applicantData.resume}
+                href={applicant.resume}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -56,7 +67,7 @@ const ApplicantDetailsPage = () => {
             <Box mt={3}>
               <Typography variant="h6">Cover Letter:</Typography>
               <Typography variant="body1" style={{ whiteSpace: "pre-wrap" }}>
-                {applicantData.coverLetter}
+                {applicant.coverLetter}
               </Typography>
             </Box>
           </Paper>
