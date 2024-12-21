@@ -15,12 +15,13 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchLeaveRequests,
   selectLeaveRequests,
-} from "../../redux/slices/leaveRequestSlice";
+} from "../../store/slices/leaveRequestSlice";
+import { selectUser } from "../../store/slices/userSlice";
 
 const LeaveRequestHistoryPage = () => {
   const dispatch = useDispatch();
   const leaveRequests = useSelector(selectLeaveRequests);
-
+  const user = useSelector(selectUser);
   useEffect(() => {
     dispatch(fetchLeaveRequests());
   }, [dispatch]);
@@ -51,10 +52,12 @@ const LeaveRequestHistoryPage = () => {
           </TableHead>
           <TableBody>
             {leaveRequests.map((request) => (
-              <TableRow key={request.id}>
-                <TableCell>{request.name}</TableCell>
+              <TableRow key={request._id}>
+                <TableCell>{request.username}</TableCell>
                 <TableCell>{request.position}</TableCell>
-                <TableCell>{request.date}</TableCell>
+                <TableCell>
+                  {request.startDate} - {request.endDate}
+                </TableCell>
                 <TableCell>
                   <Button
                     disableRipple

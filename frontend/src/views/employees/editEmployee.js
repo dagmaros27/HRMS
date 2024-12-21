@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
   Box,
@@ -9,12 +9,19 @@ import {
   IconButton,
 } from "@mui/material";
 import { IconPlus, IconRowRemove } from "@tabler/icons-react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchEmployeeById,
+  updateEmployee,
+} from "../../store/slices/employeeSlice";
 import PageContainer from "src/components/container/PageContainer";
 import DashboardCard from "../../components/shared/DashboardCard";
 
 const EditEmployee = () => {
   const { id } = useParams();
-  const [formData, setFormData] = React.useState({
+  const dispatch = useDispatch();
+  const employee = useSelector((state) => state.employee.selectedEmployee);
+  const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
@@ -26,26 +33,29 @@ const EditEmployee = () => {
     certifications: [],
   });
 
-  React.useEffect(() => {
-    const fetchEmployee = () => {
-      const mockEmployee = {
-        id: 1,
-        name: "John Doe",
-        email: "john@example.com",
-        position: "Developer",
-        phone: "123-456-7890",
-        address: "123 Street",
-        password: "",
-        employmentHistory: [],
-        qualifications: [],
-        certifications: [],
-      };
+  useEffect(() => {
+    if (id) {
+      console.log("Fetching employee by ID:", id);
+      dispatch(fetchEmployeeById(id));
+    }
+  }, [id, dispatch]);
 
-      setFormData(mockEmployee);
-    };
-
-    fetchEmployee();
-  }, [id]);
+  useEffect(() => {
+    if (employee && Object.keys(employee).length) {
+      console.log("Setting form data with employee:", employee);
+      setFormData({
+        name: employee.name || "",
+        email: employee.email || "",
+        password: employee.password || "",
+        phone: employee.phone || "",
+        address: employee.address || "",
+        position: employee.position || "",
+        employmentHistory: employee.employmentHistory || [],
+        qualifications: employee.qualifications || [],
+        certifications: employee.certifications || [],
+      });
+    }
+  }, [employee]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -80,8 +90,7 @@ const EditEmployee = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // TODO: Handle form submission
-    console.log(formData);
+    dispatch(updateEmployee({ id, ...formData }));
   };
 
   return (

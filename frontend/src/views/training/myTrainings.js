@@ -11,7 +11,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { IconTrash } from "@tabler/icons-react";
-import { myTrainings } from "../../redux/slices/trainingSlice";
+import { myTrainings } from "../../store/slices/trainingSlice";
 import PageContainer from "src/components/container/PageContainer";
 import DashboardCard from "../../components/shared/DashboardCard";
 

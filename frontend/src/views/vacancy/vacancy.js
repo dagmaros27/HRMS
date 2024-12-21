@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchVacancies } from "../../redux/slices/vacancySlice";
+import { fetchVacancies } from "../../store/slices/vacancySlice";
 import { Grid, Button } from "@mui/material";
 import PageContainer from "src/components/container/PageContainer";
 import DashboardCard from "../../components/shared/DashboardCard";

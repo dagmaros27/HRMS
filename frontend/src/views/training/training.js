@@ -7,7 +7,7 @@ import DashboardCard from "../../components/shared/DashboardCard";
 import {
   fetchTrainings,
   registerForTraining,
-} from "../../redux/slices/trainingSlice";
+} from "../../store/slices/trainingSlice";
 
 const TrainingPage = () => {
   const dispatch = useDispatch();
@@ -61,6 +61,14 @@ const TrainingPage = () => {
                   />
                   <div style={{ padding: "16px" }}>
                     <Typography variant="h6">{session.title}</Typography>
+                    <Typography variant="body2">
+                      Date:
+                      {session.startDate} - {session.endDate}
+                    </Typography>
+                    <Typography variant="body2">
+                      {" "}
+                      Trainer: <b> {session.trainer}</b>
+                    </Typography>
                     <Typography
                       variant="body2"
                       color="textSecondary"

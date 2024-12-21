@@ -4,7 +4,7 @@ import axiosInstance from "../../axios";
 export const fetchVacancies = createAsyncThunk(
   "vacancy/fetchVacancies",
   async () => {
-    const response = await axiosInstance.get("/vacancy");
+    const response = await axiosInstance.get("/job-vacancy");
     return response.data;
   }
 );
@@ -12,7 +12,7 @@ export const fetchVacancies = createAsyncThunk(
 export const addVacancy = createAsyncThunk(
   "vacancy/addVacancy",
   async (vacancy) => {
-    const response = await axiosInstance.post("/vacancy", vacancy);
+    const response = await axiosInstance.post("/job-vacancy", vacancy);
     return response.data;
   }
 );

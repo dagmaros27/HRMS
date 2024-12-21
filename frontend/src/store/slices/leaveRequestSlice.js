@@ -13,7 +13,7 @@ export const addLeaveRequest = createAsyncThunk(
   "leaveRequest/addLeaveRequest",
   async (leaveRequestData) => {
     const response = await axiosInstance.post(
-      "/leave-request",
+      "/leave-request/apply",
       leaveRequestData
     );
     return response.data;
@@ -31,8 +31,8 @@ export const myLeaveRequests = createAsyncThunk(
 export const approveLeaveRequest = createAsyncThunk(
   "leaveRequest/approveLeaveRequest",
   async (leaveRequestId) => {
-    const response = await axiosInstance.post(
-      `/leave-request/${leaveRequestId}/approve`
+    const response = await axiosInstance.put(
+      `/leave-request/approve/${leaveRequestId}`
     );
     return response.data;
   }
@@ -41,8 +41,8 @@ export const approveLeaveRequest = createAsyncThunk(
 export const rejectLeaveRequest = createAsyncThunk(
   "leaveRequest/rejectLeaveRequest",
   async (leaveRequestId) => {
-    const response = await axiosInstance.post(
-      `/leave-request/${leaveRequestId}/reject`
+    const response = await axiosInstance.put(
+      `/leave-request/reject/${leaveRequestId}`
     );
     return response.data;
   }

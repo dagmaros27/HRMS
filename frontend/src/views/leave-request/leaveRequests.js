@@ -62,13 +62,15 @@ const LeaveRequestPage = () => {
             </TableHead>
             <TableBody>
               {leaveRequests.map((request) => (
-                <TableRow key={request.id}>
-                  <TableCell>{request.name}</TableCell>
+                <TableRow key={request._id}>
+                  <TableCell>{request.username}</TableCell>
                   <TableCell>{request.position}</TableCell>
                   <TableCell>{request.status}</TableCell>
-                  <TableCell>{request.date}</TableCell>
+                  <TableCell>
+                    {request.startDate} - {request.endDate}
+                  </TableCell>
                   <TableCell align="right">
-                    <Link to={`/leave-requests/${request.id}`}>
+                    <Link to={`/leave-requests/${request._id}`}>
                       <IconButton color="primary">
                         <IconEdit size="18" />
                         <Typography>View details</Typography>

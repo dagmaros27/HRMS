@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchApplicationByVacancy,
   selectVacancyApplications,
-} from "../../redux/slices/applicationSlice";
+} from "../../store/slices/applicationSlice";
 
 const ApplicantDetailsPage = () => {
   const { id } = useParams();

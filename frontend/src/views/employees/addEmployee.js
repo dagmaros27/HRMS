@@ -6,11 +6,15 @@ import {
   FormControl,
   Typography,
   IconButton,
+  CircularProgress,
+  Alert,
 } from "@mui/material";
 import { IconPlus, IconRowRemove } from "@tabler/icons-react";
+import { useDispatch, useSelector } from "react-redux";
+import { createEmployee } from "../../store/slices/employeeSlice";
+import { Link } from "react-router-dom";
 import PageContainer from "src/components/container/PageContainer";
 import DashboardCard from "../../components/shared/DashboardCard";
-import { Link } from "react-router-dom";
 
 const AddEmployee = () => {
   const [formData, setFormData] = React.useState({
@@ -32,6 +36,9 @@ const AddEmployee = () => {
     certifications: [""],
   });
 
+  const dispatch = useDispatch();
+  const { status, error } = useSelector((state) => state.employee);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -43,7 +50,11 @@ const AddEmployee = () => {
   const handleNestedChange = (index, field, value, key) => {
     setFormData((prev) => {
       const updated = [...prev[key]];
-      updated[index][field] = value;
+      if (field) {
+        updated[index][field] = value;
+      } else {
+        updated[index] = value;
+      }
       return { ...prev, [key]: updated };
     });
   };
@@ -65,8 +76,7 @@ const AddEmployee = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // TODO: Handle form submission
-    console.log(formData);
+    dispatch(createEmployee(formData));
   };
 
   return (
@@ -295,12 +305,19 @@ const AddEmployee = () => {
                 Add Certification
               </Button>
 
+              {status === "loading" && <CircularProgress />}
+              {status === "succeeded" && (
+                <Alert severity="success">Employee added successfully!</Alert>
+              )}
+              {status === "failed" && <Alert severity="error">{error}</Alert>}
+
               <Button
                 variant="contained"
                 color="primary"
                 type="submit"
                 sx={{ mt: 2 }}
                 onClick={handleSubmit}
+                disabled={status === "loading"}
               >
                 Add Employee
               </Button>

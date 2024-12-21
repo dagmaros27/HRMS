@@ -8,7 +8,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { addTraining } from "../../redux/slices/trainingSlice";
+import { addTraining } from "../../store/slices/trainingSlice";
 import { Link, useNavigate } from "react-router-dom";
 import PageContainer from "src/components/container/PageContainer";
 import DashboardCard from "../../components/shared/DashboardCard";

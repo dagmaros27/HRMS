@@ -4,7 +4,7 @@ import PageContainer from "src/components/container/PageContainer";
 import DashboardCard from "../../components/shared/DashboardCard";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { addVacancy } from "../../redux/slices/vacancySlice";
+import { addVacancy } from "../../store/slices/vacancySlice";
 
 const AddVacancyPage = () => {
   const dispatch = useDispatch();

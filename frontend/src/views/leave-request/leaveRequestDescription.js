@@ -8,17 +8,17 @@ import {
   approveLeaveRequest,
   rejectLeaveRequest,
   selectLeaveRequests,
-} from "../../redux/slices/leaveRequestSlice";
+} from "../../store/slices/leaveRequestSlice";
 
 const LeaveRequestDescriptionPage = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const leaveRequests = useSelector(selectLeaveRequests);
-  const request = leaveRequests.find((request) => request.id === parseInt(id));
+  const request = leaveRequests.find((request) => request._id === id);
 
   const handleApprove = async () => {
     try {
-      await dispatch(approveLeaveRequest(request.id)).unwrap();
+      await dispatch(approveLeaveRequest(request._id)).unwrap();
       alert("Leave request approved.");
     } catch (error) {
       alert("Failed to approve leave request.");
@@ -27,7 +27,7 @@ const LeaveRequestDescriptionPage = () => {
 
   const handleReject = async () => {
     try {
-      await dispatch(rejectLeaveRequest(request.id)).unwrap();
+      await dispatch(rejectLeaveRequest(request._id)).unwrap();
       alert("Leave request rejected.");
     } catch (error) {
       alert("Failed to reject leave request.");

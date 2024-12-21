@@ -28,13 +28,13 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/applicant", applicantRoutes);
 app.use("/api/employee", employeeRoutes);
-app.use("/api/leave-requests", leaveRequestRoutes);
+app.use("/api/leave-request", leaveRequestRoutes);
 app.use("/api/hr-manager", hrManagerRoutes);
-app.use("/api/job-applications", jobApplicationRoutes);
-app.use("/api/job-vacancies", jobVacancyRoutes);
+app.use("/api/job-application", jobApplicationRoutes);
+app.use("/api/job-vacancy", jobVacancyRoutes);
 app.use("/api/news", newsRoutes);
-app.use("/api/trainings", trainingRoutes);
-app.use("/api/trainees", traineeRoutes);
+app.use("/api/training", trainingRoutes);
+app.use("/api/trainee", traineeRoutes);
 app.use("/api/report", reportRoutes);
 
 app.use(notFound);

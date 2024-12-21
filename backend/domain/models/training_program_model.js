@@ -8,7 +8,7 @@ const trainingProgramSchema = new Schema(
     description: { type: String },
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },
-    trainers: [{ type: Schema.Types.ObjectId, ref: "Employee" }],
+    trainers: { type: String },
     participants: [{ type: Schema.Types.ObjectId, ref: "Employee" }],
   },
   { timestamps: true }

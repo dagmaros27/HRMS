@@ -13,7 +13,7 @@ import PageContainer from "src/components/container/PageContainer";
 import DashboardCard from "../../components/shared/DashboardCard";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { generateReport } from "../../redux/slices/reportSlice";
+import { generateReport } from "../../store/slices/reportSlice";
 
 const ReportPage = () => {
   const navigate = useNavigate();

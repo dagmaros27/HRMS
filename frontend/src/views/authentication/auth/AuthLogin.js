@@ -34,7 +34,7 @@ const AuthLogin = ({ title, subtitle, subtext }) => {
       return;
     }
     dispatch(loginUser(credentials));
-    navigate("/dashboard");
+    navigate("/employees");
   };
 
   return (

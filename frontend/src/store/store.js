@@ -6,6 +6,7 @@ import applicationReducer from "./slices/applicationSlice";
 import leaveRequestReducer from "./slices/leaveRequestSlice";
 import reportReducer from "./slices/reportSlice";
 import trainingReducer from "./slices/trainingSlice";
+import employeeReducer from "./slices/employeeSlice";
 
 const rootReducer = combineReducers({
   user: userReducer,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   leaveRequest: leaveRequestReducer,
   report: reportReducer,
   training: trainingReducer,
+  employee: employeeReducer,
 });
 
 export const store = configureStore({

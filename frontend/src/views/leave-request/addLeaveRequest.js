@@ -4,7 +4,7 @@ import PageContainer from "src/components/container/PageContainer";
 import DashboardCard from "../../components/shared/DashboardCard";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { addLeaveRequest } from "../../redux/slices/leaveRequestSlice";
+import { addLeaveRequest } from "../../store/slices/leaveRequestSlice";
 
 const LeaveRequestForm = () => {
   const [formData, setFormData] = useState({

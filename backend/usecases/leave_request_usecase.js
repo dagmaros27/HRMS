@@ -46,8 +46,8 @@ class LeaveRequestUsecase {
     if (!leaveRequest) {
       throw new Error("Leave request not found");
     }
-    const updated = { ...leaveRequest, status: "approved" };
-    const approved = await update_leave_request(updated);
+    leaveRequest.status = "approved";
+    const approved = await update_leave_request(leaveRequest);
     if (!approved) {
       throw new Error("Failed to approve leave request");
     }
@@ -59,8 +59,8 @@ class LeaveRequestUsecase {
     if (!leaveRequest) {
       throw new Error("Leave request not found");
     }
-    const updated = { ...leaveRequest, status: "rejected" };
-    const rejected = await update_leave_request(updated);
+    leaveRequest.status = "rejected";
+    const rejected = await update_leave_request(leaveRequest);
     if (!rejected) {
       throw new Error("Failed to reject leave request");
     }

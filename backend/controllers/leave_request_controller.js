@@ -4,6 +4,7 @@ const leaveRequestUsecase = new LeaveRequestUsecase();
 
 const applyLeaveRequest = async (req, res) => {
   const leaveRequestData = req.body;
+  leaveRequestData.employee = req.user._id;
   const leaveRequest = await leaveRequestUsecase.applyLeaveRequest(
     leaveRequestData
   );
@@ -33,6 +34,7 @@ const getAllLeaveRequests = async (req, res) => {
 
 const approveLeaveRequest = async (req, res) => {
   const leaveRequestId = req.params.id;
+  console.log(leaveRequestId);
   const leaveRequest = await leaveRequestUsecase.approveLeaveRequest(
     leaveRequestId
   );

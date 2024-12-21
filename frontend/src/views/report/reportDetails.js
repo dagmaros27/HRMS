@@ -4,7 +4,7 @@ import PageContainer from "src/components/container/PageContainer";
 import DashboardCard from "../../components/shared/DashboardCard";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchReports } from "../../redux/slices/reportSlice";
+import { fetchReports } from "../../store/slices/reportSlice";
 
 const ReportDetailsPage = () => {
   const { id } = useParams();

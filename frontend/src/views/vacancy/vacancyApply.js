@@ -3,6 +3,8 @@ import PageContainer from "src/components/container/PageContainer";
 import { Link, useParams } from "react-router-dom";
 import { useState } from "react";
 import DashboardCard from "../../components/shared/DashboardCard";
+import { useDispatch } from "react-redux";
+import {applyFor}
 
 const VacancyApplyPage = () => {
   const { id } = useParams();

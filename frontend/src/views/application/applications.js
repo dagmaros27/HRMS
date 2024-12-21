@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchApplications,
   selectApplications,
-} from "../../redux/slices/applicationSlice";
+} from "../../store/slices/applicationSlice";
 
 const ApplicantsPage = () => {
   const dispatch = useDispatch();

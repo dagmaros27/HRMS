@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   IconButton,
   Button,
@@ -12,29 +12,23 @@ import { IconEdit, IconTrash } from "@tabler/icons-react";
 import PageContainer from "src/components/container/PageContainer";
 import DashboardCard from "../../components/shared/DashboardCard";
 import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  deleteEmployee,
+  selectAllEmployees,
+  fetchEmployees,
+} from "../../store/slices/employeeSlice";
 
 const Employees = () => {
-  const [employees, setEmployees] = React.useState([
-    {
-      id: 1,
-      name: "John Doe",
-      email: "john@example.com",
-      position: "Developer",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      email: "jane@example.com",
-      position: "Designer",
-    },
-  ]);
+  const dispatch = useDispatch();
+  const employees = useSelector(selectAllEmployees);
 
-  const handleEdit = (id) => {
-    // Handle edit functionality
-  };
+  useEffect(() => {
+    dispatch(fetchEmployees());
+  }, [dispatch]);
 
   const handleDelete = (id) => {
-    setEmployees(employees.filter((emp) => emp.id !== id));
+    dispatch(deleteEmployee(id));
   };
 
   return (
@@ -60,19 +54,19 @@ const Employees = () => {
           </TableHead>
           <TableBody>
             {employees.map((employee) => (
-              <TableRow key={employee.id}>
+              <TableRow key={employee._id}>
                 <TableCell>{employee.name}</TableCell>
                 <TableCell>{employee.email}</TableCell>
                 <TableCell>{employee.position}</TableCell>
                 <TableCell align="right">
-                  <Link to={`/edit-employee/${employee.id}`}>
+                  <Link to={`/edit-employee/${employee._id}`}>
                     <IconButton color="primary">
                       <IconEdit size="18" />
                     </IconButton>
                   </Link>
                   <IconButton
                     color="error"
-                    onClick={() => handleDelete(employee.id)}
+                    onClick={() => handleDelete(employee._id)}
                   >
                     <IconTrash size="18" />
                   </IconButton>

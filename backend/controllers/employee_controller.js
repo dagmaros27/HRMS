@@ -4,13 +4,16 @@ const employeeUsecase = new EmployeeUsecase();
 
 const createEmployee = async (req, res) => {
   const employeeData = req.body;
+  console.log(employeeData);
   const employee = await employeeUsecase.createEmployee(employeeData);
   res.status(201).json(employee);
 };
 
 const getEmployeeById = async (req, res) => {
   const employeeId = req.params.id;
+  console.log(employeeId);
   const employee = await employeeUsecase.getEmployeeById(employeeId);
+  console.log(employee);
   res.status(200).json(employee);
 };
 
