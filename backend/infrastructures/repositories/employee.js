@@ -22,6 +22,8 @@ const get_all_employees = async () => {
 };
 
 const update_employee = async (employee) => {
+  console.log("update employee repo");
+  console.log(employee);
   const updatedEmployee = await Employee.findByIdAndUpdate(
     employee._id,
     employee,

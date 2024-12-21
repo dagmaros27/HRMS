@@ -17,6 +17,17 @@ export const addVacancy = createAsyncThunk(
   }
 );
 
+export const applyForVacancy = createAsyncThunk(
+  "vacancy/applyForVacancy",
+  async (application) => {
+    const response = await axiosInstance.post(
+      "/job-vacancy/apply",
+      application
+    );
+    return response.data;
+  }
+);
+
 const vacancySlice = createSlice({
   name: "vacancy",
   initialState: {
@@ -44,6 +55,15 @@ const vacancySlice = createSlice({
         state.status = "success";
       })
       .addCase(addVacancy.rejected, (state) => {
+        state.status = "failed";
+      })
+      .addCase(applyForVacancy.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(applyForVacancy.fulfilled, (state) => {
+        state.status = "success";
+      })
+      .addCase(applyForVacancy.rejected, (state) => {
         state.status = "failed";
       });
   },

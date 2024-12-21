@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import {
   Box,
   TextField,
@@ -7,20 +7,25 @@ import {
   FormControl,
   Typography,
   IconButton,
+  CircularProgress,
+  Alert,
 } from "@mui/material";
 import { IconPlus, IconRowRemove } from "@tabler/icons-react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchEmployeeById,
   updateEmployee,
+  selectEmployeeStatus,
 } from "../../store/slices/employeeSlice";
 import PageContainer from "src/components/container/PageContainer";
 import DashboardCard from "../../components/shared/DashboardCard";
 
 const EditEmployee = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const employee = useSelector((state) => state.employee.selectedEmployee);
+  const updateStatus = useSelector(selectEmployeeStatus);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -35,14 +40,12 @@ const EditEmployee = () => {
 
   useEffect(() => {
     if (id) {
-      console.log("Fetching employee by ID:", id);
       dispatch(fetchEmployeeById(id));
     }
   }, [id, dispatch]);
 
   useEffect(() => {
     if (employee && Object.keys(employee).length) {
-      console.log("Setting form data with employee:", employee);
       setFormData({
         name: employee.name || "",
         email: employee.email || "",
@@ -56,6 +59,12 @@ const EditEmployee = () => {
       });
     }
   }, [employee]);
+
+  useEffect(() => {
+    if (updateStatus === "fulfilled") {
+      navigate("/employees");
+    }
+  }, [updateStatus, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -90,7 +99,7 @@ const EditEmployee = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(updateEmployee({ id, ...formData }));
+    dispatch(updateEmployee({ _id: id, ...formData }));
   };
 
   return (
@@ -113,6 +122,12 @@ const EditEmployee = () => {
             <Box
               sx={{ display: "flex", flexDirection: "column", gap: 2, p: 4 }}
             >
+              {updateStatus === "failed" && (
+                <Alert severity="error">
+                  Failed to update employee. Please try again.
+                </Alert>
+              )}
+
               <TextField
                 required
                 fullWidth
@@ -328,8 +343,13 @@ const EditEmployee = () => {
                 type="submit"
                 sx={{ mt: 2 }}
                 onClick={handleSubmit}
+                disabled={updateStatus === "pending"}
               >
-                Update Employee
+                {updateStatus === "pending" ? (
+                  <CircularProgress size={24} />
+                ) : (
+                  "Update Employee"
+                )}
               </Button>
             </Box>
           </FormControl>

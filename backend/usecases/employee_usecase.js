@@ -41,8 +41,9 @@ class EmployeeUsecase {
     return employees;
   }
 
-  async updateEmployee(employeeId, employeeData) {
-    const updated = await update_employee(employeeId, employeeData);
+  async updateEmployee(employeeData) {
+    console.log("updatedddd");
+    const updated = await update_employee(employeeData);
     if (!updated) {
       throw new Error("Failed to update employee");
     }

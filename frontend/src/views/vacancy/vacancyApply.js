@@ -4,18 +4,20 @@ import { Link, useParams } from "react-router-dom";
 import { useState } from "react";
 import DashboardCard from "../../components/shared/DashboardCard";
 import { useDispatch } from "react-redux";
-import {applyFor}
+import { applyForVacancy } from "../../store/slices/vacancySlice";
 
 const VacancyApplyPage = () => {
   const { id } = useParams();
   const [coverLetter, setCoverLetter] = useState("");
+  const dispatch = useDispatch();
 
   const handleApplicationSubmit = () => {
     const applicationData = {
       jobId: id,
       coverLetter: coverLetter,
     };
-    console.log("Submitting application:", applicationData);
+
+    dispatch(applyForVacancy(applicationData));
 
     alert("Your application has been submitted!");
   };

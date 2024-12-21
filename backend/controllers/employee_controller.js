@@ -29,12 +29,9 @@ const getAllEmployees = async (req, res) => {
 };
 
 const updateEmployee = async (req, res) => {
-  const employeeId = req.params.id;
   const employeeData = req.body;
-  const employee = await employeeUsecase.updateEmployee(
-    employeeId,
-    employeeData
-  );
+  console.log("update is calledddd");
+  const employee = await employeeUsecase.updateEmployee(employeeData);
   res.status(200).json(employee);
 };
 
