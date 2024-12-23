@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-
+const AsyncHandler = require("express-async-handler");
 const {
   applyForJob,
   getJobApplicationById,
@@ -16,9 +16,9 @@ const {
 router.use(authMiddleware);
 //router.use(accessMiddleware(["ADMIN", "APPLICANT"]));
 
-router.post("/apply", applyForJob);
-router.get("/:id", getJobApplicationById);
-router.get("/vacancy/:vacancyId", getJobApplicationsByVacancy);
-router.get("/", getAllJobApplications);
+router.post("/apply", AsyncHandler(applyForJob));
+router.get("/:id", AsyncHandler(getJobApplicationById));
+router.get("/vacancy/:vacancyId", AsyncHandler(getJobApplicationsByVacancy));
+router.get("/", AsyncHandler(getAllJobApplications));
 
 module.exports = router;

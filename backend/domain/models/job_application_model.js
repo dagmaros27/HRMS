@@ -14,6 +14,7 @@ const jobApplicationSchema = new Schema(
       ref: "JobVacancy",
       required: true,
     },
+    coverLetter: { type: String, required: true },
     status: {
       type: String,
       enum: ["pending", "approved", "rejected"],

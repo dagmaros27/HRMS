@@ -5,6 +5,7 @@ import DashboardCard from "../../components/shared/DashboardCard";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchReports } from "../../store/slices/reportSlice";
+import Markdown from "react-markdown";
 
 const ReportDetailsPage = () => {
   const { id } = useParams();
@@ -33,7 +34,7 @@ const ReportDetailsPage = () => {
       description={`Details for Report ID: ${id}`}
     >
       <DashboardCard
-        title={`Report ID: ${report.id}`}
+        title={`Report ID: ${report._id}`}
         action={
           <Link to="/reports">
             <Button variant="outlined" color="primary">
@@ -43,14 +44,15 @@ const ReportDetailsPage = () => {
         }
       >
         <Typography variant="body1" gutterBottom>
-          <strong>Timestamp:</strong> {report.timestamp}
+          <strong>Timestamp:</strong> {report.createdAt}
         </Typography>
         <Typography variant="body1" gutterBottom>
           <strong>Created By:</strong> {report.createdBy}
         </Typography>
         <Typography variant="body1" gutterBottom>
-          <strong>Details:</strong>{" "}
-          {report.content || "No additional details available."}
+          <strong>Details:</strong>
+          <Markdown>{report.content || "No content available"}</Markdown>
+          {/* {report.content} */}
         </Typography>
       </DashboardCard>
     </PageContainer>

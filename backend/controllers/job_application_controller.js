@@ -4,6 +4,7 @@ const jobApplicationUsecase = new JobApplicationUsecase();
 
 const applyForJob = async (req, res) => {
   const jobApplicationData = req.body;
+  jobApplicationData.applicant = req.user._id;
   const jobApplication = await jobApplicationUsecase.applyForJob(
     jobApplicationData
   );

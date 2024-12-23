@@ -32,9 +32,9 @@ const VacancyPage = () => {
         {status === "failed" && <p>Failed to load vacancies.</p>}
         <Grid container spacing={3}>
           {vacancies.map((vacancy) => (
-            <Grid item xs={12} sm={6} md={4} key={vacancy.id}>
+            <Grid item xs={12} sm={6} md={4} key={vacancy._id}>
               <VacancyCard
-                id={vacancy.id}
+                id={vacancy._id}
                 title={vacancy.title}
                 datePosted={vacancy.datePosted}
                 description={vacancy.description}

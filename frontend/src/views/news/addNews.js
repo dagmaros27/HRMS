@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { TextField, Button, Grid, Box, Typography } from "@mui/material";
 import PageContainer from "src/components/container/PageContainer";
 import DashboardCard from "../../components/shared/DashboardCard";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { addNews } from "../../store/slices/newsSlice";
+import { addNews, resetAddStatus } from "../../store/slices/newsSlice";
 
 const AddNewsPage = () => {
   const dispatch = useDispatch();
-  const { status, error: backendError } = useSelector((state) => state.news);
+  const { addStatus, error: backendError } = useSelector((state) => state.news);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -35,11 +35,20 @@ const AddNewsPage = () => {
     }
 
     setError("");
-    dispatch(addNews(formData)); // Dispatch the Redux action to add news
-    if (status === "success") {
+    dispatch(addNews(formData));
+  };
+
+  // Reset addStatus when component mounts
+  useEffect(() => {
+    dispatch(resetAddStatus());
+  }, [dispatch]);
+
+  // Redirect to news list on success
+  useEffect(() => {
+    if (addStatus === "success") {
       navigate("/news");
     }
-  };
+  }, [addStatus, navigate]);
 
   return (
     <PageContainer title="Add News" description="Add a new news article">
@@ -109,7 +118,7 @@ const AddNewsPage = () => {
               </Grid>
             )}
 
-            {status === "success" && (
+            {addStatus === "success" && (
               <Grid item xs={12}>
                 <Typography color="primary">
                   News added successfully! Redirecting...
@@ -123,9 +132,9 @@ const AddNewsPage = () => {
                 variant="contained"
                 color="primary"
                 fullWidth
-                disabled={status === "loading"}
+                disabled={addStatus === "loading"}
               >
-                {status === "loading" ? "Adding..." : "Add News"}
+                {addStatus === "loading" ? "Adding..." : "Add News"}
               </Button>
             </Grid>
           </Grid>

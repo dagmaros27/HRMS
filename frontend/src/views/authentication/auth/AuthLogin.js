@@ -1,24 +1,25 @@
-import React, { useState } from "react";
-import {
-  Box,
-  Typography,
-  FormGroup,
-  FormControlLabel,
-  Button,
-  Stack,
-  Checkbox,
-} from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Box, Typography, Stack, Button } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 
 import CustomTextField from "../../../components/forms/theme-elements/CustomTextField";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../../../store/slices/userSlice";
+import { loginUser, selectIsLoggedIn } from "../../../store/slices/userSlice";
 
 const AuthLogin = ({ title, subtitle, subtext }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const [credentials, setCredentials] = useState({ email: "", password: "" });
   const { loading, error } = useSelector((state) => state.user);
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+
+  useEffect(() => {
+    // Navigate to the dashboard if already logged in
+    if (isLoggedIn) {
+      navigate("/employees");
+    }
+  }, [isLoggedIn, navigate]);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -34,7 +35,6 @@ const AuthLogin = ({ title, subtitle, subtext }) => {
       return;
     }
     dispatch(loginUser(credentials));
-    navigate("/employees");
   };
 
   return (

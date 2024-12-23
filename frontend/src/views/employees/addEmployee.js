@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   TextField,
@@ -11,33 +11,53 @@ import {
 } from "@mui/material";
 import { IconPlus, IconRowRemove } from "@tabler/icons-react";
 import { useDispatch, useSelector } from "react-redux";
-import { createEmployee } from "../../store/slices/employeeSlice";
+import {
+  createEmployee,
+  clearStatusAndError,
+} from "../../store/slices/employeeSlice";
 import { Link } from "react-router-dom";
 import PageContainer from "src/components/container/PageContainer";
 import DashboardCard from "../../components/shared/DashboardCard";
+import { useNavigate } from "react-router-dom";
 
 const AddEmployee = () => {
-  const [formData, setFormData] = React.useState({
+  const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
     phone: "",
     address: "",
     position: "",
-    employmentHistory: [
-      {
-        company: "",
-        role: "",
-        startDate: "",
-        endDate: "",
-      },
-    ],
-    qualifications: [""],
-    certifications: [""],
+    employmentHistory: [],
+    qualifications: [],
+    certifications: [],
   });
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { status, error } = useSelector((state) => state.employee);
+
+  // Clear status and error when the component mounts
+  useEffect(() => {
+    dispatch(clearStatusAndError());
+  }, [dispatch]);
+
+  // Reset form on successful submission
+  useEffect(() => {
+    if (status === "succeeded") {
+      setFormData({
+        name: "",
+        email: "",
+        password: "",
+        phone: "",
+        address: "",
+        position: "",
+        employmentHistory: [],
+        qualifications: [],
+        certifications: [],
+      });
+    }
+  }, [status]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -77,6 +97,12 @@ const AddEmployee = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(createEmployee(formData));
+    if (status === "succeeded") {
+      setTimeout(() => {
+        dispatch(clearStatusAndError());
+        navigate("/employees");
+      }, 3000);
+    }
   };
 
   return (
@@ -142,11 +168,18 @@ const AddEmployee = () => {
               <TextField
                 required
                 fullWidth
-                label="Position"
                 name="position"
                 value={formData.position}
                 onChange={handleChange}
-              />
+                select
+                SelectProps={{
+                  native: true,
+                }}
+              >
+                <option value="">Select Position</option>
+                <option value="Hr manager">HR manager</option>
+                <option value="Employee">Employee</option>
+              </TextField>
 
               <Typography variant="h6">Employment History</Typography>
               {formData.employmentHistory.map((entry, index) => (

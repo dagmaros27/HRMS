@@ -88,7 +88,7 @@ const NewsDescriptionPage = () => {
         <Typography variant="h3" component="h1" gutterBottom>
           {article.title}
         </Typography>
-        <Typography variant="subtitle1" color="textSecondary" gutterBottom>
+        <Typography variant="body2" color="textSecondary" gutterBottom>
           {article.description}
         </Typography>
         <Typography variant="body1" style={{ marginTop: "16px" }}>

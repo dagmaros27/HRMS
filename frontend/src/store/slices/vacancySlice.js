@@ -21,52 +21,70 @@ export const applyForVacancy = createAsyncThunk(
   "vacancy/applyForVacancy",
   async (application) => {
     const response = await axiosInstance.post(
-      "/job-vacancy/apply",
+      "/job-application/apply",
       application
     );
     return response.data;
   }
 );
-
 const vacancySlice = createSlice({
   name: "vacancy",
   initialState: {
     vacancies: [],
-    status: null,
+    fetchStatus: null, // Status for fetching vacancies
+    addStatus: null, // Status for adding a vacancy
+    applyStatus: null, // Status for applying to a vacancy
+    error: null, // Store error messages
   },
   reducers: {},
   extraReducers: (builder) => {
     builder
+      // Fetch Vacancies
       .addCase(fetchVacancies.pending, (state) => {
-        state.status = "loading";
+        state.fetchStatus = "loading";
+        state.error = null;
       })
       .addCase(fetchVacancies.fulfilled, (state, { payload }) => {
         state.vacancies = payload;
-        state.status = "success";
+        state.fetchStatus = "succeeded";
       })
-      .addCase(fetchVacancies.rejected, (state) => {
-        state.status = "failed";
+      .addCase(fetchVacancies.rejected, (state, action) => {
+        state.fetchStatus = "failed";
+        state.error = action.error.message || "Failed to fetch vacancies.";
       })
+
+      // Add Vacancy
       .addCase(addVacancy.pending, (state) => {
-        state.status = "loading";
+        state.addStatus = "loading";
+        state.error = null;
       })
       .addCase(addVacancy.fulfilled, (state, { payload }) => {
         state.vacancies.push(payload);
-        state.status = "success";
+        state.addStatus = "succeeded";
       })
-      .addCase(addVacancy.rejected, (state) => {
-        state.status = "failed";
+      .addCase(addVacancy.rejected, (state, action) => {
+        state.addStatus = "failed";
+        state.error = action.error.message || "Failed to add vacancy.";
       })
+
+      // Apply for Vacancy
       .addCase(applyForVacancy.pending, (state) => {
-        state.status = "loading";
+        state.applyStatus = "loading";
+        state.error = null;
       })
       .addCase(applyForVacancy.fulfilled, (state) => {
-        state.status = "success";
+        state.applyStatus = "succeeded";
       })
-      .addCase(applyForVacancy.rejected, (state) => {
-        state.status = "failed";
+      .addCase(applyForVacancy.rejected, (state, action) => {
+        state.applyStatus = "failed";
+        state.error = action.error.message || "Failed to apply for vacancy.";
       });
   },
 });
 
 export default vacancySlice.reducer;
+export const selectVacancies = (state) => state.vacancy.vacancies;
+export const selectFetchStatus = (state) => state.vacancy.fetchStatus;
+export const selectAddStatus = (state) => state.vacancy.addStatus;
+export const selectApplyStatus = (state) => state.vacancy.applyStatus;
+export const selectVacancyError = (state) => state.vacancy.error;

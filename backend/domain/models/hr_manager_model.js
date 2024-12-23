@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 // HR Manager Model
 const hrManagerSchema = new Schema(
   {
-    user: { type: Schema.Types.ObjectId, ref: "Employee", required: true },
+    employee: { type: Schema.Types.ObjectId, ref: "Employee", required: true },
     department: { type: String, required: true },
   },
   { timestamps: true }

@@ -9,7 +9,7 @@ import altImage from "../../assets/images/products/s5.jpg";
 
 const NewsPage = () => {
   const dispatch = useDispatch();
-  const { news, status } = useSelector((state) => state.news);
+  const { news, fetchStatus } = useSelector((state) => state.news);
 
   useEffect(() => {
     dispatch(fetchNews());
@@ -28,14 +28,14 @@ const NewsPage = () => {
           </Link>
         }
       >
-        {status === "loading" && (
+        {fetchStatus === "loading" && (
           <div style={{ textAlign: "center", padding: "20px" }}>
             <CircularProgress />
             <Typography variant="body1">Loading news...</Typography>
           </div>
         )}
 
-        {status === "failed" && (
+        {fetchStatus === "failed" && (
           <div style={{ textAlign: "center", padding: "20px" }}>
             <Typography variant="body1" color="error">
               Failed to load news. Please try again later.
@@ -43,7 +43,7 @@ const NewsPage = () => {
           </div>
         )}
 
-        {status === "success" && news.length === 0 && (
+        {fetchStatus === "success" && news.length === 0 && (
           <div style={{ textAlign: "center", padding: "20px" }}>
             <Typography variant="body1">
               No news available at the moment.
@@ -51,7 +51,7 @@ const NewsPage = () => {
           </div>
         )}
 
-        {status === "success" && news.length > 0 && (
+        {fetchStatus === "success" && news.length > 0 && (
           <Grid container spacing={3}>
             {news.map((article) => (
               <Grid item xs={12} sm={6} md={4} key={article._id}>

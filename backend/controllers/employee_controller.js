@@ -1,11 +1,22 @@
-const { EmployeeUsecase } = require("../usecases/usecases");
+const { EmployeeUsecase, HRManagerUsecase } = require("../usecases/usecases");
 
 const employeeUsecase = new EmployeeUsecase();
+const hrManagerUsecase = new HRManagerUsecase();
 
 const createEmployee = async (req, res) => {
   const employeeData = req.body;
   console.log(employeeData);
+
   const employee = await employeeUsecase.createEmployee(employeeData);
+
+  if (employeeData.position === "Hr manager") {
+    hr = {
+      employee: employee._id,
+      department: "HR",
+    };
+    const hrManager = await hrManagerUsecase.createHrManager(hr);
+    res.status(201).json(hrManager);
+  }
   res.status(201).json(employee);
 };
 

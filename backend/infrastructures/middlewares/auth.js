@@ -6,6 +6,7 @@ const {
   Employee,
   HRManager,
 } = require("../../domain/models/models");
+const e = require("express");
 
 const authMiddleware = asyncHandler(async (req, res, next) => {
   let token;
@@ -17,7 +18,6 @@ const authMiddleware = asyncHandler(async (req, res, next) => {
     token = req.headers.authorization.split(" ")[1];
     try {
       const decoded = jwt.verify(token, process.env.JWT_TOKEN_KEY);
-
       if (decoded.user_role === "ADMIN") {
         req.user = await Admin.findById(decoded.user_id).select("-password");
         req.user.role = "ADMIN";
@@ -29,13 +29,10 @@ const authMiddleware = asyncHandler(async (req, res, next) => {
       } else if (decoded.user_role === "EMPLOYEE") {
         req.user = await Employee.findById(decoded.user_id).select("-password");
         req.user.role = "EMPLOYEE";
-      } else if (decoded.user_role === "HRMANAGER") {
-        req.user = await HRManager.findById(decoded.user_id).select(
-          "-password"
-        );
-        req.user.role = "HRMANAGER";
+      } else if (decoded.user_role === "HR_MANAGER") {
+        req.user = await Employee.findById(decoded.user_id).select("-password");
+        req.user.role = decoded.user_role;
       }
-      console.log("user", req.user);
       next();
     } catch (error) {
       console.log(error);

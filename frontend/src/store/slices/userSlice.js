@@ -13,7 +13,9 @@ const loadUserFromLocalStorage = () => {
 
 const saveUserToLocalStorage = (user) => {
   try {
-    localStorage.setItem("user", JSON.stringify(user));
+    const { user_name, user_email, token, user_role, user_id } = user;
+    const userData = { user_name, user_email, token, user_role, user_id };
+    localStorage.setItem("user", JSON.stringify(userData));
   } catch (error) {
     console.error("Failed to save user to localStorage", error);
   }
@@ -26,7 +28,7 @@ const initialState = {
   user_name: storedUser?.user_name || null,
   user_email: storedUser?.user_email || null,
   token: storedUser?.token || null,
-  role: storedUser?.role || null,
+  user_role: storedUser?.user_role || null,
   loading: false,
   error: null,
 };
@@ -37,6 +39,7 @@ export const loginUser = createAsyncThunk(
     try {
       const response = await axiosInstance.post("/auth/login", credentials);
       const data = response.data;
+      console.log(data);
       saveUserToLocalStorage(data);
       return data;
     } catch (error) {
@@ -52,18 +55,23 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action) => {
-      const { user_name, user_email, token, role } = action.payload;
+      const { user_name, user_email, token, user_role, user_id } =
+        action.payload;
       state.user_name = user_name;
       state.user_email = user_email;
+      state.user_id = user_id;
       state.token = token;
-      state.role = role;
+      state.user_role = user_role;
       saveUserToLocalStorage(state);
     },
     logout: (state) => {
       state.user_name = null;
       state.user_email = null;
       state.token = null;
-      state.role = null;
+      state.user_role = null;
+      state.user_id = null;
+      state.loading = false;
+      state.error = null;
       localStorage.removeItem("user");
     },
     setLoading: (state, action) => {
@@ -81,11 +89,13 @@ const userSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
-        const { user_name, user_email, token, role } = action.payload;
+        const { user_name, user_email, token, user_role, user_id } =
+          action.payload;
         state.user_name = user_name;
         state.user_email = user_email;
         state.token = token;
-        state.role = role;
+        state.user_role = user_role;
+        state.user_id = user_id;
         saveUserToLocalStorage(state);
       })
       .addCase(loginUser.rejected, (state, action) => {

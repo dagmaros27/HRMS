@@ -26,10 +26,10 @@ const AddVacancyPage = () => {
     });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     try {
-      await dispatch(addVacancy({ ...formValues }));
+      dispatch(addVacancy({ ...formValues }));
       alert("Vacancy added successfully!");
       navigate("/vacancy");
     } catch (error) {

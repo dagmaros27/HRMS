@@ -4,6 +4,7 @@ const jobVacancyUsecase = new JobVacancyUsecase();
 
 const createJobVacancy = async (req, res) => {
   const jobVacancyData = req.body;
+  jobVacancyData.createdBy = req.user._id;
   const jobVacancy = await jobVacancyUsecase.createJobVacancy(jobVacancyData);
   res.status(201).json(jobVacancy);
 };

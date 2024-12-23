@@ -16,32 +16,40 @@ const newsSlice = createSlice({
   name: "news",
   initialState: {
     news: [],
-    status: null,
+    fetchStatus: null, // For fetching news
+    addStatus: null, // For adding news
   },
-  reducers: {}, // In case you have other reducers to define
+  reducers: {
+    resetAddStatus: (state) => {
+      state.addStatus = null; // Reset only the add status
+    },
+  },
   extraReducers: (builder) => {
     builder
+      // Fetch News
       .addCase(fetchNews.pending, (state) => {
-        state.status = "loading";
+        state.fetchStatus = "loading";
       })
       .addCase(fetchNews.fulfilled, (state, { payload }) => {
         state.news = payload;
-        state.status = "success";
+        state.fetchStatus = "success";
       })
       .addCase(fetchNews.rejected, (state) => {
-        state.status = "failed";
+        state.fetchStatus = "failed";
       })
+      // Add News
       .addCase(addNews.pending, (state) => {
-        state.status = "loading";
+        state.addStatus = "loading";
       })
       .addCase(addNews.fulfilled, (state, { payload }) => {
         state.news.push(payload);
-        state.status = "success";
+        state.addStatus = "success";
       })
       .addCase(addNews.rejected, (state) => {
-        state.status = "failed";
+        state.addStatus = "failed";
       });
   },
 });
 
+export const { resetAddStatus } = newsSlice.actions;
 export default newsSlice.reducer;

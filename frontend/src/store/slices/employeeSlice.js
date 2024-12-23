@@ -82,7 +82,16 @@ const employeeSlice = createSlice({
     status: "idle", // 'idle' | 'loading' | 'succeeded' | 'failed'
     error: null,
   },
-  reducers: {},
+  reducers: {
+    clearStatusAndError: (state) => {
+      state.status = "idle";
+      state.error = null;
+    },
+    resetStatus: (state) => {
+      state.status = "idle";
+      state.error = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       // Fetch employees
@@ -160,6 +169,8 @@ const employeeSlice = createSlice({
       });
   },
 });
+
+export const { clearStatusAndError } = employeeSlice.actions;
 
 export default employeeSlice.reducer;
 

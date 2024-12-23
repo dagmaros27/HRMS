@@ -58,12 +58,12 @@ const Menuitems = [
     icon: IconRun,
     href: "/training",
   },
-  {
-    id: uniqueId(),
-    title: "My Trainings",
-    icon: IconRun,
-    href: "/trainings/my-trainings",
-  },
+  // {
+  //   id: uniqueId(),
+  //   title: "My Trainings",
+  //   icon: IconRun,
+  //   href: "/trainings/my-trainings",
+  // },
   {
     id: uniqueId(),
     title: "Reports",

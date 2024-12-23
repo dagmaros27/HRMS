@@ -9,17 +9,19 @@ import {
   MenuItem,
   ListItemIcon,
   ListItemText,
+  Typography,
 } from "@mui/material";
 
 import { IconListCheck, IconMail, IconUser } from "@tabler/icons-react";
 
 import ProfileImg from "src/assets/images/profile/user-1.jpg";
 
-import { useDispatch } from "react-redux";
-import { logout } from "src/store/slices/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { logout, selectUser } from "src/store/slices/userSlice";
 
 const Profile = () => {
   const [anchorEl2, setAnchorEl2] = useState(null);
+  const user = useSelector(selectUser);
   const handleClick2 = (event) => {
     setAnchorEl2(event.currentTarget);
   };
@@ -34,7 +36,10 @@ const Profile = () => {
   };
 
   return (
-    <Box>
+    <Box sx={{ display: "flex", alignItems: "center" }}>
+      <Typography>
+        Email: {user.user_email} <br /> Role: {user.user_role}
+      </Typography>
       <IconButton
         size="large"
         aria-label="show 11 new notifications"

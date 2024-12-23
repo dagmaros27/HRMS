@@ -1,23 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
-import {
-  Box,
-  TextField,
-  Button,
-  FormControl,
-  Typography,
-  IconButton,
-  CircularProgress,
-  Alert,
-} from "@mui/material";
-import { IconPlus, IconRowRemove } from "@tabler/icons-react";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchEmployeeById,
   updateEmployee,
   selectEmployeeStatus,
+  selectEmployeeError,
 } from "../../store/slices/employeeSlice";
-import PageContainer from "src/components/container/PageContainer";
+import {
+  TextField,
+  Button,
+  Box,
+  Typography,
+  CircularProgress,
+  Alert,
+  IconButton,
+  FormControl,
+} from "@mui/material";
+import { IconPlus, IconRowRemove } from "@tabler/icons-react";
+import PageContainer from "../../components/container/PageContainer";
 import DashboardCard from "../../components/shared/DashboardCard";
 
 const EditEmployee = () => {
@@ -26,6 +27,8 @@ const EditEmployee = () => {
   const dispatch = useDispatch();
   const employee = useSelector((state) => state.employee.selectedEmployee);
   const updateStatus = useSelector(selectEmployeeStatus);
+  const error = useSelector(selectEmployeeError);
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -42,6 +45,12 @@ const EditEmployee = () => {
     if (id) {
       dispatch(fetchEmployeeById(id));
     }
+
+    // Reset status when the component is mounted
+    return () => {
+      // Dispatch a reset action to reset the status in the Redux slice
+      dispatch({ type: "employee/resetStatus" });
+    };
   }, [id, dispatch]);
 
   useEffect(() => {
@@ -61,7 +70,7 @@ const EditEmployee = () => {
   }, [employee]);
 
   useEffect(() => {
-    if (updateStatus === "fulfilled") {
+    if (updateStatus === "succeeded") {
       navigate("/employees");
     }
   }, [updateStatus, navigate]);
@@ -118,6 +127,8 @@ const EditEmployee = () => {
         }
       >
         <Box sx={{ display: "flex", justifyContent: "center" }}>
+          {updateStatus === "loading" && <CircularProgress />}
+          {updateStatus === "failed" && <Alert severity="error">{error}</Alert>}
           <FormControl sx={{ width: "60%" }}>
             <Box
               sx={{ display: "flex", flexDirection: "column", gap: 2, p: 4 }}
