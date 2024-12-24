@@ -8,17 +8,20 @@ const FullLayout = Loadable(lazy(() => import("../layouts/full/FullLayout")));
 const BlankLayout = Loadable(
   lazy(() => import("../layouts/blank/BlankLayout"))
 );
+const ProtectedRoute = Loadable(
+  lazy(() => import("../layouts/protected/ProtectedRoute.js"))
+);
 
 /* ****Pages***** */
-const Dashboard = Loadable(lazy(() => import("../views/dashboard/Dashboard")));
-const SamplePage = Loadable(
-  lazy(() => import("../views/sample-page/SamplePage"))
-);
-const Icons = Loadable(lazy(() => import("../views/icons/Icons")));
-const TypographyPage = Loadable(
-  lazy(() => import("../views/utilities/TypographyPage"))
-);
-const Shadow = Loadable(lazy(() => import("../views/utilities/Shadow")));
+// const Dashboard = Loadable(lazy(() => import("../views/dashboard/Dashboard")));
+// const SamplePage = Loadable(
+//   lazy(() => import("../views/sample-page/SamplePage"))
+// );
+// const Icons = Loadable(lazy(() => import("../views/icons/Icons")));
+// const TypographyPage = Loadable(
+//   lazy(() => import("../views/utilities/TypographyPage"))
+// );
+// const Shadow = Loadable(lazy(() => import("../views/utilities/Shadow")));
 const Error = Loadable(lazy(() => import("../views/authentication/Error")));
 const Register = Loadable(
   lazy(() => import("../views/authentication/Register"))
@@ -87,114 +90,248 @@ const Report = Loadable(lazy(() => import("../views/report/report")));
 const ReportDetails = Loadable(
   lazy(() => import("../views/report/reportDetails"))
 );
-const Router = [
-  {
-    path: "/",
-    element: <FullLayout />,
-    children: [
-      { path: "/", element: <Navigate to="/dashboard" /> },
-      { path: "/dashboard", exact: true, element: <Dashboard /> },
-      { path: "/sample-page", exact: true, element: <SamplePage /> },
-      { path: "/icons", exact: true, element: <Icons /> },
-      { path: "/ui/typography", exact: true, element: <TypographyPage /> },
-      { path: "/ui/shadow", exact: true, element: <Shadow /> },
-      { path: "/employees", exact: true, element: <Employees /> },
-      { path: "/add-employee", exact: true, element: <AddEmployee /> },
-      { path: "/edit-employee/:id", exact: true, element: <EditEmployee /> },
-      { path: "/vacancy", exact: true, element: <Vacancy /> },
-      {
-        path: "/vacancy/apply/:id",
-        exact: true,
-        element: <VacancyApply />,
-      },
-      {
-        path: "/vacancy/add",
-        exact: true,
-        element: <AddVacancy />,
-      },
-      {
-        path: "/news",
-        exact: true,
-        element: <News />,
-      },
-      {
-        path: "/news/:id",
-        exact: true,
-        element: <NewsDescription />,
-      },
-      {
-        path: "/news/post",
-        exact: true,
-        element: <PostNews />,
-      },
-      {
-        path: "/vacancy/applicants",
-        exact: true,
-        element: <Applicants />,
-      },
-      {
-        path: "/vacancy/applicants/:id",
-        exact: true,
-        element: <ApplicantDetails />,
-      },
-      {
-        path: "/leave-requests",
-        exact: true,
-        element: <LeaveRequests />,
-      },
-      {
-        path: "/leave-requests/add",
-        exact: true,
-        element: <AddLeaveRequest />,
-      },
-      {
-        path: "/leave-requests/history",
-        exact: true,
-        element: <LeaveRequestHistory />,
-      },
-      {
-        path: "/leave-requests/:id",
-        exact: true,
-        element: <LeaveRequestDescription />,
-      },
-      {
-        path: "/training",
-        exact: true,
-        element: <Training />,
-      },
-      {
-        path: "/training/add",
-        exact: true,
-        element: <AddTraining />,
-      },
-      {
-        path: "/training/my-trainings",
-        exact: true,
-        element: <MyTrainings />,
-      },
-      {
-        path: "/reports",
-        exact: true,
-        element: <Report />,
-      },
-      {
-        path: "/reports/:id",
-        exact: true,
-        element: <ReportDetails />,
-      },
-      { path: "*", element: <Navigate to="/auth/404" /> },
-    ],
-  },
-  {
-    path: "/auth",
-    element: <BlankLayout />,
-    children: [
-      { path: "404", element: <Error /> },
-      { path: "/auth/register", element: <Register /> },
-      { path: "/auth/login", element: <Login /> },
-      { path: "*", element: <Navigate to="/auth/404" /> },
-    ],
-  },
-];
+
+const Router = (userRole) => {
+  return [
+    {
+      path: "/",
+      element: <FullLayout />,
+      children: [
+        { path: "/", element: <Navigate to="/news" /> },
+        {
+          path: "/employees",
+          exact: true,
+          element: (
+            <ProtectedRoute
+              element={<Employees />}
+              allowedRoles={["ADMIN"]}
+              userRole={userRole}
+            />
+          ),
+        },
+        {
+          path: "/add-employee",
+          exact: true,
+          element: (
+            <ProtectedRoute
+              element={<AddEmployee />}
+              allowedRoles={["ADMIN"]}
+              userRole={userRole}
+            />
+          ),
+        },
+        {
+          path: "/edit-employee/:id",
+          exact: true,
+          element: (
+            <ProtectedRoute
+              element={<EditEmployee />}
+              allowedRoles={["ADMIN"]}
+              userRole={userRole}
+            />
+          ),
+        },
+        {
+          path: "/vacancy",
+          exact: true,
+          element: (
+            <ProtectedRoute
+              element={<Vacancy />}
+              allowedRoles={["ANY"]}
+              userRole={userRole}
+            />
+          ),
+        },
+        {
+          path: "/vacancy/apply/:id",
+          exact: true,
+          element: (
+            <ProtectedRoute
+              element={<VacancyApply />}
+              allowedRoles={["ANY"]}
+              userRole={userRole}
+            />
+          ),
+        },
+        {
+          path: "/vacancy/add",
+          exact: true,
+          element: (
+            <ProtectedRoute
+              element={<AddVacancy />}
+              allowedRoles={["ADMIN", "HR_MANAGER"]}
+              userRole={userRole}
+            />
+          ),
+        },
+        {
+          path: "/news",
+          exact: true,
+          element: (
+            <ProtectedRoute
+              element={<News />}
+              allowedRoles={["ANY"]}
+              userRole={userRole}
+            />
+          ),
+        },
+        {
+          path: "/news/:id",
+          exact: true,
+          element: (
+            <ProtectedRoute
+              element={<NewsDescription />}
+              allowedRoles={["ANY"]}
+              userRole={userRole}
+            />
+          ),
+        },
+        {
+          path: "/news/post",
+          exact: true,
+          element: (
+            <ProtectedRoute
+              element={<PostNews />}
+              allowedRoles={["ADMIN", "HR_MANAGER"]}
+              userRole={userRole}
+            />
+          ),
+        },
+        {
+          path: "/vacancy/applicants",
+          exact: true,
+          element: (
+            <ProtectedRoute
+              element={<Applicants />}
+              allowedRoles={["ADMIN", "HR_MANAGER"]}
+              userRole={userRole}
+            />
+          ),
+        },
+        {
+          path: "/vacancy/applicants/:id",
+          exact: true,
+          element: (
+            <ProtectedRoute
+              element={<ApplicantDetails />}
+              allowedRoles={["ADMIN", "HR_MANAGER"]}
+              userRole={userRole}
+            />
+          ),
+        },
+        {
+          path: "/leave-requests",
+          exact: true,
+          element: (
+            <ProtectedRoute
+              element={<LeaveRequests />}
+              allowedRoles={["ADMIN", "HR_MANAGER"]}
+              userRole={userRole}
+            />
+          ),
+        },
+        {
+          path: "/leave-requests/add",
+          exact: true,
+          element: (
+            <ProtectedRoute
+              element={<AddLeaveRequest />}
+              allowedRoles={["ADMIN", "HR_MANAGER", "EMPLOYEE"]}
+              userRole={userRole}
+            />
+          ),
+        },
+        {
+          path: "/leave-requests/history",
+          exact: true,
+          element: (
+            <ProtectedRoute
+              element={<LeaveRequestHistory />}
+              allowedRoles={["ADMIN", "HR_MANAGER", "EMPLOYEE"]}
+              userRole={userRole}
+            />
+          ),
+        },
+        {
+          path: "/leave-requests/:id",
+          exact: true,
+          element: (
+            <ProtectedRoute
+              element={<LeaveRequestDescription />}
+              allowedRoles={[" ADMIN", "HR_MANAGER"]}
+              userRole={userRole}
+            />
+          ),
+        },
+        {
+          path: "/training",
+          exact: true,
+          element: (
+            <ProtectedRoute
+              element={<Training />}
+              allowedRoles={["ANY"]}
+              userRole={userRole}
+            />
+          ),
+        },
+        {
+          path: "/training/add",
+          exact: true,
+          element: (
+            <ProtectedRoute
+              element={<AddTraining />}
+              allowedRoles={["ADMIN", "HR_MANAGER"]}
+              userRole={userRole}
+            />
+          ),
+        },
+        {
+          path: "/training/my-trainings",
+          exact: true,
+          element: (
+            <ProtectedRoute
+              element={<MyTrainings />}
+              allowedRoles={["EMPLOYEE"]}
+              userRole={userRole}
+            />
+          ),
+        },
+        {
+          path: "/reports",
+          exact: true,
+          element: (
+            <ProtectedRoute
+              element={<Report />}
+              allowedRoles={["ADMIN", "HR_MANAGER"]}
+              userRole={userRole}
+            />
+          ),
+        },
+        {
+          path: "/reports/:id",
+          exact: true,
+          element: (
+            <ProtectedRoute
+              element={<ReportDetails />}
+              allowedRoles={["ADMIN", "HR_MANAGER"]}
+              userRole={userRole}
+            />
+          ),
+        },
+        { path: "*", element: <Navigate to="/auth/404" /> },
+      ],
+    },
+    {
+      path: "/auth",
+      element: <BlankLayout />,
+      children: [
+        { path: "404", element: <Error /> },
+        { path: "/auth/register", element: <Register /> },
+        { path: "/auth/login", element: <Login /> },
+        { path: "*", element: <Navigate to="/auth/404" /> },
+      ],
+    },
+  ];
+};
 
 export default Router;

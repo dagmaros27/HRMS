@@ -3,15 +3,19 @@
 // import viteLogo from '/vite.svg'
 // import './App.css'
 
-import { CssBaseline, ThemeProvider } from '@mui/material';
-import { useRoutes } from 'react-router-dom';
-import Router from './routes/Router';
+import { CssBaseline, ThemeProvider } from "@mui/material";
+import { useRoutes } from "react-router-dom";
+import Router from "./routes/Router";
+import { useSelector } from "react-redux";
 
 import { baselightTheme } from "./theme/DefaultColors";
+import { selectUser } from "./store/slices/userSlice";
 
 function App() {
-  
-  const routing = useRoutes(Router);
+  const user = useSelector(selectUser);
+  const userRole = user.user_role;
+
+  const routing = useRoutes(Router(userRole));
   const theme = baselightTheme;
 
   return (
@@ -22,4 +26,4 @@ function App() {
   );
 }
 
-export default App
+export default App;
