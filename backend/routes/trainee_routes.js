@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-
+const AsyncHandler = require("express-async-handler");
 const {
   createTrainee,
   getTraineeById,
@@ -15,8 +15,8 @@ const {
 router.use(authMiddleware);
 //router.use(accessMiddleware(["ADMIN"]));
 
-router.post("/", createTrainee);
-router.get("/:id", getTraineeById);
-router.put("/:id", updateTrainee);
+router.post("/register", AsyncHandler(createTrainee));
+router.get("/:id", AsyncHandler(getTraineeById));
+router.put("/:id", AsyncHandler(updateTrainee));
 
 module.exports = router;

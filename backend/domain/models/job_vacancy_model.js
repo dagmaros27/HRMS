@@ -3,7 +3,7 @@ const { Schema } = mongoose;
 
 const jobVacancySchema = new Schema(
   {
-    jobTitle: { type: String, required: true },
+    title: { type: String, required: true },
     description: { type: String, required: true },
     salary: { type: String, required: true },
     location: { type: String, required: true },
