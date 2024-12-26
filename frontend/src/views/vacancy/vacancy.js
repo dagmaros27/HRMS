@@ -6,10 +6,11 @@ import PageContainer from "src/components/container/PageContainer";
 import DashboardCard from "../../components/shared/DashboardCard";
 import VacancyCard from "./components/VacancyCard";
 import { Link } from "react-router-dom";
-
+import { selectUser } from "../../store/slices/userSlice";
 const VacancyPage = () => {
   const dispatch = useDispatch();
   const { vacancies, status } = useSelector((state) => state.vacancy);
+  const user = useSelector(selectUser);
 
   useEffect(() => {
     dispatch(fetchVacancies());
@@ -23,9 +24,13 @@ const VacancyPage = () => {
       <DashboardCard
         title="Current Vacancies"
         action={
-          <Link to={"/vacancy/add"}>
-            <Button variant="contained">Add Vacancy</Button>
-          </Link>
+          ["ADMIN", "HR_MANAGER"].includes(user.user_role) && (
+            <Link to="/vacancy/create">
+              <Button variant="contained" color="primary">
+                Create Vacancy
+              </Button>
+            </Link>
+          )
         }
       >
         {status === "loading" && <p>Loading vacancies...</p>}
@@ -36,10 +41,11 @@ const VacancyPage = () => {
               <VacancyCard
                 id={vacancy._id}
                 title={vacancy.title}
-                datePosted={vacancy.datePosted}
+                datePosted={vacancy.createdAt}
                 description={vacancy.description}
                 location={vacancy.location}
                 salary={vacancy.salary}
+                userRole={user.user_role}
               />
             </Grid>
           ))}

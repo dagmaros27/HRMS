@@ -38,13 +38,13 @@ const Menuitems = [
     href: "/news",
     access: ["ANY"],
   },
-  {
-    id: uniqueId(),
-    title: "Applicants",
-    icon: IconUsersPlus,
-    href: "/vacancy/applicants",
-    access: ["ADMIN", "HR_MANAGER"],
-  },
+  // {
+  //   id: uniqueId(),
+  //   title: "Applicants",
+  //   icon: IconUsersPlus,
+  //   href: "/vacancy/applicants",
+  //   access: ["ADMIN", "HR_MANAGER"],
+  // },
   {
     id: uniqueId(),
     title: "Leave Requests",

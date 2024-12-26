@@ -8,10 +8,12 @@ import {
   fetchTrainings,
   registerForTraining,
 } from "../../store/slices/trainingSlice";
+import { selectUser } from "../../store/slices/userSlice";
 
 const TrainingPage = () => {
   const dispatch = useDispatch();
   const { trainings, status } = useSelector((state) => state.training);
+  const user = useSelector(selectUser);
 
   useEffect(() => {
     dispatch(fetchTrainings());
@@ -29,11 +31,13 @@ const TrainingPage = () => {
       <DashboardCard
         title="Upcoming Training"
         action={
-          <Link to="/training/add">
-            <Button variant="contained" color="primary">
-              Add Training
-            </Button>
-          </Link>
+          ["ADMIN", "HR_MANAGER"].includes(user.user_role) && (
+            <Link to="/training/add">
+              <Button variant="contained" color="primary">
+                Add Training
+              </Button>
+            </Link>
+          )
         }
       >
         {status === "loading" ? (
@@ -80,7 +84,7 @@ const TrainingPage = () => {
                       variant="contained"
                       size="small"
                       fullWidth
-                      onClick={() => handleRegister(session.id)}
+                      onClick={() => handleRegister(session._id)}
                     >
                       Register
                     </Button>

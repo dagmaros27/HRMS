@@ -3,8 +3,18 @@ import axiosInstance from "../../axios";
 
 export const fetchApplications = createAsyncThunk(
   "application/fetchApplications",
-  async () => {
-    const response = await axiosInstance.get("/application");
+  async (id) => {
+    const response = await axiosInstance.get(`/job-application/vacancy/${id}`);
+    console.log(id);
+    console.log(response.data);
+    return response.data;
+  }
+);
+
+export const fetchApplicationById = createAsyncThunk(
+  "application/fetchApplicationById",
+  async (id) => {
+    const response = await axiosInstance.get(`/job-application/${id}`);
     return response.data;
   }
 );
@@ -12,16 +22,9 @@ export const fetchApplications = createAsyncThunk(
 export const addApplication = createAsyncThunk(
   "application/addApplication",
   async (applicationData) => {
-    const response = await axiosInstance.post("/application", applicationData);
-    return response.data;
-  }
-);
-
-export const fetchApplicationByVacancy = createAsyncThunk(
-  "application/fetchApplicationByVacancy",
-  async (vacancyId) => {
-    const response = await axiosInstance.get(
-      `/application/vacancy/${vacancyId}`
+    const response = await axiosInstance.post(
+      "/job-application",
+      applicationData
     );
     return response.data;
   }
@@ -32,6 +35,7 @@ const applicationSlice = createSlice({
   initialState: {
     applications: [],
     vacancyApplications: [],
+    selectedApplication: {},
     status: null,
   },
   reducers: {},
@@ -57,14 +61,14 @@ const applicationSlice = createSlice({
       .addCase(addApplication.rejected, (state) => {
         state.status = "failed";
       })
-      .addCase(fetchApplicationByVacancy.pending, (state) => {
+      .addCase(fetchApplicationById.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(fetchApplicationByVacancy.fulfilled, (state, { payload }) => {
-        state.vacancyApplications = payload;
+      .addCase(fetchApplicationById.fulfilled, (state, { payload }) => {
+        state.selectedApplication = payload;
         state.status = "success";
       })
-      .addCase(fetchApplicationByVacancy.rejected, (state) => {
+      .addCase(fetchApplicationById.rejected, (state) => {
         state.status = "failed";
       });
   },
@@ -74,3 +78,5 @@ export default applicationSlice.reducer;
 export const selectApplications = (state) => state.application.applications;
 export const selectVacancyApplications = (state) =>
   state.application.vacancyApplications;
+export const selectSelectedApplication = (state) =>
+  state.application.selectedApplication;

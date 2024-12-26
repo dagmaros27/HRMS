@@ -4,7 +4,11 @@ import { Link, useNavigate } from "react-router-dom";
 
 import CustomTextField from "../../../components/forms/theme-elements/CustomTextField";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser, selectIsLoggedIn } from "../../../store/slices/userSlice";
+import {
+  loginUser,
+  selectIsLoggedIn,
+  selectUser,
+} from "../../../store/slices/userSlice";
 
 const AuthLogin = ({ title, subtitle, subtext }) => {
   const dispatch = useDispatch();
@@ -13,11 +17,18 @@ const AuthLogin = ({ title, subtitle, subtext }) => {
   const [credentials, setCredentials] = useState({ email: "", password: "" });
   const { loading, error } = useSelector((state) => state.user);
   const isLoggedIn = useSelector(selectIsLoggedIn);
+  const user = useSelector(selectUser);
 
   useEffect(() => {
     // Navigate to the dashboard if already logged in
     if (isLoggedIn) {
-      navigate("/employees");
+      if (["ADMIN", "HR_MANAGER"].includes(user.user_role)) {
+        navigate("/employees");
+      } else if (user.user_role === "EMPLOYEE") {
+        navigate("/news");
+      } else {
+        navigate("/vacancy");
+      }
     }
   }, [isLoggedIn, navigate]);
 

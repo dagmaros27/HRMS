@@ -198,7 +198,7 @@ const Router = (userRole) => {
           ),
         },
         {
-          path: "/vacancy/applicants",
+          path: "/vacancy/:vacancyId/applicants",
           exact: true,
           element: (
             <ProtectedRoute
@@ -209,7 +209,7 @@ const Router = (userRole) => {
           ),
         },
         {
-          path: "/vacancy/applicants/:id",
+          path: "/vacancy/:vacancyId/applicants/:id",
           exact: true,
           element: (
             <ProtectedRoute
@@ -286,7 +286,7 @@ const Router = (userRole) => {
           ),
         },
         {
-          path: "/training/my-trainings",
+          path: "/training/:id/my-trainings",
           exact: true,
           element: (
             <ProtectedRoute

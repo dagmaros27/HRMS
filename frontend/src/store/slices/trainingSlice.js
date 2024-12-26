@@ -20,9 +20,9 @@ export const addTraining = createAsyncThunk(
 export const registerForTraining = createAsyncThunk(
   "training/registerForTraining",
   async (trainingId) => {
-    const response = await axiosInstance.post(
-      `/training/${trainingId}/register`
-    );
+    const response = await axiosInstance.post(`/trainee/register`, {
+      trainingId: trainingId,
+    });
     return response.data;
   }
 );

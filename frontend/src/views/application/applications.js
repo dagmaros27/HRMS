@@ -17,19 +17,29 @@ import {
   fetchApplications,
   selectApplications,
 } from "../../store/slices/applicationSlice";
+import { useParams } from "react-router-dom";
 
 const ApplicantsPage = () => {
   const dispatch = useDispatch();
-  const applicants = useSelector(selectApplications);
+  const applications = useSelector(selectApplications);
   const status = useSelector((state) => state.application.status);
+  const params = useParams();
+  const { vacancyId } = params;
 
   useEffect(() => {
-    dispatch(fetchApplications());
+    dispatch(fetchApplications(vacancyId));
   }, [dispatch]);
 
   return (
     <PageContainer title="Applicants" description="View job applicants">
-      <DashboardCard title="Job Applicants">
+      <DashboardCard
+        title="Job Applicants"
+        action={
+          <Link to={`/vacancy/`}>
+            <Button variant="outlined">Back</Button>
+          </Link>
+        }
+      >
         {status === "loading" ? (
           <Typography>Loading...</Typography>
         ) : (
@@ -38,10 +48,13 @@ const ApplicantsPage = () => {
               <TableHead>
                 <TableRow>
                   <TableCell>
-                    <Typography variant="h6">Name</Typography>
+                    <Typography variant="h6">Applicant</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography variant="h6">Email</Typography>
+                    <Typography variant="h6">Date</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="h6">Status</Typography>
                   </TableCell>
                   <TableCell>
                     <Typography variant="h6">Actions</Typography>
@@ -49,13 +62,14 @@ const ApplicantsPage = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {applicants.map((applicant) => (
-                  <TableRow key={applicant.id}>
-                    <TableCell>{applicant.name}</TableCell>
-                    <TableCell>{applicant.email}</TableCell>
+                {applications.map((application) => (
+                  <TableRow key={application._id}>
+                    <TableCell>{application.applicant}</TableCell>
+                    <TableCell>{application.appliedDate}</TableCell>
+                    <TableCell>{application.status}</TableCell>
                     <TableCell>
                       <Link
-                        to={`/vacancy/applicants/${applicant.id}`}
+                        to={`/vacancy/${vacancyId}/applicants/${application._id}`}
                         style={{ textDecoration: "none" }}
                       >
                         <Button variant="contained" color="primary">

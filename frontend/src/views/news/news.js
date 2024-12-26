@@ -6,10 +6,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { fetchNews } from "../../store/slices/newsSlice";
 import altImage from "../../assets/images/products/s5.jpg";
+import { selectUser } from "../../store/slices/userSlice";
 
 const NewsPage = () => {
   const dispatch = useDispatch();
   const { news, fetchStatus } = useSelector((state) => state.news);
+  const user = useSelector(selectUser);
 
   useEffect(() => {
     dispatch(fetchNews());
@@ -23,9 +25,11 @@ const NewsPage = () => {
       <DashboardCard
         title="Latest News"
         action={
-          <Link to={"/news/post"}>
-            <Button variant="contained">Post News</Button>
-          </Link>
+          ["ADMIN", "HR_MANAGER"].includes(user.user_role) && (
+            <Link to={"/news/post"}>
+              <Button variant="contained">Post News</Button>
+            </Link>
+          )
         }
       >
         {fetchStatus === "loading" && (
