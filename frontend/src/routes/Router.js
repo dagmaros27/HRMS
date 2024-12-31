@@ -132,6 +132,17 @@ const Router = (userRole) => {
           ),
         },
         {
+          path: "/profile/:id",
+          exact: true,
+          element: (
+            <ProtectedRoute
+              element={<EditEmployee />}
+              allowedRoles={["ANY"]}
+              userRole={userRole}
+            />
+          ),
+        },
+        {
           path: "/vacancy",
           exact: true,
           element: (

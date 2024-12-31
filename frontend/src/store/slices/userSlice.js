@@ -50,6 +50,27 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+export const registerApplicant = createAsyncThunk(
+  "user/register",
+  async (credentials, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.post(
+        "/applicant/register",
+        credentials
+      );
+      const data = response.data;
+      console.log(data);
+      saveUserToLocalStorage(data);
+      return data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message ||
+          "Registration failed. Please try again."
+      );
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -99,6 +120,25 @@ const userSlice = createSlice({
         saveUserToLocalStorage(state);
       })
       .addCase(loginUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(registerApplicant.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(registerApplicant.fulfilled, (state, action) => {
+        state.loading = false;
+        const { user_name, user_email, token, user_role, user_id } =
+          action.payload;
+        state.user_name = user_name;
+        state.user_email = user_email;
+        state.token = token;
+        state.user_role = user_role;
+        state.user_id = user_id;
+        saveUserToLocalStorage(state);
+      })
+      .addCase(registerApplicant.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

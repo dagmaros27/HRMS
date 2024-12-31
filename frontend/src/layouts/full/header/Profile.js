@@ -80,17 +80,27 @@ const Profile = () => {
         }}
       >
         <MenuItem>
-          <ListItemIcon>
-            <IconUser width={20} />
-          </ListItemIcon>
-          <ListItemText>My Profile</ListItemText>
+          <Link
+            to={`/profile/${user.user_id}`}
+            style={{
+              textDecoration: "none",
+              color: "inherit",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <ListItemIcon>
+              <IconUser width={20} />
+            </ListItemIcon>
+            <ListItemText>My Profile</ListItemText>
+          </Link>
         </MenuItem>
-        <MenuItem>
+        {/* <MenuItem>
           <ListItemIcon>
             <IconMail width={20} />
           </ListItemIcon>
           <ListItemText>My Account</ListItemText>
-        </MenuItem>
+        </MenuItem> */}
         <MenuItem>
           <ListItemIcon>
             <IconListCheck width={20} />
