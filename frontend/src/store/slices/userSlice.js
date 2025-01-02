@@ -23,16 +23,6 @@ const saveUserToLocalStorage = (user) => {
 
 const storedUser = loadUserFromLocalStorage();
 
-const initialState = {
-  user_id: storedUser?.user_id || null,
-  user_name: storedUser?.user_name || null,
-  user_email: storedUser?.user_email || null,
-  token: storedUser?.token || null,
-  user_role: storedUser?.user_role || null,
-  loading: false,
-  error: null,
-};
-
 export const loginUser = createAsyncThunk(
   "user/login",
   async (credentials, { rejectWithValue }) => {
@@ -70,6 +60,48 @@ export const registerApplicant = createAsyncThunk(
     }
   }
 );
+
+export const fetchUserProfile = createAsyncThunk(
+  "user/getUserProfile",
+  async ({ userId, userRole }, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.post("/user/profile", {
+        userId,
+        userRole,
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to get user profile."
+      );
+    }
+  }
+);
+
+export const updateUserProfile = createAsyncThunk(
+  "user/updateUserProfile",
+  async (user, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.put("/user/profile", user);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to update user profile."
+      );
+    }
+  }
+);
+
+const initialState = {
+  user_id: storedUser?.user_id || null,
+  user_name: storedUser?.user_name || null,
+  user_email: storedUser?.user_email || null,
+  token: storedUser?.token || null,
+  user_role: storedUser?.user_role || null,
+  loading: false,
+  error: null,
+  userProfile: null,
+};
 
 const userSlice = createSlice({
   name: "user",
@@ -141,11 +173,36 @@ const userSlice = createSlice({
       .addCase(registerApplicant.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(fetchUserProfile.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchUserProfile.fulfilled, (state, action) => {
+        state.loading = false;
+        state.userProfile = action.payload;
+      })
+      .addCase(fetchUserProfile.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(updateUserProfile.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateUserProfile.fulfilled, (state, action) => {
+        state.loading = false;
+        state.userProfile = action.payload;
+      })
+      .addCase(updateUserProfile.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
 
 export const { setUser, logout, setLoading, setError } = userSlice.actions;
 export const selectUser = (state) => state.user;
+export const selectUserProfile = (state) => state.user.userProfile;
 export const selectIsLoggedIn = (state) => Boolean(state.user.token);
 export default userSlice.reducer;

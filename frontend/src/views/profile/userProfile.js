@@ -2,10 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  fetchUserById, // Adjust this to a unified fetch action
-  updateUser, // Unified update action
-  selectUserStatus,
-  selectUserError,
+  fetchUserProfile, // Adjust this to a unified fetch action
+  updateUserProfile, // Unified update action
+  selectUserProfile,
 } from "../../store/slices/userSlice"; // Adjust to a unified slice
 import {
   TextField,
@@ -22,12 +21,11 @@ import PageContainer from "../../components/container/PageContainer";
 import DashboardCard from "../../components/shared/DashboardCard";
 
 const UserProfile = () => {
-  const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user.selectedUser);
-  const updateStatus = useSelector(selectUserStatus);
-  const error = useSelector(selectUserError);
+  const user = useSelector(selectUserProfile);
+  const { error, status } = useSelector((state) => state.user);
+  const updateStatus = status;
 
   const [formData, setFormData] = useState({
     name: "",
@@ -44,13 +42,12 @@ const UserProfile = () => {
   });
 
   useEffect(() => {
-    if (id) {
-      dispatch(fetchUserById(id));
-    }
+    dispatch(fetchUserProfile());
+    console.log(user);
     return () => {
       dispatch({ type: "user/resetStatus" });
     };
-  }, [id, dispatch]);
+  }, [dispatch]);
 
   useEffect(() => {
     if (user && Object.keys(user).length) {
@@ -85,7 +82,7 @@ const UserProfile = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(updateUser({ _id: id, ...formData }));
+    dispatch(updateUserProfile({ _id: id, ...formData }));
   };
 
   return (

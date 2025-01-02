@@ -91,6 +91,11 @@ const ReportDetails = Loadable(
   lazy(() => import("../views/report/reportDetails"))
 );
 
+//user routes
+const UserProfile = Loadable(
+  lazy(() => import("../views/profile/userProfile"))
+);
+
 const Router = (userRole) => {
   return [
     {
@@ -132,11 +137,11 @@ const Router = (userRole) => {
           ),
         },
         {
-          path: "/profile/:id",
+          path: "/profile",
           exact: true,
           element: (
             <ProtectedRoute
-              element={<EditEmployee />}
+              element={<UserProfile />}
               allowedRoles={["ANY"]}
               userRole={userRole}
             />

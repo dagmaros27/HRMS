@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   registerApplicant,
   selectIsLoggedIn,
+  selectUser,
 } from "../../../store/slices/userSlice";
 
 const AuthRegister = ({ title, subtitle, subtext }) => {
@@ -21,12 +22,13 @@ const AuthRegister = ({ title, subtitle, subtext }) => {
   });
   const { loading, error } = useSelector((state) => state.user);
   const isLoggedIn = useSelector(selectIsLoggedIn);
+  const user = useSelector(selectUser);
 
   useEffect(() => {
     if (isLoggedIn) {
-      navigate("/profile");
+      navigate(`/profile/${user.user_id}`);
     }
-  }, [isLoggedIn, navigate]);
+  }, [isLoggedIn, navigate, user]);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
