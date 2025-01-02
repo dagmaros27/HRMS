@@ -8,6 +8,7 @@ const {
   updateApplicant,
   deleteApplicant,
 } = require("../controllers/applicant_controller");
+const AsyncHandler = require("express-async-handler");
 
 const authMiddleware = require("../infrastructures/middlewares/auth");
 const {
@@ -15,12 +16,11 @@ const {
   accessMiddleware,
 } = require("../infrastructures/middlewares/access");
 
-router.use(authMiddleware);
 //router.use(accessMiddleware(["ADMIN"]));
 
-router.post("/", createApplicant);
-router.get("/:id", getApplicantById);
-router.put("/:id", updateApplicant);
-router.delete("/:id", deleteApplicant);
+router.post("/register", AsyncHandler(createApplicant));
+router.get("/:id", authMiddleware, AsyncHandler(getApplicantById));
+router.put("/:id", authMiddleware, AsyncHandler(updateApplicant));
+router.delete("/:id", authMiddleware, AsyncHandler(deleteApplicant));
 
 module.exports = router;

@@ -1,11 +1,23 @@
 const { ApplicantUsecase } = require("../usecases/usecases");
+const generateToken = require("../infrastructures/utils/generate_token");
 
 const applicantUsecase = new ApplicantUsecase();
 
 const createApplicant = async (req, res) => {
   const applicantData = req.body;
+  console.log(applicantData);
   const applicant = await applicantUsecase.createApplicant(applicantData);
-  res.status(201).json(applicant);
+  applicant.role = "APPLICANT";
+
+  const token = generateToken(applicant._id, applicant.role);
+
+  res.status(200).send({
+    token: token,
+    user_id: applicant._id,
+    user_name: applicant.username,
+    user_email: applicant.email,
+    user_role: applicant.role,
+  });
 };
 
 const getApplicantById = async (req, res) => {

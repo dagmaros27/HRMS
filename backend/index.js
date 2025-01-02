@@ -16,6 +16,7 @@ const newsRoutes = require("./routes/news_routes");
 const trainingRoutes = require("./routes/training_program_routes");
 const traineeRoutes = require("./routes/trainee_routes");
 const reportRoutes = require("./routes/report_routes");
+const userRoutes = require("./routes/user_routes");
 const {
   notFound,
   errorHandler,
@@ -36,6 +37,7 @@ app.use("/api/news", newsRoutes);
 app.use("/api/training", trainingRoutes);
 app.use("/api/trainee", traineeRoutes);
 app.use("/api/report", reportRoutes);
+app.use("/api/user", userRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
