@@ -17,6 +17,7 @@ const trainingRoutes = require("./routes/training_program_routes");
 const traineeRoutes = require("./routes/trainee_routes");
 const reportRoutes = require("./routes/report_routes");
 const userRoutes = require("./routes/user_routes");
+const attendanceRoutes = require("./routes/attendance_routes");
 const {
   notFound,
   errorHandler,
@@ -28,6 +29,7 @@ app.use(cors());
 app.use("/api/admin", adminRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/applicant", applicantRoutes);
+app.use("/api/attendance", attendanceRoutes);
 app.use("/api/employee", employeeRoutes);
 app.use("/api/leave-request", leaveRequestRoutes);
 app.use("/api/hr-manager", hrManagerRoutes);

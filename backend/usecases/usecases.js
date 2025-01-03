@@ -10,6 +10,7 @@ const LeaveRequestUsecase = require("./leave_request_usecase");
 const NewsUsecase = require("./news_usecase");
 const UserUsecase = require("./user_usecase");
 const ReportUsecase = require("./report_usecase");
+const AttendanceUseCase = require("./attendance_usecase");
 
 module.exports = {
   AdminUsecase,
@@ -24,4 +25,5 @@ module.exports = {
   NewsUsecase,
   UserUsecase,
   ReportUsecase,
+  AttendanceUseCase,
 };

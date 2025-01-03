@@ -9,6 +9,7 @@ const { Trainee } = require("./trainee_model");
 const { News } = require("./news_model");
 const { JobVacancy } = require("./job_vacancy_model");
 const { Report } = require("./report_model");
+const { Attendance } = require("./attendance_model");
 module.exports = {
   Admin,
   Employee,
@@ -21,4 +22,5 @@ module.exports = {
   Trainee,
   News,
   Report,
+  Attendance,
 };

@@ -1,9 +1,14 @@
-const { get_admin_by_id } = require("../infrastructures/repositories/admin");
+const {
+  get_admin_by_id,
+  get_admin_by_email,
+} = require("../infrastructures/repositories/admin");
 const {
   get_applicant_by_id,
+  get_applicant_by_email,
 } = require("../infrastructures/repositories/applicant");
 const {
   get_employee_by_id,
+  get_employee_by_email,
 } = require("../infrastructures/repositories/employee");
 
 class UserUsecase {
