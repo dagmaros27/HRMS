@@ -18,6 +18,7 @@ const traineeRoutes = require("./routes/trainee_routes");
 const reportRoutes = require("./routes/report_routes");
 const userRoutes = require("./routes/user_routes");
 const attendanceRoutes = require("./routes/attendance_routes");
+const path = require("path");
 const {
   notFound,
   errorHandler,
@@ -26,6 +27,8 @@ connectDB();
 
 app.use(express.json());
 app.use(cors());
+app.use("/api/uploads", express.static(path.join(__dirname, "../uploads")));
+
 app.use("/api/admin", adminRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/applicant", applicantRoutes);

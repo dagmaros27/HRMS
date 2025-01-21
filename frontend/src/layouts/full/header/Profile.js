@@ -81,7 +81,7 @@ const Profile = () => {
       >
         <MenuItem>
           <Link
-            to={`/profile/${user.user_id}`}
+            to={`/profile`}
             style={{
               textDecoration: "none",
               color: "inherit",

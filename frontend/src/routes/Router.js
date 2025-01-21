@@ -37,6 +37,10 @@ const EditEmployee = Loadable(
   lazy(() => import("../views/employees/editEmployee"))
 );
 
+const Attendance = Loadable(
+  lazy(() => import("../views/attendance/attendance"))
+);
+
 //vacancy routes
 const Vacancy = Loadable(lazy(() => import("../views/vacancy/vacancy")));
 const VacancyApply = Loadable(
@@ -110,6 +114,17 @@ const Router = (userRole) => {
             <ProtectedRoute
               element={<Employees />}
               allowedRoles={["ADMIN"]}
+              userRole={userRole}
+            />
+          ),
+        },
+        {
+          path: "/employees/attendance",
+          exact: true,
+          element: (
+            <ProtectedRoute
+              element={<Attendance />}
+              allowedRoles={["ADMIN", "HR_MANAGER"]}
               userRole={userRole}
             />
           ),

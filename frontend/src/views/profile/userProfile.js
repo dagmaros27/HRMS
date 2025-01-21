@@ -5,6 +5,7 @@ import {
   fetchUserProfile, // Adjust this to a unified fetch action
   updateUserProfile, // Unified update action
   selectUserProfile,
+  setLoading,
 } from "../../store/slices/userSlice"; // Adjust to a unified slice
 import {
   TextField,
@@ -23,8 +24,10 @@ import DashboardCard from "../../components/shared/DashboardCard";
 const UserProfile = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector(selectUserProfile);
-  const { error, status } = useSelector((state) => state.user);
+  const userProfile = useSelector(selectUserProfile);
+  const { error, status, user_id, user_role } = useSelector(
+    (state) => state.user
+  );
   const updateStatus = status;
 
   const [formData, setFormData] = useState({
@@ -42,21 +45,21 @@ const UserProfile = () => {
   });
 
   useEffect(() => {
-    dispatch(fetchUserProfile());
-    console.log(user);
+    dispatch(fetchUserProfile({ user_id, user_role }));
+    console.log(userProfile);
     return () => {
-      dispatch({ type: "user/resetStatus" });
+      dispatch(setLoading(false));
     };
   }, [dispatch]);
 
   useEffect(() => {
-    if (user && Object.keys(user).length) {
+    if (userProfile && Object.keys(userProfile).length) {
       setFormData({
         ...formData,
-        ...user,
+        ...userProfile,
       });
     }
-  }, [user]);
+  }, [userProfile]);
 
   useEffect(() => {
     if (updateStatus === "succeeded") {

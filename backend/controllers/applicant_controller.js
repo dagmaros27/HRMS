@@ -32,20 +32,34 @@ const getApplicantByEmail = async (req, res) => {
   res.status(200).json(applicant);
 };
 
-const updateApplicant = async (req, res) => {
-  const applicantId = req.params.id;
-  const applicantData = req.body;
-  const applicant = await applicantUsecase.updateApplicant(
-    applicantId,
-    applicantData
-  );
-  res.status(200).json(applicant);
-};
-
 const deleteApplicant = async (req, res) => {
   const applicantId = req.params.id;
   const applicant = await applicantUsecase.deleteApplicant(applicantId);
   res.status(200).json(applicant);
+};
+
+const updateApplicant = async (req, res) => {
+  try {
+    const applicantId = req.params.id;
+    const applicantData = req.body;
+
+    // If a file is uploaded, include the file path in the applicant data
+    if (req.file) {
+      applicantData.resume = req.file.path; // Adjust path handling as needed
+    }
+
+    // Use the use case to update the applicant
+    const updatedApplicant = await applicantUsecase.updateApplicant(
+      applicantId,
+      applicantData
+    );
+
+    // Respond with the updated applicant data
+    res.status(200).json(updatedApplicant);
+  } catch (error) {
+    // Handle errors gracefully
+    res.status(500).json({ error: error.message });
+  }
 };
 
 module.exports = {

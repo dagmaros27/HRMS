@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import {
   Typography,
-  TextField,
+  Select,
+  MenuItem,
   Button,
   Table,
   TableBody,
@@ -15,84 +16,86 @@ import {
 import PageContainer from "src/components/container/PageContainer";
 import DashboardCard from "../../components/shared/DashboardCard";
 
-const AttendancePage = () => {
-  const [employeeName, setEmployeeName] = useState("");
-  const [attendance, setAttendance] = useState([]);
+const mockData = [
+  { id: 1, name: "John Doe", totalDays: 10, presentDays: 7, absentDays: 3 },
+  { id: 2, name: "Jane Smith", totalDays: 10, presentDays: 9, absentDays: 1 },
+  { id: 3, name: "Sam Wilson", totalDays: 10, presentDays: 5, absentDays: 5 },
+];
 
-  const handleAddAttendance = () => {
-    if (employeeName.trim()) {
-      setAttendance([
-        ...attendance,
-        {
-          name: employeeName,
-          date: new Date().toLocaleDateString(),
-          status: "Present",
-        },
-      ]);
-      setEmployeeName("");
-    }
+const AttendancePage = () => {
+  const [attendanceData, setAttendanceData] = useState(
+    mockData.map((employee) => ({
+      ...employee,
+      todaysAttendance: "Present", // Default today's attendance
+    }))
+  );
+
+  const handleAttendanceChange = (id, value) => {
+    setAttendanceData((prevData) =>
+      prevData.map((employee) =>
+        employee.id === id ? { ...employee, todaysAttendance: value } : employee
+      )
+    );
+  };
+
+  const handleTakeAttendance = () => {
+    console.log("Attendance Submitted:", attendanceData);
+    alert("Attendance has been submitted!");
   };
 
   return (
     <PageContainer
       title="Attendance Page"
-      description="Take attendance of employees and view records"
+      description="View employee stats and take attendance for today"
     >
       <DashboardCard title="Employee Attendance">
-        <Box mb={3}>
-          <Typography variant="h6" gutterBottom>
-            Mark Attendance
-          </Typography>
-          <TextField
-            label="Employee Name"
-            variant="outlined"
-            value={employeeName}
-            onChange={(e) => setEmployeeName(e.target.value)}
-            fullWidth
-            margin="normal"
-          />
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleAddAttendance}
-            disabled={!employeeName.trim()}
-          >
-            Add Attendance
-          </Button>
-        </Box>
-
         <Box>
           <Typography variant="h6" gutterBottom>
-            Attendance Records
+            Employee Attendance Stats
           </Typography>
           <TableContainer component={Paper}>
             <Table>
               <TableHead>
                 <TableRow>
                   <TableCell>Name</TableCell>
-                  <TableCell>Date</TableCell>
-                  <TableCell>Status</TableCell>
+                  <TableCell>Total Days</TableCell>
+                  <TableCell>Present Days</TableCell>
+                  <TableCell>Absent Days</TableCell>
+                  <TableCell>Today's Attendance</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {attendance.length > 0 ? (
-                  attendance.map((record, index) => (
-                    <TableRow key={index}>
-                      <TableCell>{record.name}</TableCell>
-                      <TableCell>{record.date}</TableCell>
-                      <TableCell>{record.status}</TableCell>
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell colSpan={3} align="center">
-                      No attendance records found.
+                {attendanceData.map((employee) => (
+                  <TableRow key={employee.id}>
+                    <TableCell>{employee.name}</TableCell>
+                    <TableCell>{employee.totalDays}</TableCell>
+                    <TableCell>{employee.presentDays}</TableCell>
+                    <TableCell>{employee.absentDays}</TableCell>
+                    <TableCell>
+                      <Select
+                        value={employee.todaysAttendance}
+                        onChange={(e) =>
+                          handleAttendanceChange(employee.id, e.target.value)
+                        }
+                      >
+                        <MenuItem value="Present">Present</MenuItem>
+                        <MenuItem value="Absent">Absent</MenuItem>
+                      </Select>
                     </TableCell>
                   </TableRow>
-                )}
+                ))}
               </TableBody>
             </Table>
           </TableContainer>
+          <Box mt={3} textAlign="center">
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleTakeAttendance}
+            >
+              Take Attendance
+            </Button>
+          </Box>
         </Box>
       </DashboardCard>
     </PageContainer>
