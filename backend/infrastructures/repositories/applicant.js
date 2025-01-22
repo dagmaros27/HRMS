@@ -16,12 +16,17 @@ const get_applicant_by_email = async (email) => {
   return applicant;
 };
 
-const update_applicant = async (id, applicant) => {
-  const updatedApplicant = await Applicant.findByIdAndUpdate(id, applicant, {
-    new: true,
-  });
-  const { password, ...applicantWithoutPassword } = updatedApplicant.toObject();
-  return applicantWithoutPassword;
+const update_applicant = async (applicant) => {
+  try {
+    const updatedApplicant = await Applicant.findByIdAndUpdate(applicant._id, {
+      new: true,
+    });
+    console.log(updatedApplicant);
+    return updatedApplicant.toObject();
+  } catch (error) {
+    console.error(`Error updating applicant with id ${id}:`, error);
+    throw error;
+  }
 };
 
 const delete_applicant = async (id) => {

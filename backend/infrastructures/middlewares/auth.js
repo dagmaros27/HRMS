@@ -5,6 +5,7 @@ const {
   Applicant,
   Employee,
   HRManager,
+  Trainer,
 } = require("../../domain/models/models");
 const e = require("express");
 
@@ -32,7 +33,12 @@ const authMiddleware = asyncHandler(async (req, res, next) => {
       } else if (decoded.user_role === "HR_MANAGER") {
         req.user = await Employee.findById(decoded.user_id).select("-password");
         req.user.role = decoded.user_role;
+      } else if (decoded.user_role === "TRAINER") {
+        const users = await Trainer.find({ employee: decoded.user_id });
+        req.user = users[0];
+        req.user.role = "TRAINER";
       }
+
       next();
     } catch (error) {
       console.log(error);

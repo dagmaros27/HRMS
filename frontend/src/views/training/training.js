@@ -19,6 +19,7 @@ const TrainingPage = () => {
 
   useEffect(() => {
     dispatch(fetchTrainings());
+    console.log(trainings);
   }, [dispatch]);
 
   const handleRegister = (id) => {
@@ -46,62 +47,56 @@ const TrainingPage = () => {
           <CircularProgress />
         ) : (
           <Grid container spacing={3}>
-            {trainings.map((session) => (
-              <Grid item xs={12} sm={6} md={4} key={session.id}>
-                <div
-                  style={{
-                    border: "1px solid #ddd",
-                    borderRadius: "8px",
-                    overflow: "hidden",
-                    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-                  }}
-                >
-                  <img
-                    src={session.image || trainingImage}
-                    alt={session.title}
+            {trainings.length === 0 ? (
+              <Typography variant="body1" color="textSecondary">
+                No training sessions available
+              </Typography>
+            ) : (
+              trainings.map((session) => (
+                <Grid item xs={12} sm={6} md={4} key={session.id}>
+                  <div
                     style={{
-                      width: "100%",
-                      height: "200px",
-                      objectFit: "cover",
+                      border: "1px solid #ddd",
+                      borderRadius: "8px",
+                      overflow: "hidden",
+                      boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
                     }}
-                  />
-                  <div style={{ padding: "16px" }}>
-                    <Typography variant="h6">{session.title}</Typography>
-                    <Typography variant="body2">
-                      <FormatedDate date={session.startDate} /> -{" "}
-                      <FormatedDate date={session.endDate} />
-                    </Typography>
-                    <Typography variant="body2">
-                      {" "}
-                      Trainer: <b> {session.trainer}</b>
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      color="textSecondary"
-                      gutterBottom
-                    >
-                      {session.description}
-                    </Typography>
-                    {["ADMIN", "HR_MANAGER"].includes(user.user_role) ? (
-                      <Link to={`/training/edit/${session.id}`}>
-                        <Button variant="contained" color="primary" fullWidth>
-                          See Details
-                        </Button>
-                      </Link>
-                    ) : (
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        fullWidth
-                        onClick={() => handleRegister(session.id)}
+                  >
+                    <img
+                      src={session.image || trainingImage}
+                      alt={session.trainee}
+                      style={{
+                        width: "100%",
+                        height: "200px",
+                        objectFit: "cover",
+                      }}
+                    />
+                    <div style={{ padding: "16px" }}>
+                      <Typography variant="body2">
+                        Trainee: {session?.trainee}
+                      </Typography>
+                      <Typography variant="body2">
+                        {" "}
+                        Trainer: <b> {session.trainer?.employee?.name}</b>
+                      </Typography>
+                      <Typography variant="body2">
+                        {" "}
+                        Date:
+                        <FormatedDate date={session?.startDate} /> -{" "}
+                        <FormatedDate date={session?.endDate} />
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        color="textSecondary"
+                        gutterBottom
                       >
-                        Register
-                      </Button>
-                    )}
+                        {session?.description}
+                      </Typography>
+                    </div>
                   </div>
-                </div>
-              </Grid>
-            ))}
+                </Grid>
+              ))
+            )}
           </Grid>
         )}
       </DashboardCard>

@@ -1,25 +1,13 @@
 import React, { useState, useEffect } from "react";
-import {
-  Box,
-  Typography,
-  Paper,
-  Grid,
-  Button,
-  TextField,
-  InputLabel,
-  Select,
-  MenuItem,
-  FormControl,
-} from "@mui/material";
+import { Box, Typography, Paper, Grid, Button, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { updateUserProfile } from "../../store/slices/userSlice";
+import { updateUserProfile, selectUser } from "../../store/slices/userSlice";
 
 const UpdateProfilePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const user = useSelector((state) => state.user);
+  const user = useSelector(selectUser);
   const { userProfile, loading, error } = useSelector((state) => state.user);
 
   const [formData, setFormData] = useState({
@@ -63,7 +51,6 @@ const UpdateProfilePage = () => {
     e.preventDefault();
     const updatedData = new FormData();
     updatedData.append("_id", user.user_id);
-    updatedData.append("role", user.user_role);
     updatedData.append("name", formData.name);
     updatedData.append("email", formData.email);
     updatedData.append("phone", formData.phone);
@@ -115,57 +102,49 @@ const UpdateProfilePage = () => {
                 onChange={handleChange}
               />
             </Grid>
-            {user.user_role === "EMPLOYEE" && (
-              <>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    label="Phone"
-                    variant="outlined"
-                    fullWidth
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    label="Address"
-                    variant="outlined"
-                    fullWidth
-                    name="address"
-                    value={formData.address}
-                    onChange={handleChange}
-                  />
-                </Grid>
-              </>
-            )}
-            {user.user_role === "EMPLOYEE" && (
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  label="New Password"
-                  variant="outlined"
-                  fullWidth
-                  name="password"
-                  type="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                />
-              </Grid>
-            )}
-            {user.user_role === "APPLICANT" && (
-              <Grid item xs={12}>
-                <input
-                  type="file"
-                  onChange={handleFileChange}
-                  accept=".pdf,.doc,.docx"
-                />
-                {formData.resume && (
-                  <Typography variant="body2" sx={{ mt: 1 }}>
-                    Selected File: {formData.resume.name}
-                  </Typography>
-                )}
-              </Grid>
-            )}
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Phone"
+                variant="outlined"
+                fullWidth
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Address"
+                variant="outlined"
+                fullWidth
+                name="address"
+                value={formData.address}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="New Password"
+                variant="outlined"
+                fullWidth
+                name="password"
+                type="password"
+                value={formData.password}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <input
+                type="file"
+                onChange={handleFileChange}
+                accept=".pdf,.doc,.docx"
+              />
+              {formData.resume && (
+                <Typography variant="body2" sx={{ mt: 1 }}>
+                  Selected File: {formData.resume.name}
+                </Typography>
+              )}
+            </Grid>
           </Grid>
 
           <Box mt={4} textAlign="center">

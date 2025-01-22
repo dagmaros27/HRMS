@@ -40,9 +40,9 @@ const Profile = () => {
 
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
-      <Typography>
+      {/* <Typography>
         Email: {user.user_email} <br /> Role: {user.user_role}
-      </Typography>
+      </Typography> */}
       <IconButton
         size="large"
         aria-label="show 11 new notifications"

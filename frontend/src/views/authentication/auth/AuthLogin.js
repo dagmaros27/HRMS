@@ -22,9 +22,11 @@ const AuthLogin = ({ title, subtitle, subtext }) => {
   useEffect(() => {
     // Navigate to the dashboard if already logged in
     if (isLoggedIn) {
-      if (["ADMIN", "HR_MANAGER"].includes(user.user_role)) {
+      if (user.user_role === "ADMIN") {
         navigate("/employees");
-      } else if (user.user_role === "EMPLOYEE") {
+      } else if (
+        ["HR_MANAGER", "EMPLOYEE", "TRAINER"].includes(user.user_role)
+      ) {
         navigate("/news");
       } else {
         navigate("/vacancy");

@@ -19,25 +19,18 @@ class LeaveRequestUsecase {
 
   async getLeaveRequestById(leaveRequestId) {
     const leaveRequest = await get_leave_request_by_id(leaveRequestId);
-    if (!leaveRequest) {
-      throw new Error("Leave request not found");
-    }
+
     return leaveRequest;
   }
 
   async getLeaveRequestsByEmployee(employeeId) {
     const leaveRequests = await get_leave_requests_by_employee(employeeId);
-    if (!leaveRequests) {
-      throw new Error("Failed to get leave requests by employee");
-    }
+
     return leaveRequests;
   }
 
   async getAllLeaveRequests() {
     const leaveRequests = await get_all_leave_requests();
-    if (!leaveRequests) {
-      throw new Error("Failed to get all leave requests");
-    }
     return leaveRequests;
   }
 

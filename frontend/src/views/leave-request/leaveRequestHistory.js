@@ -17,6 +17,7 @@ import {
   selectLeaveRequests,
 } from "../../store/slices/leaveRequestSlice";
 import { selectUser } from "../../store/slices/userSlice";
+import FormatedDate from "../../components/shared/FormatedDate";
 
 const LeaveRequestHistoryPage = () => {
   const dispatch = useDispatch();
@@ -53,10 +54,11 @@ const LeaveRequestHistoryPage = () => {
           <TableBody>
             {leaveRequests.map((request) => (
               <TableRow key={request._id}>
-                <TableCell>{request.username}</TableCell>
-                <TableCell>{request.position}</TableCell>
+                <TableCell>{request.employee?.name}</TableCell>
+                <TableCell>{request.employee?.position}</TableCell>
                 <TableCell>
-                  {request.startDate} - {request.endDate}
+                  <FormatedDate date={request.startDate} /> -{" "}
+                  <FormatedDate date={request.endDate} />
                 </TableCell>
                 <TableCell>
                   <Button

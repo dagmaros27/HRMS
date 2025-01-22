@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   TextField,
   Button,
@@ -12,21 +12,36 @@ import { addTraining } from "../../store/slices/trainingSlice";
 import { Link, useNavigate } from "react-router-dom";
 import PageContainer from "src/components/container/PageContainer";
 import DashboardCard from "../../components/shared/DashboardCard";
+import axios from "../../axios";
 
 const AddTrainingPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { status } = useSelector((state) => state.training);
 
+  const [trainers, setTrainers] = useState([]);
   const [formData, setFormData] = useState({
-    title: "",
+    trainee: "",
     description: "",
     startDate: "",
     endDate: "",
-    trainers: "",
+    trainer: "",
   });
-
   const [error, setError] = useState("");
+
+  // Fetch trainers on component mount
+  useEffect(() => {
+    const fetchTrainers = async () => {
+      try {
+        const response = await axios.get("/trainer");
+        setTrainers(response.data);
+      } catch (error) {
+        console.error("Error fetching trainers:", error);
+      }
+    };
+
+    fetchTrainers();
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -35,10 +50,10 @@ const AddTrainingPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const { title, startDate, endDate } = formData;
+    const { trainee, startDate, endDate, trainer } = formData;
 
-    if (!title || !startDate || !endDate) {
-      setError("Title, Start Date, and End Date are required.");
+    if (!trainee || !startDate || !endDate || !trainer) {
+      setError("Trainee, Start Date, and End Date are required.");
       return;
     }
 
@@ -70,8 +85,8 @@ const AddTrainingPage = () => {
           <Grid container spacing={3} lg={8}>
             <Grid item xs={12}>
               <TextField
-                label="Title"
-                name="title"
+                label="Trainee Name"
+                name="trainee"
                 value={formData.title}
                 onChange={handleInputChange}
                 fullWidth
@@ -115,12 +130,26 @@ const AddTrainingPage = () => {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                label="Trainers"
-                name="trainers"
-                value={formData.trainers}
+                label="Trainer"
+                name="trainer"
+                value={formData.trainer}
                 onChange={handleInputChange}
+                select
                 fullWidth
-              />
+                required
+                SelectProps={{
+                  native: true,
+                }}
+              >
+                <option value="" disabled>
+                  Select a trainer
+                </option>
+                {trainers.map((trainer) => (
+                  <option key={trainer._id} value={trainer._id}>
+                    {trainer?.employee?.name}
+                  </option>
+                ))}
+              </TextField>
             </Grid>
             {error && (
               <Grid item xs={12}>

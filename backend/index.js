@@ -18,6 +18,7 @@ const traineeRoutes = require("./routes/trainee_routes");
 const reportRoutes = require("./routes/report_routes");
 const userRoutes = require("./routes/user_routes");
 const attendanceRoutes = require("./routes/attendance_routes");
+const TrainerRoutes = require("./routes/trainer_routes");
 const seedAdmin = require("./bootstrap/seeder");
 const path = require("path");
 const {
@@ -46,6 +47,7 @@ app.use("/api/training", trainingRoutes);
 app.use("/api/trainee", traineeRoutes);
 app.use("/api/report", reportRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/trainer", TrainerRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

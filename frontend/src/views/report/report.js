@@ -60,10 +60,10 @@ const ReportPage = () => {
           </TableHead>
           <TableBody>
             {reports.map((report) => (
-              <TableRow key={report._id}>
-                <TableCell>{report._id}</TableCell>
+              <TableRow key={report?._id}>
+                <TableCell>{report?._id}</TableCell>
                 <TableCell>
-                  <FormatedDate date={report.createdAt} />
+                  <FormatedDate date={report?.createdAt} />
                 </TableCell>
                 <TableCell>
                   {report.createdBy === null
@@ -71,7 +71,7 @@ const ReportPage = () => {
                     : report?.createdBy?.name}{" "}
                 </TableCell>
                 <TableCell>
-                  <Link to={`/reports/${report._id}`}>
+                  <Link to={`/reports/${report?._id}`}>
                     <Button variant="outlined">View Details</Button>
                   </Link>
                 </TableCell>

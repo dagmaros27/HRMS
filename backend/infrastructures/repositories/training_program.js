@@ -22,7 +22,14 @@ const get_training_program_by_id = async (id) => {
 };
 
 const get_all_training_programs = async () => {
-  const trainingPrograms = await TrainingProgram.find();
+  const trainingPrograms = await TrainingProgram.find().populate({
+    path: "trainer",
+    populate: {
+      path: "employee", // Populates the 'employee' field in the Trainer schema
+      select: "name", // Fetches only the 'name' field of the employee
+    },
+  });
+
   return trainingPrograms;
 };
 

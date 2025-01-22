@@ -6,6 +6,7 @@ import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchReports } from "../../store/slices/reportSlice";
 import Markdown from "react-markdown";
+import FormatedDate from "../../components/shared/FormatedDate";
 
 const ReportDetailsPage = () => {
   const { id } = useParams();
@@ -18,7 +19,7 @@ const ReportDetailsPage = () => {
     }
   }, [dispatch, reports.length]);
 
-  const report = reports.find((report) => report._id === id);
+  const report = reports.find((report) => report._id.toString() === id);
 
   if (status === "loading") {
     return <Typography>Loading...</Typography>;
@@ -34,7 +35,7 @@ const ReportDetailsPage = () => {
       description={`Details for Report ID: ${id}`}
     >
       <DashboardCard
-        title={`Report ID: ${report._id}`}
+        title={`Report ID: ${report?._id}`}
         action={
           <Link to="/reports">
             <Button variant="outlined" color="primary">
@@ -44,14 +45,14 @@ const ReportDetailsPage = () => {
         }
       >
         <Typography variant="body1" gutterBottom>
-          <strong>Timestamp:</strong> {report.createdAt}
+          <strong>Timestamp:</strong> <FormatedDate date={report?.createdAt} />
         </Typography>
         <Typography variant="body1" gutterBottom>
-          <strong>Created By:</strong> {report.createdBy}
+          <strong>Created By:</strong> {report?.createdBy?.name || "Admin"}
         </Typography>
         <Typography variant="body1" gutterBottom>
           <strong>Details:</strong>
-          <Markdown>{report.content || "No content available"}</Markdown>
+          <Markdown>{report?.content || "No content available"}</Markdown>
           {/* {report.content} */}
         </Typography>
       </DashboardCard>

@@ -35,7 +35,9 @@ class UserUsecase {
     if (employee) {
       if (employee.position === "Hr manager") {
         employee.role = "HR_MANAGER";
-      } else if (employee.position === "Employee") {
+      } else if (employee.position === "Trainer") {
+        employee.role = "TRAINER";
+      } else {
         employee.role = "EMPLOYEE";
       }
       return employee;
@@ -50,26 +52,36 @@ class UserUsecase {
     if (userRole === "APPLICANT") {
       return await get_applicant_by_id(userId);
     }
-    if (userRole === "HR_MANAGER" || userRole === "EMPLOYEE") {
+    if (
+      userRole === "HR_MANAGER" ||
+      userRole === "EMPLOYEE" ||
+      userRole === "TRAINER"
+    ) {
       return await get_employee_by_id(userId);
     }
     throw new Error("User not found");
   }
 
   async updateUserProfile(user) {
-    if (user.role === "ADMIN") {
-      const admin = Admin(user);
-      return await update_admin(admin._id, admin);
-    }
-    if (user.role === "APPLICANT") {
-      const applicant = Applicant(user);
-      return await update_applicant(applicant._id, applicant);
-    }
-    if (user.role === "HR_MANAGER" || user.role === "EMPLOYEE") {
-      const employee = Employee(user);
-      return await update_employee(employee);
-    }
-    throw new Error("User not found");
+    // if (user.role === "ADMIN") {
+    //   const admin = Admin(user);
+    //   return await update_admin(admin._id, admin);
+    // }
+    // if (user.role === "APPLICANT") {
+    //   const applicant = Applicant(user);
+    //   return await update_applicant(applicant._id, applicant);
+    // }
+    // if (user.role === "HR_MANAGER" || user.role === "EMPLOYEE") {
+    //   const employee = Employee(user);
+    //   return await update_employee(employee);
+    // }
+
+    const applicant = Applicant(user);
+    const { _id, ...applicantWithoutId } = applicant;
+
+    return await update_applicant(applicant._id, applicantWithoutId);
+
+    // throw new Error("User not found");
   }
 }
 

@@ -9,6 +9,7 @@ const applicantSchema = new Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     phone: { type: String, required: false },
+    address: { type: String, required: false },
     resume: { type: String }, // URL to the resume file
     appliedJobs: [{ type: Schema.Types.ObjectId, ref: "JobApplication" }],
   },

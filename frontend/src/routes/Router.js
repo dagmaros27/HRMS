@@ -297,7 +297,7 @@ const Router = (userRole) => {
           element: (
             <ProtectedRoute
               element={<AddLeaveRequest />}
-              allowedRoles={["ADMIN", "HR_MANAGER", "EMPLOYEE"]}
+              allowedRoles={["ADMIN", "HR_MANAGER", "EMPLOYEE", "TRAINER"]}
               userRole={userRole}
             />
           ),
@@ -308,7 +308,7 @@ const Router = (userRole) => {
           element: (
             <ProtectedRoute
               element={<LeaveRequestHistory />}
-              allowedRoles={["ADMIN", "HR_MANAGER", "EMPLOYEE"]}
+              allowedRoles={["ADMIN", "HR_MANAGER", "EMPLOYEE", "TRAINER"]}
               userRole={userRole}
             />
           ),
@@ -341,7 +341,7 @@ const Router = (userRole) => {
           element: (
             <ProtectedRoute
               element={<MyTrainings />}
-              allowedRoles={["EMPLOYEE"]}
+              allowedRoles={["TRAINER"]}
               userRole={userRole}
             />
           ),

@@ -179,6 +179,7 @@ const AddEmployee = () => {
                 <option value="">Select Position</option>
                 <option value="Hr manager">HR manager</option>
                 <option value="Employee">Employee</option>
+                <option value="Trainer">Trainer</option>
               </TextField>
 
               <Typography variant="h6">Employment History</Typography>

@@ -140,15 +140,17 @@ const ProfilePage = () => {
 
         <Box mt={4}>{renderSpecificDetails()}</Box>
 
-        <Box mt={4} textAlign="center">
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => navigate("/profile/edit")}
-          >
-            Update Profile
-          </Button>
-        </Box>
+        {user.user_role === "APPLICANT" && (
+          <Box mt={4} textAlign="center">
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => navigate("/profile/edit")}
+            >
+              Update Profile
+            </Button>
+          </Box>
+        )}
       </Paper>
     </Box>
   );

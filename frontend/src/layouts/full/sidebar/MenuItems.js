@@ -57,14 +57,14 @@ const Menuitems = [
     title: "Leave Requests History",
     icon: IconDoorExit,
     href: "/leave-requests/history",
-    access: ["EMPLOYEE"],
+    access: ["EMPLOYEE", "TRAINER", "HR_MANAGER"],
   },
   {
     id: uniqueId(),
     title: "Training Programs",
     icon: IconRun,
     href: "/training",
-    access: ["ADMIN", "HR_MANAGER", "EMPLOYEE"],
+    access: ["ADMIN", "HR_MANAGER", "TRAINER"],
   },
   // {
   //   id: uniqueId(),

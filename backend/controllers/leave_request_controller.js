@@ -28,6 +28,12 @@ const getLeaveRequestsByEmployee = async (req, res) => {
 };
 
 const getAllLeaveRequests = async (req, res) => {
+  if (["EMPLOYEE", "TRAINER"].includes(req.user.role)) {
+    const leaveRequests = await leaveRequestUsecase.getLeaveRequestsByEmployee(
+      req.user._id
+    );
+    return res.status(200).json(leaveRequests);
+  }
   const leaveRequests = await leaveRequestUsecase.getAllLeaveRequests();
   res.status(200).json(leaveRequests);
 };
