@@ -1,14 +1,19 @@
 const multer = require("multer");
 const path = require("path");
 
-// Configure Multer storage
+const fs = require("fs");
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads/"); // Specify the folder to save the files
+    const uploadPath = path.join(__dirname, "../../uploads");
+    if (!fs.existsSync(uploadPath)) {
+      fs.mkdirSync(uploadPath, { recursive: true });
+    }
+    cb(null, uploadPath);
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, uniqueSuffix + "-" + file.originalname); // Create a unique file name
+    cb(null, uniqueSuffix + "-" + file.originalname);
   },
 });
 
@@ -18,6 +23,9 @@ const fileFilter = (req, file, cb) => {
     "application/pdf",
     "application/msword",
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "image/jpeg",
+    "image/png",
+    "image/gif",
   ];
   if (allowedTypes.includes(file.mimetype)) {
     cb(null, true);

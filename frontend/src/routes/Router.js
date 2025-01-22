@@ -96,8 +96,16 @@ const ReportDetails = Loadable(
 );
 
 //user routes
-const UserProfile = Loadable(
+const EditProfile = Loadable(
+  lazy(() => import("../views/profile/editProfile"))
+);
+
+const ProfilePage = Loadable(
   lazy(() => import("../views/profile/userProfile"))
+);
+
+const LandingPage = Loadable(
+  lazy(() => import("../views/landing-page/landingPage"))
 );
 
 const Router = (userRole) => {
@@ -106,7 +114,7 @@ const Router = (userRole) => {
       path: "/",
       element: <FullLayout />,
       children: [
-        { path: "/", element: <Navigate to="/news" /> },
+        { path: "/", element: <Navigate to={"/homepage"} /> },
         {
           path: "/employees",
           exact: true,
@@ -156,7 +164,18 @@ const Router = (userRole) => {
           exact: true,
           element: (
             <ProtectedRoute
-              element={<UserProfile />}
+              element={<ProfilePage />}
+              allowedRoles={["ANY"]}
+              userRole={userRole}
+            />
+          ),
+        },
+        {
+          path: "/profile/edit",
+          exact: true,
+          element: (
+            <ProtectedRoute
+              element={<EditProfile />}
               allowedRoles={["ANY"]}
               userRole={userRole}
             />
@@ -251,6 +270,17 @@ const Router = (userRole) => {
           ),
         },
         {
+          path: "/leave-requests/:id",
+          exact: true,
+          element: (
+            <ProtectedRoute
+              element={<LeaveRequestDescription />}
+              allowedRoles={["ANY"]}
+              userRole={userRole}
+            />
+          ),
+        },
+        {
           path: "/leave-requests",
           exact: true,
           element: (
@@ -279,17 +309,6 @@ const Router = (userRole) => {
             <ProtectedRoute
               element={<LeaveRequestHistory />}
               allowedRoles={["ADMIN", "HR_MANAGER", "EMPLOYEE"]}
-              userRole={userRole}
-            />
-          ),
-        },
-        {
-          path: "/leave-requests/:id",
-          exact: true,
-          element: (
-            <ProtectedRoute
-              element={<LeaveRequestDescription />}
-              allowedRoles={[" ADMIN", "HR_MANAGER"]}
               userRole={userRole}
             />
           ),
@@ -361,6 +380,10 @@ const Router = (userRole) => {
         { path: "/auth/login", element: <Login /> },
         { path: "*", element: <Navigate to="/auth/404" /> },
       ],
+    },
+    {
+      path: "/homepage",
+      element: <LandingPage />,
     },
   ];
 };

@@ -18,6 +18,7 @@ import {
   selectApplications,
 } from "../../store/slices/applicationSlice";
 import { useParams } from "react-router-dom";
+import FormatedDate from "../../components/shared/FormatedDate";
 
 const ApplicantsPage = () => {
   const dispatch = useDispatch();
@@ -28,6 +29,7 @@ const ApplicantsPage = () => {
 
   useEffect(() => {
     dispatch(fetchApplications(vacancyId));
+    console.log(applications);
   }, [dispatch]);
 
   return (
@@ -51,7 +53,7 @@ const ApplicantsPage = () => {
                     <Typography variant="h6">Applicant</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography variant="h6">Date</Typography>
+                    <Typography variant="h6">Applied Date</Typography>
                   </TableCell>
                   <TableCell>
                     <Typography variant="h6">Status</Typography>
@@ -64,8 +66,10 @@ const ApplicantsPage = () => {
               <TableBody>
                 {applications.map((application) => (
                   <TableRow key={application._id}>
-                    <TableCell>{application.applicant}</TableCell>
-                    <TableCell>{application.appliedDate}</TableCell>
+                    <TableCell>{application.applicant?.name}</TableCell>
+                    <TableCell>
+                      <FormatedDate date={application.appliedDate} />{" "}
+                    </TableCell>
                     <TableCell>{application.status}</TableCell>
                     <TableCell>
                       <Link

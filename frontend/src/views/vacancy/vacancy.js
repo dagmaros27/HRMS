@@ -25,7 +25,7 @@ const VacancyPage = () => {
         title="Current Vacancies"
         action={
           ["ADMIN", "HR_MANAGER"].includes(user.user_role) && (
-            <Link to="/vacancy/create">
+            <Link to="/vacancy/add">
               <Button variant="contained" color="primary">
                 Create Vacancy
               </Button>

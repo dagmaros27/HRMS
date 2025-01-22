@@ -15,6 +15,7 @@ const NewsPage = () => {
 
   useEffect(() => {
     dispatch(fetchNews());
+    console.log(news);
   }, [dispatch]);
 
   return (
@@ -68,7 +69,11 @@ const NewsPage = () => {
                   }}
                 >
                   <img
-                    src={article.image || altImage}
+                    src={
+                      article?.image
+                        ? `${import.meta.env.VITE_API_BASE_URL}${article.image}`
+                        : altImage
+                    }
                     alt={article.title}
                     style={{
                       width: "100%",
@@ -76,6 +81,7 @@ const NewsPage = () => {
                       objectFit: "cover",
                     }}
                   />
+
                   <div style={{ padding: "16px" }}>
                     <h3 style={{ margin: "0 0 8px" }}>{article.title}</h3>
                     <p style={{ margin: "0 0 16px", color: "#555" }}>

@@ -75,7 +75,11 @@ const NewsDescriptionPage = () => {
         }
       >
         <img
-          src={article.image || altImage}
+          src={
+            article?.image
+              ? `${import.meta.env.VITE_API_BASE_URL}${article.image}`
+              : altImage
+          }
           alt={article.title}
           style={{
             width: "100%",

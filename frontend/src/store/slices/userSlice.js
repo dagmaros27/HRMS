@@ -80,9 +80,13 @@ export const fetchUserProfile = createAsyncThunk(
 
 export const updateUserProfile = createAsyncThunk(
   "user/updateUserProfile",
-  async (user, { rejectWithValue }) => {
+  async (updatedData, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.put("/user/profile", user);
+      const response = await axiosInstance.put("/user/profile", updatedData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       return response.data;
     } catch (error) {
       return rejectWithValue(

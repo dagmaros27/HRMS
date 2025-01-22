@@ -9,6 +9,7 @@ const newsSchema = new Schema(
     content: { type: String, required: true },
     author: { type: Schema.Types.ObjectId, ref: "Employee" },
     publishedDate: { type: Date, default: Date.now },
+    image: { type: String },
   },
   { timestamps: true }
 );

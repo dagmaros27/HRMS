@@ -1,5 +1,6 @@
 import { Card, Typography, Button, Box, Divider } from "@mui/material";
 import { Link } from "react-router-dom";
+import FormatedDate from "../../../components/shared/FormatedDate";
 
 function ApplyButton(id) {
   return (
@@ -59,7 +60,7 @@ const VacancyCard = ({
           <strong>Salary:</strong> {salary}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          <strong>Date Posted:</strong> {datePosted}
+          <strong>Date Posted:</strong> <FormatedDate date={datePosted} />
         </Typography>
       </Box>
       {["APPLICANT", "EMPLOYEE"].includes(userRole) && ApplyButton(id)}

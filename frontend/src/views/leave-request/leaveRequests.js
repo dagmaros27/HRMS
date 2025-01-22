@@ -19,6 +19,7 @@ import { IconEdit } from "@tabler/icons-react";
 import PageContainer from "src/components/container/PageContainer";
 import DashboardCard from "../../components/shared/DashboardCard";
 import { Link } from "react-router-dom";
+import FormatedDate from "../../components/shared/FormatedDate";
 
 const LeaveRequestPage = () => {
   const dispatch = useDispatch();
@@ -27,6 +28,7 @@ const LeaveRequestPage = () => {
   const leaveRequests = useSelector(selectLeaveRequests);
   const status = useSelector((state) => state.leaveRequest.status);
 
+  console.log(leaveRequests);
   useEffect(() => {
     // Fetch leave requests on component mount
     dispatch(fetchLeaveRequests());
@@ -63,11 +65,12 @@ const LeaveRequestPage = () => {
             <TableBody>
               {leaveRequests.map((request) => (
                 <TableRow key={request._id}>
-                  <TableCell>{request.username}</TableCell>
-                  <TableCell>{request.position}</TableCell>
+                  <TableCell>{request.employee?.name}</TableCell>
+                  <TableCell>{request.employee?.position}</TableCell>
                   <TableCell>{request.status}</TableCell>
                   <TableCell>
-                    {request.startDate} - {request.endDate}
+                    <FormatedDate date={request.startDate} /> -{" "}
+                    <FormatedDate date={request.endDate} />
                   </TableCell>
                   <TableCell align="right">
                     <Link to={`/leave-requests/${request._id}`}>

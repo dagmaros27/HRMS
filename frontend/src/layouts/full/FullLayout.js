@@ -33,7 +33,7 @@ const FullLayout = () => {
 
   useEffect(() => {
     if (!isLoggedIn) {
-      navigate("/auth/login");
+      navigate("/homepage");
     }
   }, [isLoggedIn, navigate]);
 

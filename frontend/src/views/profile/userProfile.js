@@ -1,228 +1,157 @@
-import React, { useEffect, useState } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect } from "react";
 import {
-  fetchUserProfile, // Adjust this to a unified fetch action
-  updateUserProfile, // Unified update action
-  selectUserProfile,
-  setLoading,
-} from "../../store/slices/userSlice"; // Adjust to a unified slice
-import {
-  TextField,
-  Button,
   Box,
   Typography,
-  CircularProgress,
-  Alert,
-  IconButton,
-  FormControl,
+  Paper,
+  Grid,
+  Button,
+  List,
+  ListItem,
+  ListItemText,
 } from "@mui/material";
-import { IconPlus, IconRowRemove } from "@tabler/icons-react";
-import PageContainer from "../../components/container/PageContainer";
-import DashboardCard from "../../components/shared/DashboardCard";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUserProfile, selectUser } from "../../store/slices/userSlice"; // Import your thunk action
 
-const UserProfile = () => {
-  const navigate = useNavigate();
+const ProfilePage = () => {
   const dispatch = useDispatch();
-  const userProfile = useSelector(selectUserProfile);
-  const { error, status, user_id, user_role } = useSelector(
-    (state) => state.user
-  );
-  const updateStatus = status;
+  const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    phone: "",
-    address: "",
-    position: "",
-    employmentHistory: [],
-    qualifications: [],
-    certifications: [],
-    resume: "",
-    role: "", // Add a role field
-  });
+  const user = useSelector(selectUser);
+  const { userProfile, loading, error } = useSelector((state) => state.user);
 
   useEffect(() => {
-    dispatch(fetchUserProfile({ user_id, user_role }));
-    console.log(userProfile);
-    return () => {
-      dispatch(setLoading(false));
-    };
+    // Fetch user profile on component mount
+    dispatch(
+      fetchUserProfile({ userId: user.user_id, userRole: user.user_role })
+    );
   }, [dispatch]);
 
-  useEffect(() => {
-    if (userProfile && Object.keys(userProfile).length) {
-      setFormData({
-        ...formData,
-        ...userProfile,
-      });
+  if (loading) return <Typography>Loading...</Typography>;
+  if (error) return <Typography>Error fetching profile: {error}</Typography>;
+  if (!userProfile) return <Typography>No user profile available</Typography>;
+
+  // Render user-specific data
+  const renderSpecificDetails = () => {
+    switch (user.user_role) {
+      case "EMPLOYEE":
+      case "HR_MANAGER":
+        return (
+          <>
+            <Typography variant="h6">Employment History:</Typography>
+            <List>
+              {userProfile.employmentHistory.map((history, index) => (
+                <ListItem key={index}>
+                  <ListItemText
+                    primary={`${history.company} - ${history.role}`}
+                    secondary={`From: ${new Date(
+                      history.startDate
+                    ).toLocaleDateString()} To: ${
+                      history.endDate
+                        ? new Date(history.endDate).toLocaleDateString()
+                        : "Present"
+                    }`}
+                  />
+                </ListItem>
+              ))}
+            </List>
+            <Typography variant="h6">Qualifications:</Typography>
+            <List>
+              {userProfile.qualifications.map((qualification, index) => (
+                <ListItem key={index}>
+                  <ListItemText primary={qualification} />
+                </ListItem>
+              ))}
+            </List>
+            <Typography variant="h6">Certifications:</Typography>
+            <List>
+              {userProfile.certifications.map((certification, index) => (
+                <ListItem key={index}>
+                  <ListItemText primary={certification} />
+                </ListItem>
+              ))}
+            </List>
+          </>
+        );
+      case "APPLICANT":
+        return (
+          <>
+            {userProfile.resume ? (
+              <>
+                <Typography variant="h6">Resume:</Typography>
+                <a
+                  href={userProfile?.resume}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  View Resume
+                </a>
+              </>
+            ) : (
+              <Typography variant="h6">No resume uploaded</Typography>
+            )}
+            {/* <Typography variant="h6">Applied Jobs:</Typography>
+            <List>
+              {userProfile.appliedJobs.map((job, index) => (
+                <ListItem key={index}>
+                  <ListItemText primary={`Job ID: ${job}`} />
+                </ListItem>
+              ))}
+            </List> */}
+          </>
+        );
+      case "ADMIN":
+        return <></>;
+      default:
+        return <Typography>No specific details available.</Typography>;
     }
-  }, [userProfile]);
-
-  useEffect(() => {
-    if (updateStatus === "succeeded") {
-      navigate("/users");
-    }
-  }, [updateStatus, navigate]);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleNestedChange = (index, field, value, key) => {
-    setFormData((prev) => {
-      const updated = [...prev[key]];
-      updated[index][field] = value;
-      return { ...prev, [key]: updated };
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    dispatch(updateUserProfile({ _id: id, ...formData }));
   };
 
   return (
-    <PageContainer title="Edit User" description="Edit User Profile">
-      <DashboardCard
-        title="Edit User"
-        action={
-          <Link to="/users">
-            <Button variant="outlined" color="primary">
-              Back
-            </Button>
-          </Link>
-        }
-      >
-        <Box sx={{ display: "flex", justifyContent: "center" }}>
-          {updateStatus === "loading" && <CircularProgress />}
-          {updateStatus === "failed" && <Alert severity="error">{error}</Alert>}
-          <FormControl sx={{ width: "60%" }}>
-            <Box
-              sx={{ display: "flex", flexDirection: "column", gap: 2, p: 4 }}
-            >
-              <TextField
-                required
-                fullWidth
-                label="Name"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-              />
-              <TextField
-                required
-                fullWidth
-                label="Email"
-                name="email"
-                type="email"
-                value={formData.email}
-                onChange={handleChange}
-              />
-              <TextField
-                required
-                fullWidth
-                label="Password"
-                name="password"
-                type="password"
-                value={formData.password}
-                onChange={handleChange}
-              />
-              <TextField
-                fullWidth
-                label="Phone"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-              />
-              {formData.role === "Employee" && (
-                <>
-                  <TextField
-                    fullWidth
-                    label="Address"
-                    name="address"
-                    value={formData.address}
-                    onChange={handleChange}
-                  />
-                  <TextField
-                    fullWidth
-                    label="Position"
-                    name="position"
-                    value={formData.position}
-                    onChange={handleChange}
-                  />
-                  <Typography variant="h6">Employment History</Typography>
-                  {formData.employmentHistory.map((entry, index) => (
-                    <Box
-                      key={index}
-                      sx={{ display: "flex", flexDirection: "column", gap: 2 }}
-                    >
-                      <TextField
-                        fullWidth
-                        label="Company"
-                        value={entry.company}
-                        onChange={(e) =>
-                          handleNestedChange(
-                            index,
-                            "company",
-                            e.target.value,
-                            "employmentHistory"
-                          )
-                        }
-                      />
-                      <TextField
-                        fullWidth
-                        label="Role"
-                        value={entry.role}
-                        onChange={(e) =>
-                          handleNestedChange(
-                            index,
-                            "role",
-                            e.target.value,
-                            "employmentHistory"
-                          )
-                        }
-                      />
-                    </Box>
-                  ))}
-                </>
-              )}
-              {formData.role === "Applicant" && (
-                <>
-                  <TextField
-                    fullWidth
-                    label="Resume"
-                    name="resume"
-                    value={formData.resume}
-                    onChange={handleChange}
-                  />
-                </>
-              )}
-              <Button
-                variant="contained"
-                color="primary"
-                type="submit"
-                sx={{ mt: 2 }}
-                onClick={handleSubmit}
-                disabled={updateStatus === "pending"}
-              >
-                {updateStatus === "pending" ? (
-                  <CircularProgress size={24} />
-                ) : (
-                  "Update User"
-                )}
-              </Button>
-            </Box>
-          </FormControl>
+    <Box sx={{ p: 4 }}>
+      <Paper elevation={3} sx={{ p: 4, maxWidth: 800, margin: "0 auto" }}>
+        <Typography variant="h4" gutterBottom>
+          Profile
+        </Typography>
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={6}>
+            <Typography variant="h6">Name:</Typography>
+            <Typography>
+              {userProfile.name ? userProfile.name : userProfile.username}
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Typography variant="h6">Email:</Typography>
+            <Typography>{userProfile.email}</Typography>
+          </Grid>
+          {userProfile.phone && (
+            <Grid item xs={12} sm={6}>
+              <Typography variant="h6">Phone:</Typography>
+              <Typography>{userProfile.phone}</Typography>
+            </Grid>
+          )}
+          {userProfile.address && (
+            <Grid item xs={12} sm={6}>
+              <Typography variant="h6">Address:</Typography>
+              <Typography>{userProfile.address}</Typography>
+            </Grid>
+          )}
+        </Grid>
+
+        <Box mt={4}>{renderSpecificDetails()}</Box>
+
+        <Box mt={4} textAlign="center">
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => navigate("/profile/edit")}
+          >
+            Update Profile
+          </Button>
         </Box>
-      </DashboardCard>
-    </PageContainer>
+      </Paper>
+    </Box>
   );
 };
 
-export default UserProfile;
+export default ProfilePage;

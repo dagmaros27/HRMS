@@ -6,7 +6,11 @@ const create_leave_request = async (leaveRequest) => {
 };
 
 const get_leave_request_by_id = async (id) => {
-  const leaveRequest = await LeaveRequest.findById(id);
+  const leaveRequest = await LeaveRequest.findById(id).populate({
+    path: "employee",
+    select: "name email",
+  });
+  console.log(leaveRequest);
   return leaveRequest;
 };
 
@@ -16,7 +20,11 @@ const get_leave_requests_by_employee = async (employeeId) => {
 };
 
 const get_all_leave_requests = async () => {
-  const leaveRequests = await LeaveRequest.find();
+  const leaveRequests = await LeaveRequest.find().populate({
+    path: "employee",
+    select: "name  position",
+  });
+
   return leaveRequests;
 };
 

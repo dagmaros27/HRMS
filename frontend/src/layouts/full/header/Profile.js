@@ -18,10 +18,12 @@ import ProfileImg from "src/assets/images/profile/user-1.jpg";
 
 import { useDispatch, useSelector } from "react-redux";
 import { logout, selectUser } from "src/store/slices/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const [anchorEl2, setAnchorEl2] = useState(null);
   const user = useSelector(selectUser);
+  const navigate = useNavigate();
   const handleClick2 = (event) => {
     setAnchorEl2(event.currentTarget);
   };
@@ -33,6 +35,7 @@ const Profile = () => {
 
   const handleLogout = () => {
     dispatch(logout());
+    navigate("/");
   };
 
   return (
@@ -101,12 +104,12 @@ const Profile = () => {
           </ListItemIcon>
           <ListItemText>My Account</ListItemText>
         </MenuItem> */}
-        <MenuItem>
+        {/* <MenuItem>
           <ListItemIcon>
             <IconListCheck width={20} />
           </ListItemIcon>
           <ListItemText>My Tasks</ListItemText>
-        </MenuItem>
+        </MenuItem> */}
         <Box mt={1} py={1} px={2}>
           <Button
             onClick={handleLogout}

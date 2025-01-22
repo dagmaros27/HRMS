@@ -4,11 +4,13 @@ import { Grid, Button, CircularProgress, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import PageContainer from "src/components/container/PageContainer";
 import DashboardCard from "../../components/shared/DashboardCard";
+import trainingImage from "../../assets/images/training.jpg";
 import {
   fetchTrainings,
   registerForTraining,
 } from "../../store/slices/trainingSlice";
 import { selectUser } from "../../store/slices/userSlice";
+import FormatedDate from "../../components/shared/FormatedDate";
 
 const TrainingPage = () => {
   const dispatch = useDispatch();
@@ -55,7 +57,7 @@ const TrainingPage = () => {
                   }}
                 >
                   <img
-                    src={session.image || "default-image-url.jpg"}
+                    src={session.image || trainingImage}
                     alt={session.title}
                     style={{
                       width: "100%",
@@ -66,8 +68,8 @@ const TrainingPage = () => {
                   <div style={{ padding: "16px" }}>
                     <Typography variant="h6">{session.title}</Typography>
                     <Typography variant="body2">
-                      Date:
-                      {session.startDate} - {session.endDate}
+                      <FormatedDate date={session.startDate} /> -{" "}
+                      <FormatedDate date={session.endDate} />
                     </Typography>
                     <Typography variant="body2">
                       {" "}
@@ -80,14 +82,22 @@ const TrainingPage = () => {
                     >
                       {session.description}
                     </Typography>
-                    <Button
-                      variant="contained"
-                      size="small"
-                      fullWidth
-                      onClick={() => handleRegister(session._id)}
-                    >
-                      Register
-                    </Button>
+                    {["ADMIN", "HR_MANAGER"].includes(user.user_role) ? (
+                      <Link to={`/training/edit/${session.id}`}>
+                        <Button variant="contained" color="primary" fullWidth>
+                          See Details
+                        </Button>
+                      </Link>
+                    ) : (
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        fullWidth
+                        onClick={() => handleRegister(session.id)}
+                      >
+                        Register
+                      </Button>
+                    )}
                   </div>
                 </div>
               </Grid>

@@ -79,67 +79,57 @@ const employeeSlice = createSlice({
   initialState: {
     employees: [],
     selectedEmployee: {},
-    status: "idle", // 'idle' | 'loading' | 'succeeded' | 'failed'
+    fetchStatus: "idle", // Status for fetch actions
+    updateStatus: "idle", // Status for update actions
     error: null,
   },
   reducers: {
     clearStatusAndError: (state) => {
-      state.status = "idle";
-      state.error = null;
-    },
-    resetStatus: (state) => {
-      state.status = "idle";
+      state.fetchStatus = "idle";
+      state.updateStatus = "idle";
       state.error = null;
     },
   },
   extraReducers: (builder) => {
     builder
-      // Fetch employees
-      .addCase(fetchEmployees.pending, (state) => {
-        state.status = "loading";
-        state.error = null;
-      })
-      .addCase(fetchEmployees.fulfilled, (state, action) => {
-        state.status = "succeeded";
-        state.employees = action.payload;
-      })
-      .addCase(fetchEmployees.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.payload;
-      })
-      // Fetch employee by ID
+
       .addCase(fetchEmployeeById.pending, (state) => {
-        state.status = "loading";
+        state.fetchStatus = "loading";
         state.error = null;
       })
       .addCase(fetchEmployeeById.fulfilled, (state, action) => {
-        state.status = "succeeded";
+        state.fetchStatus = "succeeded";
         state.selectedEmployee = action.payload || {};
       })
       .addCase(fetchEmployeeById.rejected, (state, action) => {
-        state.status = "failed";
+        state.fetchStatus = "failed";
         state.error = action.payload;
       })
-      // Create employee
-      .addCase(createEmployee.pending, (state) => {
-        state.status = "loading";
+      .addCase(fetchEmployees.pending, (state) => {
+        state.fetchStatus = "loading";
         state.error = null;
       })
-      .addCase(createEmployee.fulfilled, (state, action) => {
-        state.status = "succeeded";
-        state.employees.push(action.payload);
+      .addCase(fetchEmployees.fulfilled, (state, action) => {
+        state.fetchStatus = "succeeded";
+        state.employees = action.payload;
       })
-      .addCase(createEmployee.rejected, (state, action) => {
-        state.status = "failed";
+      .addCase(fetchEmployees.rejected, (state, action) => {
+        state.fetchStatus = "failed";
         state.error = action.payload;
       })
-      // Update employee
+      .addCase(deleteEmployee.fulfilled, (state, action) => {
+        state.employees = state.employees.filter(
+          (employee) => employee._id !== action.payload
+        );
+      })
+
+      // Update actions
       .addCase(updateEmployee.pending, (state) => {
-        state.status = "loading";
+        state.updateStatus = "loading";
         state.error = null;
       })
       .addCase(updateEmployee.fulfilled, (state, action) => {
-        state.status = "succeeded";
+        state.updateStatus = "succeeded";
         const updatedEmployee = action.payload;
         const index = state.employees.findIndex(
           (employee) => employee._id === updatedEmployee._id
@@ -149,22 +139,7 @@ const employeeSlice = createSlice({
         }
       })
       .addCase(updateEmployee.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.payload;
-      })
-      // Delete employee
-      .addCase(deleteEmployee.pending, (state) => {
-        state.status = "loading";
-        state.error = null;
-      })
-      .addCase(deleteEmployee.fulfilled, (state, action) => {
-        state.status = "succeeded";
-        state.employees = state.employees.filter(
-          (employee) => employee._id !== action.payload
-        );
-      })
-      .addCase(deleteEmployee.rejected, (state, action) => {
-        state.status = "failed";
+        state.updateStatus = "failed";
         state.error = action.payload;
       });
   },

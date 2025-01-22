@@ -14,6 +14,7 @@ import DashboardCard from "../../components/shared/DashboardCard";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { generateReport, fetchReports } from "../../store/slices/reportSlice";
+import FormatedDate from "../../components/shared/FormatedDate";
 
 const ReportPage = () => {
   const navigate = useNavigate();
@@ -22,6 +23,7 @@ const ReportPage = () => {
 
   useEffect(() => {
     dispatch(fetchReports());
+    console.log(reports);
   }, [dispatch]);
 
   const handleGenerateReport = async () => {
@@ -60,8 +62,14 @@ const ReportPage = () => {
             {reports.map((report) => (
               <TableRow key={report._id}>
                 <TableCell>{report._id}</TableCell>
-                <TableCell>{report.createdAt}</TableCell>
-                <TableCell>{report.createdBy}</TableCell>
+                <TableCell>
+                  <FormatedDate date={report.createdAt} />
+                </TableCell>
+                <TableCell>
+                  {report.createdBy === null
+                    ? "Admin"
+                    : report?.createdBy?.name}{" "}
+                </TableCell>
                 <TableCell>
                   <Link to={`/reports/${report._id}`}>
                     <Button variant="outlined">View Details</Button>

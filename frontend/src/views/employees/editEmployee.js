@@ -6,6 +6,7 @@ import {
   updateEmployee,
   selectEmployeeStatus,
   selectEmployeeError,
+  clearStatusAndError,
 } from "../../store/slices/employeeSlice";
 import {
   TextField,
@@ -47,10 +48,7 @@ const EditEmployee = () => {
     }
 
     // Reset status when the component is mounted
-    return () => {
-      // Dispatch a reset action to reset the status in the Redux slice
-      dispatch({ type: "employee/resetStatus" });
-    };
+    dispatch(clearStatusAndError()); // Reset on mount
   }, [id, dispatch]);
 
   useEffect(() => {
@@ -72,8 +70,9 @@ const EditEmployee = () => {
   useEffect(() => {
     if (updateStatus === "succeeded") {
       navigate("/employees");
+      dispatch(clearStatusAndError());
     }
-  }, [updateStatus, navigate]);
+  }, [updateStatus, navigate, dispatch]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -86,7 +85,15 @@ const EditEmployee = () => {
   const handleNestedChange = (index, field, value, key) => {
     setFormData((prev) => {
       const updated = [...prev[key]];
-      updated[index][field] = value;
+
+      if (field === null) {
+        // For string arrays like qualifications or certifications
+        updated[index] = value;
+      } else {
+        // For object arrays like employmentHistory
+        updated[index] = { ...updated[index], [field]: value };
+      }
+
       return { ...prev, [key]: updated };
     });
   };
@@ -228,7 +235,11 @@ const EditEmployee = () => {
                     label="Start Date"
                     type="date"
                     InputLabelProps={{ shrink: true }}
-                    value={entry.startDate}
+                    value={
+                      entry.startDate
+                        ? new Date(entry.startDate).toISOString().split("T")[0]
+                        : ""
+                    }
                     onChange={(e) =>
                       handleNestedChange(
                         index,
@@ -243,7 +254,11 @@ const EditEmployee = () => {
                     label="End Date"
                     type="date"
                     InputLabelProps={{ shrink: true }}
-                    value={entry.endDate}
+                    value={
+                      entry.endDate
+                        ? new Date(entry.endDate).toISOString().split("T")[0]
+                        : ""
+                    }
                     onChange={(e) =>
                       handleNestedChange(
                         index,

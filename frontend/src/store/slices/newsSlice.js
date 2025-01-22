@@ -16,8 +16,8 @@ const newsSlice = createSlice({
   name: "news",
   initialState: {
     news: [],
-    fetchStatus: null, // For fetching news
-    addStatus: null, // For adding news
+    fetchStatus: null,
+    addStatus: null,
   },
   reducers: {
     resetAddStatus: (state) => {

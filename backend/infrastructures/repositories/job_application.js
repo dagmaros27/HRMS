@@ -6,13 +6,33 @@ const create_job_application = async (application) => {
 };
 
 const get_job_application_by_id = async (id) => {
-  const application = await JobApplication.findById(id);
-  return application;
+  try {
+    const applications = await JobApplication.findById(id).populate({
+      path: "applicant",
+      select: "-password -__v",
+    });
+
+    return applications;
+  } catch (error) {
+    console.error("Error fetching job applications:", error.message);
+    throw new Error("Failed to retrieve job applications");
+  }
 };
 
 const get_job_applications_by_vacancy = async (vacancyId) => {
-  const applications = await JobApplication.find({ jobVacancy: vacancyId });
-  return applications;
+  try {
+    const applications = await JobApplication.find({
+      jobVacancy: vacancyId,
+    }).populate({
+      path: "applicant",
+      select: "-password -__v",
+    });
+
+    return applications;
+  } catch (error) {
+    console.error("Error fetching job applications:", error.message);
+    throw new Error("Failed to retrieve job applications");
+  }
 };
 
 const get_all_job_applications = async () => {

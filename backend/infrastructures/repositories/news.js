@@ -1,8 +1,9 @@
 const { News } = require("../../domain/models/models");
 
 const create_news = async (news) => {
-  news = await News.create(news);
-  return news;
+  console.log("news", news);
+  const created = await News.create(news);
+  return created;
 };
 
 const get_news_by_id = async (id) => {

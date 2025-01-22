@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { TextField, Button, Grid, Box, Typography } from "@mui/material";
+import {
+  TextField,
+  Button,
+  Grid,
+  Box,
+  Typography,
+  CircularProgress,
+} from "@mui/material";
 import PageContainer from "src/components/container/PageContainer";
 import DashboardCard from "../../components/shared/DashboardCard";
 import { Link, useNavigate } from "react-router-dom";
@@ -12,9 +19,9 @@ const AddNewsPage = () => {
 
   const [formData, setFormData] = useState({
     title: "",
-    image: "",
     description: "",
     content: "",
+    image: null,
   });
 
   const [error, setError] = useState("");
@@ -22,7 +29,12 @@ const AddNewsPage = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setFormData((prev) => ({ ...prev, image: file }));
   };
 
   const handleSubmit = (e) => {
@@ -35,21 +47,25 @@ const AddNewsPage = () => {
     }
 
     setError("");
-    dispatch(addNews(formData));
+
+    const data = new FormData();
+    data.append("title", title);
+    data.append("description", description);
+    data.append("content", content);
+    data.append("image", image);
+
+    dispatch(addNews(data));
   };
 
-  // Reset addStatus when component mounts
   useEffect(() => {
     dispatch(resetAddStatus());
   }, [dispatch]);
 
-  // Redirect to news list on success
   useEffect(() => {
     if (addStatus === "success") {
       navigate("/news");
     }
   }, [addStatus, navigate]);
-
   return (
     <PageContainer title="Add News" description="Add a new news article">
       <DashboardCard
@@ -78,14 +94,20 @@ const AddNewsPage = () => {
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                label="Image URL"
-                name="image"
-                value={formData.image}
-                onChange={handleInputChange}
+              <Button
+                variant="outlined"
+                component="label"
                 fullWidth
-                required
-              />
+                sx={{ textAlign: "left" }}
+              >
+                {formData.image ? formData.image.name : "Upload Image"}
+                <input
+                  type="file"
+                  hidden
+                  accept="image/*"
+                  onChange={handleFileChange}
+                />
+              </Button>
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -134,7 +156,11 @@ const AddNewsPage = () => {
                 fullWidth
                 disabled={addStatus === "loading"}
               >
-                {addStatus === "loading" ? "Adding..." : "Add News"}
+                {addStatus === "loading" ? (
+                  <CircularProgress size={24} color="inherit" />
+                ) : (
+                  "Add News"
+                )}
               </Button>
             </Grid>
           </Grid>
