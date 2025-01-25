@@ -36,7 +36,11 @@ const vacancySlice = createSlice({
     applyStatus: null, // Status for applying to a vacancy
     error: null, // Store error messages
   },
-  reducers: {},
+  reducers: {
+    clearApplyStatus: (state) => {
+      state.applyStatus = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       // Fetch Vacancies
@@ -88,3 +92,4 @@ export const selectFetchStatus = (state) => state.vacancy.fetchStatus;
 export const selectAddStatus = (state) => state.vacancy.addStatus;
 export const selectApplyStatus = (state) => state.vacancy.applyStatus;
 export const selectVacancyError = (state) => state.vacancy.error;
+export const { clearApplyStatus } = vacancySlice.actions;

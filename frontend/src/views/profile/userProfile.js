@@ -8,6 +8,7 @@ import {
   List,
   ListItem,
   ListItemText,
+  Alert,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -36,41 +37,54 @@ const ProfilePage = () => {
     switch (user.user_role) {
       case "EMPLOYEE":
       case "HR_MANAGER":
+      case "TRAINER":
         return (
           <>
-            <Typography variant="h6">Employment History:</Typography>
-            <List>
-              {userProfile.employmentHistory.map((history, index) => (
-                <ListItem key={index}>
-                  <ListItemText
-                    primary={`${history.company} - ${history.role}`}
-                    secondary={`From: ${new Date(
-                      history.startDate
-                    ).toLocaleDateString()} To: ${
-                      history.endDate
-                        ? new Date(history.endDate).toLocaleDateString()
-                        : "Present"
-                    }`}
-                  />
-                </ListItem>
-              ))}
-            </List>
-            <Typography variant="h6">Qualifications:</Typography>
-            <List>
-              {userProfile.qualifications.map((qualification, index) => (
-                <ListItem key={index}>
-                  <ListItemText primary={qualification} />
-                </ListItem>
-              ))}
-            </List>
-            <Typography variant="h6">Certifications:</Typography>
-            <List>
-              {userProfile.certifications.map((certification, index) => (
-                <ListItem key={index}>
-                  <ListItemText primary={certification} />
-                </ListItem>
-              ))}
-            </List>
+            {userProfile.employmentHistory.length > 0 && (
+              <>
+                <Typography variant="h6">Employment History:</Typography>
+                <List>
+                  {userProfile.employmentHistory.map((history, index) => (
+                    <ListItem key={index}>
+                      <ListItemText
+                        primary={`${history.company} - ${history.role}`}
+                        secondary={`From: ${new Date(
+                          history.startDate
+                        ).toLocaleDateString()} To: ${
+                          history.endDate
+                            ? new Date(history.endDate).toLocaleDateString()
+                            : "Present"
+                        }`}
+                      />
+                    </ListItem>
+                  ))}
+                </List>
+              </>
+            )}
+            {userProfile.qualifications.length > 0 && (
+              <>
+                <Typography variant="h6">Qualifications:</Typography>
+                <List>
+                  {userProfile.qualifications.map((qualification, index) => (
+                    <ListItem key={index}>
+                      <ListItemText primary={qualification} />
+                    </ListItem>
+                  ))}
+                </List>
+              </>
+            )}
+            {userProfile.certifications.length > 0 && (
+              <>
+                <Typography variant="h6">Certifications:</Typography>
+                <List>
+                  {userProfile.certifications.map((certification, index) => (
+                    <ListItem key={index}>
+                      <ListItemText primary={certification} />
+                    </ListItem>
+                  ))}
+                </List>
+              </>
+            )}
           </>
         );
       case "APPLICANT":
@@ -80,7 +94,7 @@ const ProfilePage = () => {
               <>
                 <Typography variant="h6">Resume:</Typography>
                 <a
-                  href={userProfile?.resume}
+                  href={`http://localhost:5000/api${userProfile?.resume}`}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -139,17 +153,22 @@ const ProfilePage = () => {
         </Grid>
 
         <Box mt={4}>{renderSpecificDetails()}</Box>
-
         {user.user_role === "APPLICANT" && (
-          <Box mt={4} textAlign="center">
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => navigate("/profile/edit")}
-            >
-              Update Profile
-            </Button>
-          </Box>
+          <>
+            <Alert severity="info">
+              If you are an applicant, you can update your profile and add your
+              resume by clicking the button below.
+            </Alert>
+            <Box mt={4} textAlign="center">
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => navigate("/profile/edit")}
+              >
+                Update Profile
+              </Button>
+            </Box>
+          </>
         )}
       </Paper>
     </Box>

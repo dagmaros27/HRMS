@@ -104,6 +104,7 @@ const generatePrompt = async () => {
   // Construct the prompt string
   const prompt = `
 Generate a detailed and professional report about the Galaxy Car Training Center based on the provided context:
+Today's Date = ${new Date().toLocaleDateString()}
 1. **Employee Overview**:
    - Total number of employees: ${employeeData.numberOfEmployees}.
    - Employee distribution by position: ${JSON.stringify(

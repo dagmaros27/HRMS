@@ -23,17 +23,11 @@ class AdminUsecase {
 
   async getAdminById(adminId) {
     const admin = await get_admin_by_id(adminId);
-    if (!admin) {
-      throw new Error("Admin not found");
-    }
     return admin;
   }
 
   async getAdminByEmail(email) {
     const admin = await get_admin_by_email(email);
-    if (!admin) {
-      throw new Error("Admin not found");
-    }
     return admin;
   }
 

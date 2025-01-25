@@ -79,6 +79,7 @@ const employeeSlice = createSlice({
   initialState: {
     employees: [],
     selectedEmployee: {},
+    createStatus: "idle",
     fetchStatus: "idle", // Status for fetch actions
     updateStatus: "idle", // Status for update actions
     error: null,
@@ -141,6 +142,18 @@ const employeeSlice = createSlice({
       .addCase(updateEmployee.rejected, (state, action) => {
         state.updateStatus = "failed";
         state.error = action.payload;
+      })
+      .addCase(createEmployee.pending, (state) => {
+        state.createStatus = "loading";
+        state.error = null;
+      })
+      .addCase(createEmployee.fulfilled, (state, action) => {
+        state.createStatus = "succeeded";
+        state.employees.push(action.payload);
+      })
+      .addCase(createEmployee.rejected, (state, action) => {
+        state.createStatus = "failed";
+        state.error = action.payload;
       });
   },
 });
@@ -150,7 +163,7 @@ export const { clearStatusAndError } = employeeSlice.actions;
 export default employeeSlice.reducer;
 
 export const selectAllEmployees = (state) => state.employee.employees;
-export const selectEmployeeStatus = (state) => state.employee.status;
+export const selectEmployeeStatus = (state) => state.employee.updateStatus;
 export const selectEmployeeError = (state) => state.employee.error;
 export const selectSelectedEmployee = (state) =>
   state.employee.selectedEmployee;

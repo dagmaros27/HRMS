@@ -4,9 +4,10 @@ const fs = require("fs");
 
 const convertMarkdownToPDF = async (markdownContent) => {
   try {
-    const htmlContent = marked(markdownContent);
+    const htmlContent = marked.parse(markdownContent);
 
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({ headless: true });
+
     const page = await browser.newPage();
     await page.setContent(htmlContent);
 
@@ -16,6 +17,9 @@ const convertMarkdownToPDF = async (markdownContent) => {
     });
 
     await browser.close();
+
+    fs.writeFileSync("debug.pdf", pdfBuffer);
+    console.log("PDF saved locally for debugging");
 
     return pdfBuffer;
   } catch (error) {

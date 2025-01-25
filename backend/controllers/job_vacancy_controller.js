@@ -10,8 +10,23 @@ const createJobVacancy = async (req, res) => {
 };
 
 const getAllJobs = async (req, res) => {
-  const jobs = await jobVacancyUsecase.getAllJobs();
-  res.status(200).json(jobs);
+  try {
+    let jobs = await jobVacancyUsecase.getAllJobs();
+
+    console.log("User role:", req.user.role);
+    console.log("User applied jobs:", req.user.appliedJobs);
+    if (req.user.role === "APPLICANT") {
+      const appliedJobIds = req.user.appliedJobs || [];
+      jobs = jobs.filter((job) => !appliedJobIds.includes(job._id));
+    }
+
+    console.log("Jobs:", jobs);
+
+    res.status(200).json(jobs);
+  } catch (error) {
+    console.error("Error fetching jobs:", error);
+    res.status(500).json({ error: "Failed to fetch jobs" });
+  }
 };
 
 const getJobById = async (req, res) => {

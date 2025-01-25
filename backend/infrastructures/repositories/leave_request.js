@@ -15,7 +15,12 @@ const get_leave_request_by_id = async (id) => {
 };
 
 const get_leave_requests_by_employee = async (employeeId) => {
-  const leaveRequests = await LeaveRequest.find({ employee: employeeId });
+  const leaveRequests = await LeaveRequest.find({
+    employee: employeeId,
+  }).populate({
+    path: "employee",
+    select: "name  position",
+  });
   return leaveRequests;
 };
 

@@ -52,15 +52,38 @@ const AddTrainingPage = () => {
     e.preventDefault();
     const { trainee, startDate, endDate, trainer } = formData;
 
+    // Validation: Check for missing fields
     if (!trainee || !startDate || !endDate || !trainer) {
-      setError("Trainee, Start Date, and End Date are required.");
+      setError("Trainee, Start Date, End Date, and Trainer are required.");
       return;
     }
 
+    // Validation: Check date constraints
+    const today = new Date().setHours(0, 0, 0, 0); // Today's date
+    const start = new Date(startDate).setHours(0, 0, 0, 0);
+    const end = new Date(endDate).setHours(0, 0, 0, 0);
+
+    if (start < today) {
+      setError("Start Date must be in the future.");
+      return;
+    }
+
+    if (end <= start) {
+      setError("End Date must be after Start Date.");
+      return;
+    }
+
+    // Reset error and dispatch action
     setError("");
-    dispatch(addTraining(formData)).then(() => {
-      navigate("/training");
-    });
+    dispatch(addTraining(formData))
+      .unwrap()
+      .then(() => {
+        navigate("/training");
+      })
+      .catch((error) => {
+        setError("Failed to add training. Please try again.");
+        console.error(error);
+      });
   };
 
   return (

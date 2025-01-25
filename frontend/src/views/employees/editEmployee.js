@@ -69,8 +69,9 @@ const EditEmployee = () => {
 
   useEffect(() => {
     if (updateStatus === "succeeded") {
+      alert("Employee updated successfully");
       navigate("/employees");
-      dispatch(clearStatusAndError());
+      dispatch(clearStatusAndError()); // Reset status after navigation
     }
   }, [updateStatus, navigate, dispatch]);
 

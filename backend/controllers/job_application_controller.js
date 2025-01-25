@@ -1,6 +1,10 @@
-const { JobApplicationUsecase } = require("../usecases/usecases");
+const {
+  JobApplicationUsecase,
+  ApplicantUsecase,
+} = require("../usecases/usecases");
 
 const jobApplicationUsecase = new JobApplicationUsecase();
+const applicantUsecase = new ApplicantUsecase();
 
 const applyForJob = async (req, res) => {
   const jobApplicationData = req.body;
@@ -8,6 +12,12 @@ const applyForJob = async (req, res) => {
   const jobApplication = await jobApplicationUsecase.applyForJob(
     jobApplicationData
   );
+
+  const applicant = await applicantUsecase.addJobApplication(
+    jobApplication.applicant,
+    jobApplication.jobVacancy
+  );
+
   res.status(201).json(jobApplication);
 };
 

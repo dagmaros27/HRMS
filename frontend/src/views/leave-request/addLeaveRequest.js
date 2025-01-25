@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { TextField, Button, Grid, Box, Typography } from "@mui/material";
 import PageContainer from "src/components/container/PageContainer";
 import DashboardCard from "../../components/shared/DashboardCard";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addLeaveRequest } from "../../store/slices/leaveRequestSlice";
 
@@ -13,6 +13,7 @@ const LeaveRequestForm = () => {
     reason: "",
   });
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,9 +22,30 @@ const LeaveRequestForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const today = new Date().setHours(0, 0, 0, 0); // Current date with time reset
+    const startDate = new Date(formData.startDate).setHours(0, 0, 0, 0);
+    const endDate = new Date(formData.endDate).setHours(0, 0, 0, 0);
+
+    // Validation
+    if (!formData.startDate || !formData.endDate) {
+      alert("Please select both start and end dates.");
+      return;
+    }
+    if (startDate < today) {
+      alert("Start date must be in the future.");
+      return;
+    }
+    if (endDate <= startDate) {
+      alert("End date must be after the start date.");
+      return;
+    }
+
     try {
       await dispatch(addLeaveRequest(formData)).unwrap();
       alert("Leave request submitted successfully!");
+      navigate("/leave-requests/history");
+
       setFormData({ startDate: "", endDate: "", reason: "" });
     } catch (error) {
       alert("Failed to submit leave request. Please try again.");

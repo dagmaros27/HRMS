@@ -17,14 +17,25 @@ const get_applicant_by_email = async (email) => {
 };
 
 const update_applicant = async (applicant) => {
+  console.log("applicant", applicant);
   try {
-    const updatedApplicant = await Applicant.findByIdAndUpdate(applicant._id, {
-      new: true,
-    });
-    console.log(updatedApplicant);
-    return updatedApplicant.toObject();
+    const updatedApplicant = await Applicant.findByIdAndUpdate(
+      applicant._id, // ID of the document to update
+      {
+        name: applicant.name,
+        email: applicant.email,
+        phone: applicant.phone,
+        address: applicant.address,
+        appliedJobs: applicant.appliedJobs,
+        resume: applicant.resume,
+      }, // Updated data
+      { new: true } // Options to return the updated document
+    );
+
+    console.log("updatedApplicant", updatedApplicant);
+    return updatedApplicant;
   } catch (error) {
-    console.error(`Error updating applicant with id ${id}:`, error);
+    console.error(`Error updating applicant with id ${applicant._id}:`, error);
     throw error;
   }
 };

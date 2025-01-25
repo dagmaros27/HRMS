@@ -35,7 +35,7 @@ const AddEmployee = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { status, error } = useSelector((state) => state.employee);
+  const { createStatus, error } = useSelector((state) => state.employee);
 
   // Clear status and error when the component mounts
   useEffect(() => {
@@ -44,7 +44,7 @@ const AddEmployee = () => {
 
   // Reset form on successful submission
   useEffect(() => {
-    if (status === "succeeded") {
+    if (createStatus === "succeeded") {
       setFormData({
         name: "",
         email: "",
@@ -57,7 +57,7 @@ const AddEmployee = () => {
         certifications: [],
       });
     }
-  }, [status]);
+  }, [createStatus]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -94,14 +94,34 @@ const AddEmployee = () => {
     });
   };
 
+  const validateForm = () => {
+    if (
+      formData.name.trim() === "" ||
+      formData.email.trim() === "" ||
+      formData.password.trim() === "" ||
+      formData.phone.trim() === "" ||
+      formData.address.trim() === "" ||
+      formData.position.trim() === ""
+    ) {
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(createEmployee(formData));
-    if (status === "succeeded") {
-      setTimeout(() => {
-        dispatch(clearStatusAndError());
-        navigate("/employees");
-      }, 3000);
+
+    if (validateForm()) {
+      dispatch(createEmployee(formData));
+      if (createStatus === "succeeded") {
+        setTimeout(() => {
+          dispatch(clearStatusAndError());
+          alert("Employee added successfully");
+          navigate("/employees");
+        }, 3000);
+      }
+    } else {
+      alert("Please fill the required fields ");
     }
   };
 
@@ -339,11 +359,13 @@ const AddEmployee = () => {
                 Add Certification
               </Button>
 
-              {status === "loading" && <CircularProgress />}
-              {status === "succeeded" && (
+              {createStatus === "loading" && <CircularProgress />}
+              {createStatus === "succeeded" && (
                 <Alert severity="success">Employee added successfully!</Alert>
               )}
-              {status === "failed" && <Alert severity="error">{error}</Alert>}
+              {createStatus === "failed" && (
+                <Alert severity="error">{error}</Alert>
+              )}
 
               <Button
                 variant="contained"
@@ -351,7 +373,7 @@ const AddEmployee = () => {
                 type="submit"
                 sx={{ mt: 2 }}
                 onClick={handleSubmit}
-                disabled={status === "loading"}
+                disabled={createStatus === "loading"}
               >
                 Add Employee
               </Button>

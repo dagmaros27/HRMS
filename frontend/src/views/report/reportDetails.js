@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Typography, Button } from "@mui/material";
+import { Typography, Button, Box } from "@mui/material";
 import PageContainer from "src/components/container/PageContainer";
 import DashboardCard from "../../components/shared/DashboardCard";
 import { Link, useParams } from "react-router-dom";
@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchReports } from "../../store/slices/reportSlice";
 import Markdown from "react-markdown";
 import FormatedDate from "../../components/shared/FormatedDate";
+import axiosInstance from "../../axios";
 
 const ReportDetailsPage = () => {
   const { id } = useParams();
@@ -29,6 +30,17 @@ const ReportDetailsPage = () => {
     return <Typography>Report not found.</Typography>;
   }
 
+  const handleDownloadPdf = async () => {
+    try {
+      const response = await axiosInstance.get(
+        `/report/download-pdf/${report._id}`
+      );
+      console.log(response);
+    } catch (error) {
+      console.error("Error downloading pdf:", error);
+    }
+  };
+
   return (
     <PageContainer
       title="Report Details"
@@ -44,6 +56,15 @@ const ReportDetailsPage = () => {
           </Link>
         }
       >
+        <Box sx={{ display: "flex", justifyContent: "end" }}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleDownloadPdf}
+          >
+            Download PDF
+          </Button>
+        </Box>
         <Typography variant="body1" gutterBottom>
           <strong>Timestamp:</strong> <FormatedDate date={report?.createdAt} />
         </Typography>

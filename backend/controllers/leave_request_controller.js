@@ -4,7 +4,11 @@ const leaveRequestUsecase = new LeaveRequestUsecase();
 
 const applyLeaveRequest = async (req, res) => {
   const leaveRequestData = req.body;
-  leaveRequestData.employee = req.user._id;
+  if (req.user.role === "TRAINER") {
+    leaveRequestData.employee = req.user.employee;
+  } else {
+    leaveRequestData.employee = req.user._id;
+  }
   const leaveRequest = await leaveRequestUsecase.applyLeaveRequest(
     leaveRequestData
   );
@@ -28,9 +32,14 @@ const getLeaveRequestsByEmployee = async (req, res) => {
 };
 
 const getAllLeaveRequests = async (req, res) => {
-  if (["EMPLOYEE", "TRAINER"].includes(req.user.role)) {
+  if (["EMPLOYEE"].includes(req.user.role)) {
     const leaveRequests = await leaveRequestUsecase.getLeaveRequestsByEmployee(
       req.user._id
+    );
+    return res.status(200).json(leaveRequests);
+  } else if (["TRAINER"].includes(req.user.role)) {
+    const leaveRequests = await leaveRequestUsecase.getLeaveRequestsByEmployee(
+      req.user.employee
     );
     return res.status(200).json(leaveRequests);
   }

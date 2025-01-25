@@ -1,5 +1,8 @@
 const { ReportUsecase } = require("../usecases/usecases");
 const Gemini = require("../infrastructures/llm/gemini");
+const {
+  convertMarkdownToPDF,
+} = require("../infrastructures/utils/generate_pdf");
 
 const gemini = new Gemini();
 const reportUsecase = new ReportUsecase(gemini);
@@ -22,13 +25,16 @@ const createReport = async (req, res) => {
 
 const downloadPdf = async (req, res) => {
   try {
-    const markdownContent = await reportUsecase.getReportById(req.params.id);
+    const report = await reportUsecase.getReportById(req.params.id);
 
-    const pdfBuffer = await convertMarkdownToPDF(markdownContent);
+    const pdfBuffer = await convertMarkdownToPDF(report.content);
 
     res.setHeader("Content-Type", "application/pdf");
-    res.setHeader("Content-Disposition", `attachment; filename="content.pdf"`);
-    res.status(200).send(pdfBuffer);
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename="Report ${report.createdAt.toDateString()}.pdf"`
+    );
+    res.status(200).end(pdfBuffer);
   } catch (error) {
     res.status(500).json({ message: "Error generating PDF" });
   }

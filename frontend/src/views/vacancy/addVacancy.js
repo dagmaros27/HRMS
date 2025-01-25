@@ -10,7 +10,7 @@ const AddVacancyPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState({
-    jobTitle: "",
+    title: "",
     description: "",
     salary: "",
     location: "",
@@ -28,6 +28,15 @@ const AddVacancyPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const today = new Date().setHours(0, 0, 0, 0);
+    const vacancyDate = new Date(formValues.deadline).setHours(0, 0, 0, 0);
+
+    if (vacancyDate < today) {
+      alert("The date must be in the future.");
+      return;
+    }
+
     try {
       dispatch(addVacancy({ ...formValues }));
       alert("Vacancy added successfully!");
@@ -61,8 +70,8 @@ const AddVacancyPage = () => {
         >
           <TextField
             label="Job Title"
-            name="jobTitle"
-            value={formValues.jobTitle}
+            name="title"
+            value={formValues.title}
             onChange={handleChange}
             required
             fullWidth
@@ -82,6 +91,7 @@ const AddVacancyPage = () => {
           <TextField
             label="Salary"
             name="salary"
+            type="number"
             value={formValues.salary}
             onChange={handleChange}
             required

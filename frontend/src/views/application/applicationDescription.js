@@ -102,15 +102,21 @@ const ApplicantDetailsPage = () => {
               {/* Resume */}
               <Grid item xs={12} sm={6}>
                 <Typography variant="h6">Resume:</Typography>
-                <a
-                  href={applicant?.resume}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Button variant="contained" color="primary" size="small">
-                    View Resume
-                  </Button>
-                </a>
+                {applicant?.resume ? (
+                  <a
+                    href={`http://localhost:5000/api${applicant?.resume}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Button variant="contained" color="primary" size="small">
+                      View Resume
+                    </Button>
+                  </a>
+                ) : (
+                  <Typography variant="body1" color="text.secondary">
+                    No resume uploaded
+                  </Typography>
+                )}
               </Grid>
             </Grid>
 

@@ -55,8 +55,7 @@ const updateUserProfile = async (req, res) => {
         delete updatedUser[key];
       }
     });
-
-    // Pass the updated user data to your userUsecase for database update
+    updatedUser._id = _id;
     const result = await userUsecase.updateUserProfile(updatedUser);
 
     res.status(200).json(result); // Send the updated user data back

@@ -1,4 +1,5 @@
 const { AdminUsecase } = require("../usecases/usecases");
+const { Admin } = require("../domain/models/admin_model");
 
 const adminUsecase = new AdminUsecase();
 
@@ -14,7 +15,9 @@ const seedAdmin = async () => {
       email: "admin@test.com", // Default email
     };
 
-    const newAdmin = await adminUsecase.createAdmin(adminData);
+    const admin = new Admin(adminData);
+
+    const newAdmin = await adminUsecase.createAdmin(admin);
     console.log("Admin seeded successfully:", newAdmin);
   } catch (error) {
     console.error("Error seeding admin:", error.message);

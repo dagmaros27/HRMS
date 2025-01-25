@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   applyForVacancy,
   selectApplyStatus,
+  clearApplyStatus,
 } from "../../store/slices/vacancySlice";
 
 const VacancyApplyPage = () => {
@@ -31,11 +32,12 @@ const VacancyApplyPage = () => {
   useEffect(() => {
     if (applicationStatus === "succeeded") {
       alert("Your application has been submitted!");
+      dispatch(clearApplyStatus());
       navigate("/vacancy");
     } else if (applicationStatus === "failed") {
       alert("Failed to submit your application. Please try again.");
     }
-  }, [applicationStatus, navigate]);
+  }, [applicationStatus, navigate, dispatch]);
 
   return (
     <PageContainer title="Apply for Vacancy">

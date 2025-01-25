@@ -26,7 +26,7 @@ const AuthRegister = ({ title, subtitle, subtext }) => {
 
   useEffect(() => {
     if (isLoggedIn) {
-      navigate(`/profile/${user.user_id}`);
+      navigate(`/profile`);
     }
   }, [isLoggedIn, navigate, user]);
 

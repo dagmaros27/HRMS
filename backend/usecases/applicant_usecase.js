@@ -33,7 +33,7 @@ class ApplicantUsecase {
   }
 
   async updateApplicant(applicantId, applicantData) {
-    const updated = await update_applicant(applicantId, applicantData);
+    const updated = await update_applicant(applicantData);
     if (!updated) {
       throw new Error("Failed to update applicant");
     }
@@ -46,6 +46,17 @@ class ApplicantUsecase {
       throw new Error("Failed to delete applicant");
     }
     return deleted;
+  }
+
+  async addJobApplication(applicantId, jobApplicationId) {
+    const applicant = await get_applicant_by_id(applicantId);
+    if (!applicant.appliedJobs) {
+      applicant.appliedJobs = [];
+    }
+    applicant.appliedJobs.push(jobApplicationId);
+    console.log(applicant, jobApplicationId);
+    const updated = await update_applicant(applicant);
+    return updated;
   }
 }
 

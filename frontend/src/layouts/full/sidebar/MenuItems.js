@@ -29,7 +29,7 @@ const Menuitems = [
     title: "Vacancy",
     icon: IconBriefcase,
     href: "/vacancy",
-    access: ["ANY"],
+    access: ["ADMIN", "HR_MANAGER", "APPLICANT"],
   },
   {
     id: uniqueId(),

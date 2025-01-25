@@ -77,9 +77,8 @@ class UserUsecase {
     // }
 
     const applicant = Applicant(user);
-    const { _id, ...applicantWithoutId } = applicant;
 
-    return await update_applicant(applicant._id, applicantWithoutId);
+    return await update_applicant(applicant);
 
     // throw new Error("User not found");
   }

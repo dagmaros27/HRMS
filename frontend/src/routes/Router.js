@@ -187,7 +187,7 @@ const Router = (userRole) => {
           element: (
             <ProtectedRoute
               element={<Vacancy />}
-              allowedRoles={["ANY"]}
+              allowedRoles={["ADMIN", "HR_MANAGER", "APPLICANT"]}
               userRole={userRole}
             />
           ),
